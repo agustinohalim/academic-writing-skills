@@ -1,0 +1,253 @@
+{
+  "versi": "1.0",
+  "bahasa": "id",
+  "catatan": "Pola bahasa Indonesia yang menandai prosa tulisan mesin. Disusun khusus untuk bahasa Indonesia, karena daftar yang beredar semuanya berbahasa Inggris. Aturan berbobot 'berat' membuat pemeriksa keluar dengan status 1; 'ringan' hanya dilaporkan. Pola ditulis sebagai regex Python, dicocokkan tanpa membedakan huruf besar-kecil, hanya pada baris prosa (blok kode, kode sebaris, tautan, dan komentar HTML sudah dibuang lebih dahulu).",
+  "leksikal": [
+    {
+      "id": "pengantar-kosong",
+      "bobot": "berat",
+      "pesan": "Pengantar yang tidak membawa isi.",
+      "saran": "Buang frasanya, mulai langsung dari pernyataannya.",
+      "pola": [
+        "penting untuk dicatat bahwa",
+        "perlu (dicatat|diketahui|dipahami|digarisbawahi|ditekankan) bahwa",
+        "(tidak|tak|tidaklah|tak) (dapat|bisa) dipungkiri",
+        "sebagaimana (kita|telah) (ketahui|diketahui)",
+        "seperti yang (kita|sudah|telah) (tahu|ketahui)",
+        "sebelum (kita )?(masuk|melangkah) lebih jauh",
+        "tanpa berlama-lama",
+        "berikut (adalah|ini adalah) (beberapa|penjelasan|ulasan)"
+      ]
+    },
+    {
+      "id": "pembuka-zaman",
+      "bobot": "berat",
+      "pesan": "Pembuka bergaya esai umum yang tidak menyentuh pokok bahasan.",
+      "saran": "Mulai dari persoalan nyata yang dihadapi pembaca.",
+      "pola": [
+        "di (era|zaman|abad) (digital|modern|informasi|globalisasi|industri)",
+        "di zaman (sekarang|serba cepat|yang serba)",
+        "seiring (dengan )?(berkembangnya|perkembangan|majunya|pesatnya|kemajuan)",
+        "di tengah (pesatnya|derasnya|arus)",
+        "dalam dunia \\w+ yang (serba cepat|terus berubah|semakin)",
+        "(kian|semakin) hari (kian|semakin)"
+      ]
+    },
+    {
+      "id": "ajakan-kosong",
+      "bobot": "berat",
+      "pesan": "Ajakan basa-basi. Ajakan yang diikuti tindakan nyata ('Mari kita buktikan') tidak termasuk.",
+      "saran": "Langsung kerjakan hal yang diajak.",
+      "pola": [
+        "mari kita (bahas|lihat|simak|mulai|selami|telusuri lebih|kupas|jelajahi)",
+        "yuk (kita )?(bahas|simak|mulai)",
+        "sekarang, mari",
+        "ayo (kita )?(bahas|simak|mulai)"
+      ]
+    },
+    {
+      "id": "penutup-rekap",
+      "bobot": "ringan",
+      "pesan": "Penutup yang mengulang isi yang baru saja dibaca.",
+      "saran": "Akhiri pada butir konkret terakhir, atau pada tindakan yang harus pembaca lakukan.",
+      "pola": [
+        "^(secara keseluruhan|sebagai (penutup|kesimpulan)|kesimpulannya|singkat kata|singkatnya|pada akhirnya|intinya|akhir kata)\\s*[,:]",
+        "dengan demikian dapat disimpulkan",
+        "demikianlah pembahasan",
+        "itulah (tadi )?(penjelasan|pembahasan|ulasan)"
+      ]
+    },
+    {
+      "id": "kata-inflasi",
+      "bobot": "ringan",
+      "pesan": "Kata besar yang tidak menambah keterangan.",
+      "saran": "Ganti dengan kata biasa, atau sebutkan angka dan akibat yang sebenarnya.",
+      "pola": [
+        "\\bkrusial\\b",
+        "\\besensial\\b",
+        "\\bvital\\b",
+        "\\brevolusioner\\b",
+        "\\bmumpuni\\b",
+        "\\bholistik\\b",
+        "\\bkomprehensif\\b",
+        "\\b(sangat )?canggih\\b",
+        "\\bmutakhir\\b",
+        "\\bterobosan\\b",
+        "\\blanskap (digital|teknologi|industri)\\b",
+        "\\b(menyelami|mendalami) lebih (dalam|jauh)\\b",
+        "\\bdunia yang penuh\\b",
+        "\\bsolusi (jitu|ampuh|terbaik)\\b"
+      ]
+    },
+    {
+      "id": "puffery",
+      "bobot": "berat",
+      "pesan": "Klaim kepentingan tanpa isi. Pembaca yang memutuskan sesuatu penting atau tidak.",
+      "saran": "Nyatakan faktanya saja.",
+      "pola": [
+        "(memegang|memainkan) peran(an)? (penting|kunci|vital|sentral)",
+        "\\bberperan penting\\b",
+        "menjadi (bukti nyata|tonggak|penanda penting)",
+        "menegaskan komitmen",
+        "mengukuhkan posisi",
+        "menggarisbawahi pentingnya",
+        "membuka jalan bagi",
+        "tidak (dapat|bisa) dipisahkan dari kehidupan",
+        "sangat penting untuk (dipahami|diketahui|dikuasai)"
+      ]
+    },
+    {
+      "id": "kontras-biner",
+      "bobot": "ringan",
+      "pesan": "Pola 'bukan X, melainkan Y' yang dipakai untuk efek, bukan untuk membedakan.",
+      "saran": "Sebutkan Y langsung.",
+      "pola": [
+        "bukan (sekadar|sekedar|hanya|melulu) [^.,;]{2,40}[,.]? (tetapi|melainkan|tapi|namun)",
+        "pertanyaannya bukan(lah)? ",
+        "ini bukan tentang [^.]{2,40}\\. ini tentang",
+        "bukan soal [^.]{2,40}, (tapi|tetapi) soal"
+      ]
+    },
+    {
+      "id": "pertanyaan-retoris",
+      "bobot": "berat",
+      "pesan": "Pertanyaan retoris yang jawabannya disediakan sendiri.",
+      "saran": "Buang pertanyaannya, sampaikan jawabannya. 'Bayangkan Anda ...' sebagai alat peraga tidak termasuk.",
+      "pola": [
+        "pernahkah (anda|kamu|kita)",
+        "tahukah (anda|kamu)",
+        "(coba )?bayangkan (jika|seandainya|saja) ",
+        "apa (yang terjadi )?jika kita (tidak )?",
+        "menarik, bukan\\?",
+        "\\bbukan begitu\\?"
+      ]
+    },
+    {
+      "id": "weasel",
+      "bobot": "ringan",
+      "pesan": "Atribusi kabur.",
+      "saran": "Sebutkan sumbernya secara Harvard, atau hapus klaimnya.",
+      "pola": [
+        "(banyak|para) (ahli|pakar|peneliti) (berpendapat|sepakat|percaya|menyatakan)",
+        "(studi|penelitian|riset) (menunjukkan|membuktikan|mengungkapkan)",
+        "(umumnya|secara luas) di(anggap|yakini|percaya)",
+        "konon",
+        "dipercaya (oleh )?banyak"
+      ]
+    },
+    {
+      "id": "transisi-hampa",
+      "bobot": "ringan",
+      "pesan": "Transisi yang tidak memindahkan gagasan.",
+      "saran": "Sambungkan dengan isinya, atau mulai kalimat baru.",
+      "pola": [
+        "tidak hanya itu",
+        "yang lebih (penting|menarik) lagi",
+        "yang menarik adalah",
+        "hal ini menunjukkan betapa",
+        "sehingga menjadikannya",
+        "hal ini mencerminkan",
+        "\\bperlu diingat kembali bahwa\\b"
+      ]
+    },
+    {
+      "id": "kolon-dramatis",
+      "bobot": "ringan",
+      "pesan": "Titik dua yang dipakai untuk membuat kejutan.",
+      "saran": "Tulis sebagai kalimat biasa. Titik dua untuk daftar, label, dan kutipan.",
+      "pola": [
+        "^(kuncinya|intinya|masalahnya|hasilnya|yang menarik|bagian terbaiknya|ironinya)\\s*:\\s+[a-z]"
+      ]
+    },
+    {
+      "id": "inggris-tak-perlu",
+      "bobot": "ringan",
+      "pesan": "Kata Inggris yang punya padanan Indonesia mapan. Istilah teknis dan identifier tidak termasuk — keduanya sudah dibuang sebelum pemeriksaan.",
+      "saran": "Pakai padanan Indonesianya.",
+      "pola": [
+        "\\brobust\\b",
+        "\\bpowerful\\b",
+        "\\bseamless\\b",
+        "\\bleverage\\b",
+        "\\bgame changer\\b",
+        "\\bcutting[- ]edge\\b",
+        "\\bstate of the art\\b",
+        "\\binsight(ful)?\\b",
+        "\\buser[- ]friendly\\b"
+      ]
+    },
+    {
+      "id": "register-anda",
+      "bobot": "berat",
+      "pesan": "Sapaan tidak konsisten. Bahan ajar dan buku ajar lazim memakai 'Anda'.",
+      "saran": "Ganti menjadi 'Anda'.",
+      "pola": [
+        "\\bkamu\\b",
+        "\\bdirimu\\b",
+        "\\bkalian\\b"
+      ]
+    },
+    {
+      "id": "nudge-pembaca",
+      "bobot": "berat",
+      "pesan": "Menyuruh pembaca memperhatikan, alih-alih menuliskan hal yang layak diperhatikan.",
+      "saran": "Buang frasanya dan mulai dari isinya. 'Perhatikan bahwa X' hampir selalu sama baiknya sebagai 'X'.",
+      "pola": [
+        "perhatikan (bahwa|juga|pula|betapa)",
+        "patut (diperhatikan|dicatat|dilihat|dibahas|disebut)",
+        "perlu diperhatikan bahwa",
+        "yang (perlu|patut) (anda )?(perhatikan|dicatat|disadari)",
+        "camkan bahwa",
+        "\\bingat bahwa"
+      ]
+    },
+    {
+      "id": "rujukan-kabur",
+      "bobot": "berat",
+      "pesan": "Rujukan ke bab lain tanpa menyebut apa yang ada di sana.",
+      "saran": "Sebutkan isinya, bukan hanya nomornya: 'dibahas di Bab 12 sebagai operasi berkas', bukan 'baru terasa di Bab 12'.",
+      "pola": [
+        "(baru )?(benar-benar )?terasa (nanti )?di bab \\d+",
+        "lihat bab \\d+\\s*[.)]",
+        "(dibahas|dijelaskan) (nanti )?di bab (berikutnya|selanjutnya|lain)",
+        "pada bab (berikutnya|selanjutnya) akan (dibahas|dijelaskan)",
+        "sebagaimana (sudah )?(disebut|dijelaskan) (di|pada) (atas|bawah)\\b"
+      ]
+    },
+    {
+      "id": "daftar-tiga",
+      "bobot": "ringan",
+      "pesan": "Rangkaian tiga sifat yang disusun demi irama.",
+      "saran": "Sebutkan satu yang benar-benar Anda maksud.",
+      "pola": [
+        "lebih \\w+, lebih \\w+, dan lebih \\w+",
+        "\\w+, \\w+, dan \\w+ sekaligus"
+      ]
+    }
+  ],
+  "struktur": {
+    "pisah_per_1000_kata": 14,
+    "butir_rasio_maks": 0.6,
+    "butir_minimum": 8,
+    "butir_judul_dikecualikan": [
+      "^#+\\s*[FGHIJ]\\.",
+      "^#+\\s*(Yang dikumpulkan|Kriteria Penilaian|Daftar|Isi)\\b",
+      "^#+\\s*\\d+\\.\\d+\\s+Rangkuman\\b",
+      "^#+\\s*(Rangkuman|Latihan|Capaian Bab|Proyek Bab|Kesalahan Umum)\\b",
+      "^#+\\s*(Konsep|Praktik|Membaca dan memperbaiki)\\b"
+    ],
+    "pembuka_paragraf_berulang": 3,
+    "tebal_per_paragraf_maks": 3,
+    "kalimat_panjang_kata": 45,
+    "kepadatan_kata": {
+      "justru": 3,
+      "itulah": 3,
+      "perhatikan": 2,
+      "patut": 2,
+      "memang": 3,
+      "sebenarnya": 3,
+      "sesungguhnya": 2
+    },
+    "kepadatan_kata_minimum": 800
+  }
+}
