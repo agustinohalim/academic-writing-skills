@@ -52,6 +52,9 @@ Work top-down; errors in upper layers make lower-layer work wasted.
 python "${CLAUDE_SKILL_DIR}/scripts/check_manuscript_en.py" manuscript.md
 python "${CLAUDE_SKILL_DIR}/scripts/check_manuscript_en.py" --heavy --no-markers draft.md
 
+# Grammar and spelling (optional; Java 17+, `pip install language_tool_python`)
+python "${CLAUDE_SKILL_DIR}/scripts/check_grammar_lt.py" manuscript.md
+
 # Indonesian prose
 python "${CLAUDE_SKILL_DIR}/scripts/periksa_gaya.py" bab_02.md
 python "${CLAUDE_SKILL_DIR}/scripts/periksa_gaya.py" --semua --berat     # all .md under the working folder
@@ -92,4 +95,5 @@ Re-run the checkers afterwards. Rebuild derived files (`.docx`, `.pptx`, PDF) fr
 
 - `references/id/ejaan-eyd-v.md` — EYD V and KBBI rules most often missed (Indonesian)
 - `references/en/academic-english.md` — numbers, tenses, terminology, claims, tone
-- `scripts/check_manuscript_en.py`, `scripts/periksa_gaya.py`, `scripts/pola/claudish_id.json`
+- `references/en/related-tools.md` — other open checkers and agent skills, what each is good for, conflicts with research conventions
+- `scripts/check_manuscript_en.py`, `scripts/check_grammar_lt.py`, `scripts/periksa_gaya.py`, `scripts/pola/claudish_id.json`

@@ -23,6 +23,7 @@ call them directly: `/academic-writing:research-integrity`.
 - `check_manuscript_en.py` — English Markdown manuscripts: abstract numbers missing from the
   body, citations without references and vice versa, tables/figures never cited, leftover
   placeholders, and machine-prose patterns.
+- `check_grammar_lt.py` — optional LanguageTool grammar/spelling pass (Java 17+, `pip install language_tool_python`).
 - `periksa_gaya.py` + `pola/claudish_id.json` — Indonesian prose: essay-style openers, empty
   throat-clearing, rhetorical questions, puffery, wrong register, repeated emphasis words.
 

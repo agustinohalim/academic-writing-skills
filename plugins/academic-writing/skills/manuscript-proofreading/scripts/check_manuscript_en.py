@@ -255,7 +255,30 @@ MSG = {
     "baca_titikkoma": "{:.1f} semicolons per 1,000 words (guide <= {}): split into sentences",
     "baca_kalimat": "long or number-dense sentence ({} words): '{}...'",
     "baca_jamak": "'{}': uncountable noun used as countable (e.g. research -> studies, information -> details)",
+    "ing_rider": "', highlighting/underscoring/reflecting …' rider: state the consequence as its own clause with a subject",
+    "kopula": "'serves as / stands as a …': write 'is'",
+    "hedge": "stacked hedge ('may potentially'): one hedge is enough",
+    "not_only": "'not only … but also': usually a staged contrast; state both points plainly",
 }
+
+
+# Patterns from the "signs of AI writing" taxonomy used by blader/humanizer (MIT), limited to the
+# ones that are wrong in research prose: -ing riders, copula avoidance, stacked hedges.
+POLA_AI = [
+    (r",\s+(?:highlighting|underscoring|emphasi[sz]ing|showcasing|reflecting|illustrating|demonstrating|signal(?:l)?ing)\b", "ing_rider"),
+    (r"\b(?:serves|stands|acts|functions) as (?:a|an|the)\b", "kopula"),
+    (r"\b(?:may|might|could) (?:potentially|possibly|perhaps)\b|\bpotentially (?:may|might|could)\b", "hedge"),
+    (r"\bnot only\b[^.]{0,80}\bbut also\b", "not_only"),
+]
+
+
+def periksa_pola_ai(abstrak, badan):
+    temuan = []
+    for no, b in abstrak + badan:
+        for pola, kunci in POLA_AI:
+            if re.search(pola, b, re.IGNORECASE):
+                temuan.append((no, MSG[kunci]))
+    return temuan
 
 
 UNCOUNTABLE = ["researches", "informations", "equipments", "literatures", "evidences",
@@ -357,7 +380,7 @@ def periksa(jalur, hanya_berat=False, penanda=True):
     abstrak, badan, rujukan, keterangan = bagian(baris)
     berat = (periksa_angka(abstrak, badan, keterangan) + periksa_sitasi(badan, rujukan)
              + periksa_gambar(badan, keterangan) + (periksa_penanda(baris) if penanda else []))
-    ringan = [] if hanya_berat else periksa_gaya(abstrak, badan) + periksa_struktur(baris) + periksa_keterbacaan(abstrak, badan)
+    ringan = [] if hanya_berat else periksa_gaya(abstrak, badan) + periksa_struktur(baris) + periksa_keterbacaan(abstrak, badan) + periksa_pola_ai(abstrak, badan)
     nama = jalur
     print(f"\n== {nama}: {len(berat)} heavy, {len(ringan)} light")
     for no, pesan in sorted(berat):
