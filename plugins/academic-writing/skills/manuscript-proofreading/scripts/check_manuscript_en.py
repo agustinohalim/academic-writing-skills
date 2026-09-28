@@ -259,6 +259,7 @@ MSG = {
     "kopula": "'serves as / stands as a …': write 'is'",
     "hedge": "stacked hedge ('may potentially'): one hedge is enough",
     "not_only": "'not only … but also': usually a staged contrast; state both points plainly",
+    "overclaim": "overstatement (prove, definitively, guarantee, universally, highly significant): size the verb to the evidence",
 }
 
 
@@ -269,6 +270,8 @@ POLA_AI = [
     (r"\b(?:serves|stands|acts|functions) as (?:a|an|the)\b", "kopula"),
     (r"\b(?:may|might|could) (?:potentially|possibly|perhaps)\b|\bpotentially (?:may|might|could)\b", "hedge"),
     (r"\bnot only\b[^.]{0,80}\bbut also\b", "not_only"),
+    # overstatement list adapted from K-Dense scientific-writing lint_manuscript.py (MIT, K-Dense Inc.)
+    (r"\b(?:proves?|proven|definitively|guarantees?|no limitations|universally|highly significant)\b", "overclaim"),
 ]
 
 

@@ -19,10 +19,14 @@ Read as a reviewer who wants to reject, not as an author who wants to pass. The 
    file → the line of code that produced it. Check the splitting unit, time windows, number of
    repeats, label direction (AUC far below 0.5 almost always means an inverted label).
 3. **Cross-section consistency.** The same number in abstract, body, tables, supplement, and plan.
-4. **Confounders.** What distinguishes the classes besides what is claimed? (Database,
+4. **Methods and statistics.** Walk the checklists in
+   `third-party/k-dense/common-review-issues.md` (claim–evidence alignment, units, sample size,
+   analysis–design fit, prediction and ML) and `third-party/k-dense/statistical-reproducibility-review.md`
+   (estimand, denominators, clustered data, multiplicity, reproducibility). MIT, K-Dense Inc.
+5. **Confounders.** What distinguishes the classes besides what is claimed? (Database,
    annotator, device, year.)
-5. **Tone.** Neutralise sentences that attack other authors or sound dramatic.
-6. **Compliance.** Reporting guideline, AI policy, the journal's required statements.
+6. **Tone.** Neutralise sentences that attack other authors or sound dramatic.
+7. **Compliance.** Reporting guideline, AI policy, the journal's required statements.
 
 ## Review file format
 

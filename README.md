@@ -68,6 +68,11 @@ Update later with `/plugin marketplace update academic-writing-skills`.
 
 Code in `plugins/**/scripts/`: MIT. Everything else: CC BY 4.0. See `LICENSE`.
 
+Third-party: `scientific-article-writing/references/third-party/k-dense/` contains two checklists
+from [K-Dense-AI/scientific-agent-skills](https://github.com/K-Dense-AI/scientific-agent-skills),
+MIT, © 2025 K-Dense Inc. (licence included in that folder). Pattern ideas from
+[blader/humanizer](https://github.com/blader/humanizer) (MIT).
+
 ---
 
 ## Bahasa Indonesia

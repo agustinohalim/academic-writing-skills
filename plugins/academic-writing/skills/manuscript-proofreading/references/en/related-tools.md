@@ -25,6 +25,16 @@ and where it conflicts with research-writing conventions.
 | [bahayonghang/academic-writing-skills](https://github.com/bahayonghang/academic-writing-skills) | none stated | LaTeX/Typst paper audit, grammar and de-AI polish, cover-letter alignment | No licence: use, don't copy |
 | [wanshuiyin/Anti-Autoresearch](https://github.com/wanshuiyin/Anti-Autoresearch) | MIT | Reviewer-side integrity forensics (self-consistency of numbers, claims) | Aimed at AI-generated papers |
 
+## Tested on real manuscripts (28 September 2026)
+
+Three larger skill collections were cloned and run on a 5,500-word Markdown manuscript and its PDF.
+
+| Collection | Verdict | What was taken |
+|---|---|---|
+| K-Dense `scientific-writing` / `peer-review` (MIT) | Scripts need JSON manifests and inline `[claim:…]` markers — a heavy workflow that does not fit a plain Markdown manuscript. Its two review checklists are excellent | `common_issues.md` and `statistical_reproducibility.md` copied unchanged into `scientific-article-writing/references/third-party/k-dense/` with the MIT notice; its overstatement word list adapted into `check_manuscript_en.py` |
+| Imbad0202 `academic-research-skills` (CC BY-NC 4.0) | High-quality simulated review panel (seven agents, seven-dimension rubric, journal-fit reviewer, devil's advocate). One plugin with four skills that overlap writing and research workflows | Nothing copied (non-commercial licence is incompatible with CC BY). Install it for personal use and make its skills user-invocable only, so they run when called and do not compete with other writing skills |
+| bahayonghang `academic-writing-skills` (no licence) | Built for LaTeX/Typst; on a PDF the audit reported ~11,000 findings, almost all false positives (margin checks, text decoded as Latin-1) | Nothing — no licence, and the format does not fit |
+
 ## What none of them do
 
 No open tool reproduces a commercial language score such as Research Square's; those models are
