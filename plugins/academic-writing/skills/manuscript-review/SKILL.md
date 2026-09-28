@@ -30,6 +30,8 @@ consolidate_review.py  →  quote verification · consensus clusters · scorecar
         ↓
 author revises  →  prepare_review.py again (new folder)  →  panel  →  consolidate
         ↓
+impact_review.py old new  →  stale values · declared changes · sections edited / not edited
+        ↓
 diff_review.py old new  →  resolved · still open · not re-checked · new
 ```
 
@@ -68,6 +70,8 @@ problem per finding; severity by consequence (`critical` = a main claim may be w
 unsupported; `major` = a reviewer will certainly require it; `minor` = improves the paper);
 say what to do in `fix`; no invented references, numbers, or facts about the field — if a
 missing reference is suspected, describe what kind of work is missing instead of naming one.
+A question the manuscript gives no material to answer goes in `not_assessable`, not in a
+finding and not silently dropped.
 
 ### 4. Consolidate
 
@@ -92,12 +96,30 @@ changed the result from 56 clusters with 8 consensus issues to 38 clusters with 
 
 Then read `report.md` with the author. Findings "set aside" had quotes not found in the
 manuscript: check whether the reviewer misquoted (fix and re-run) or hallucinated (discard).
+The "Not assessable" section lists questions a role could not answer because an input was
+absent (no split procedure, no code link); those are unchecked, not passed, and a clean report
+with a long list there is weaker than it looks.
 Decision rules and scorecard: `references/decision-rules.md`.
 
 ### 5. Re-review after revision
 
-Prepare a **new** workspace on the revised manuscript, run the roles again (all of them, or at
-least the ones that raised critical or major issues), consolidate, then:
+Prepare a **new** workspace on the revised manuscript, then map what the revision touched before
+any role runs:
+
+```bash
+python "${CLAUDE_SKILL_DIR}/scripts/impact_review.py" review/<old> review/<new> [--change "OLS=SEM"]
+```
+
+It writes `impact.md` into the new workspace: values the author swapped in place (`81%` → `78%`,
+`OLS` → `SEM`) that still appear elsewhere, every line still holding an `OLD` from a declared
+`--change`, and which sections were edited and which were not. A value changed in Results and
+left in the Abstract is the commonest revision error, and it is mechanical — fix those before
+the panel spends time on them. Roles read `impact.md` when it exists, so they look hardest at
+claims in unedited sections that rest on edited ones. The script catches literal leftovers only;
+a sentence that still says "improves" after the number turned negative is the roles' job.
+
+Then run the roles again (all of them, or at least the ones that raised critical or major
+issues), consolidate, then:
 
 ```bash
 python "${CLAUDE_SKILL_DIR}/scripts/diff_review.py" review/<old> review/<new>

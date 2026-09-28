@@ -25,13 +25,15 @@ call them directly: `/academic-writing:research-integrity`.
 python prepare_review.py paper.md --out review/2026-10-01     # workspace, numbered lines, machine checks
 # five reviewer agents write review/2026-10-01/findings/<role>.json
 python consolidate_review.py review/2026-10-01                 # verify quotes, consensus, scorecard, report.md
+python impact_review.py review/2026-10-01 review/2026-10-20    # after revision: stale values, sections edited
 python diff_review.py review/2026-10-01 review/2026-10-20      # after revision: resolved / open / new
 ```
 
 The reviewer roles ship as plugin agents (`review-editor`, `review-methods`, `review-domain`,
 `review-presentation`, `review-devils-advocate`) so they can run in parallel and independently.
 The flow was designed after studying the review pipelines in K-Dense scientific-agent-skills,
-Imbad0202 academic-research-skills, and bahayonghang academic-writing-skills; the code and text
+Imbad0202 academic-research-skills, and bahayonghang academic-writing-skills; the revision-impact
+check and the not-assessable state follow ideas in ARKANAALZAIR thesis-debugger; the code and text
 here are original.
 
 ### Checkers (Python 3.10+, standard library only)

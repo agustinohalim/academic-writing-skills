@@ -9,7 +9,8 @@ findings/<role>.json, then:
   3. clusters findings raised by several roles about the same passage (consensus);
   4. aggregates the seven dimension scores (median and spread; spread >= 2 = disagreement);
   5. applies the decision rules (references/decision-rules.md);
-  6. writes report.md (for the author) and findings_final.json (for diff_review.py).
+  6. lists the questions roles marked not assessable (a missing input is not a pass);
+  7. writes report.md (for the author) and findings_final.json (for diff_review.py).
 
 Usage:
     python consolidate_review.py review/2026-09-28
@@ -63,6 +64,9 @@ def validasi(role, data):
             galat.append(f"{role} finding {i + 1}: severity must be one of {SEVERITIES}")
         if t.get("dimension") not in DIMENSIONS:
             galat.append(f"{role} finding {i + 1}: dimension must be one of {DIMENSIONS}")
+    for i, n in enumerate(data.get("not_assessable") or []):
+        if not isinstance(n, dict) or not n.get("question") or not n.get("missing"):
+            galat.append(f"{role} not_assessable {i + 1}: needs 'question' and 'missing'")
     return galat
 
 
@@ -173,7 +177,7 @@ def putuskan(kl, skor, mesin_berat):
     return "Accept with polishing", ["no critical or major issue"]
 
 
-def tulis_laporan(ws, meta, kl, skor, tak_terverifikasi, mesin, galat, keputusan, alasan, da):
+def tulis_laporan(ws, meta, kl, skor, tak_terverifikasi, mesin, galat, keputusan, alasan, da, tak_nilai):
     L = []
     L.append(f"# Review report\n\nManuscript: `{meta.get('source', '')}`  ")
     L.append(f"SHA-256: `{meta.get('sha256', '')[:16]}…` · {meta.get('words', 0)} words · "
@@ -213,6 +217,11 @@ def tulis_laporan(ws, meta, kl, skor, tak_terverifikasi, mesin, galat, keputusan
     kecil = [c for c in kl if c["severity"] == "minor"]
     if kecil:
         L.append(f"\nPlus {len(kecil)} minor issue(s) listed above.")
+    if tak_nilai:
+        L.append("\n## Not assessable from the manuscript\n")
+        L.append("Questions a role could not answer because an input was absent. They were not "
+                 "checked, so they did not pass either.\n")
+        L += [f"- ({n['role']}) {n['question']} — missing: {n['missing']}" for n in tak_nilai]
     if tak_terverifikasi:
         L.append("\n## Findings set aside: quote not found in the manuscript\n")
         L.append("These do not count toward the decision. Re-check or discard.\n")
@@ -234,7 +243,7 @@ def main(argv):
     if os.path.exists(os.path.join(ws, "meta.json")):
         with open(os.path.join(ws, "meta.json"), encoding="utf-8") as f:
             meta = json.load(f)
-    semua, galat, skor_mentah, da = [], [], {d: [] for d in DIMENSIONS}, ""
+    semua, galat, skor_mentah, da, tak_nilai = [], [], {d: [] for d in DIMENSIONS}, "", []
     peran_jalan = set()
     folder = os.path.join(ws, "findings")
     for nama in sorted(os.listdir(folder)):
@@ -255,6 +264,8 @@ def main(argv):
         for d, v in data["scores"].items():
             if d in skor_mentah and isinstance(v, (int, float)):
                 skor_mentah[d].append(v)
+        tak_nilai += [{**n, "role": role} for n in data.get("not_assessable") or []
+                      if isinstance(n, dict) and n.get("question") and n.get("missing")]
         if data.get("strongest_counterargument"):
             da = data["strongest_counterargument"]
         for i, t in enumerate(data["findings"], 1):
@@ -279,10 +290,10 @@ def main(argv):
             for d, v in skor_mentah.items() if v}
     mesin_berat = sum(1 for m in mesin if m["weight"] == "heavy")
     keputusan, alasan = putuskan(kl, skor, mesin_berat)
-    tulis_laporan(ws, meta, kl, skor, tak, mesin, galat, keputusan, alasan, da)
+    tulis_laporan(ws, meta, kl, skor, tak, mesin, galat, keputusan, alasan, da, tak_nilai)
     with open(os.path.join(ws, "findings_final.json"), "w", encoding="utf-8") as f:
         json.dump({"decision": keputusan, "scores": skor, "clusters": kl, "set_aside": tak,
-                   "roles_run": sorted(peran_jalan)},
+                   "not_assessable": tak_nilai, "roles_run": sorted(peran_jalan)},
                   f, ensure_ascii=False, indent=1)
     print(f"{keputusan}: {len(kl)} issue clusters ({sum(c['consensus'] >= 2 for c in kl)} with consensus), "
           f"{len(tak)} set aside (quote not found), {len(galat)} schema error(s)\n"

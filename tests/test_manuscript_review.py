@@ -184,5 +184,63 @@ class Merges(unittest.TestCase):
         self.assertEqual(r.returncode, 1)  # unknown id in merges.json is reported
 
 
+class NotAssessable(unittest.TestCase):
+    setUp, tearDown = ReviewFlow.setUp, ReviewFlow.tearDown
+    prepare, consolidate = ReviewFlow.prepare, ReviewFlow.consolidate
+
+    def test_listed_in_report_and_malformed_entry_rejected(self):
+        ws = self.prepare("r1")
+        role_file(ws, "methods", [])
+        with open(os.path.join(ws, "findings", "methods.json"), encoding="utf-8") as f:
+            data = json.load(f)
+        data["not_assessable"] = [{"question": "Is the split by region?", "missing": "split procedure"},
+                                  {"question": "no missing field"}]
+        with open(os.path.join(ws, "findings", "methods.json"), "w", encoding="utf-8") as f:
+            json.dump(data, f)
+        r, out = self.consolidate(ws)
+        self.assertEqual(r.returncode, 1)  # the malformed entry is a schema error
+        self.assertEqual(len(out["not_assessable"]), 1)
+        with open(os.path.join(ws, "report.md"), encoding="utf-8") as f:
+            self.assertIn("Is the split by region? — missing: split procedure", f.read())
+
+
+class Impact(unittest.TestCase):
+    setUp, tearDown = ReviewFlow.setUp, ReviewFlow.tearDown
+    prepare = ReviewFlow.prepare
+    IMPACT = os.path.join(REVIEW, "impact_review.py")
+
+    def revise(self, text):
+        p = os.path.join(self.tmp, "paper_v2.md")
+        with open(p, "w", encoding="utf-8") as f:
+            f.write(text)
+        return p
+
+    def test_value_changed_in_results_but_not_in_abstract(self):
+        ws1 = self.prepare("r1")
+        v2 = self.revise(MANUSCRIPT.replace("Rankings agree in 81% of resamples under a per-unit target (Table 1).",
+                                            "Rankings agree in 78% of resamples under a per-unit target (Table 1)."))
+        ws2 = self.prepare("r2", v2)
+        r = run(self.IMPACT, ws1, ws2)
+        self.assertEqual(r.returncode, 1, r.stdout + r.stderr)
+        with open(os.path.join(ws2, "impact.md"), encoding="utf-8") as f:
+            rep = f.read()
+        self.assertIn("`81%` (2 -> 1): L5 (Abstract)", rep)
+        self.assertIn("| 2. Results | 1 |", rep)
+        self.assertIn("Not edited: ", rep)
+
+    def test_deleted_sentence_is_not_a_stale_value(self):
+        v2 = self.revise(MANUSCRIPT.replace("Rankings agree in 81% of resamples under a per-unit target (Table 1).\n", ""))
+        r = run(self.IMPACT, self.ms, v2)
+        self.assertEqual(r.returncode, 0, r.stdout)
+        self.assertIn("(0)", r.stdout)
+
+    def test_declared_change_and_reference_numbers_ignored(self):
+        v2 = self.revise(MANUSCRIPT.replace("J Test 1:1-2", "J Test 12:10-20"))
+        r = run(self.IMPACT, self.ms, v2, "--change", "per-unit=per-region")
+        self.assertEqual(r.returncode, 1)
+        self.assertIn("OLD still at L6 (Abstract), L15 (2. Results)", r.stdout)
+        self.assertNotIn("`12`", r.stdout.split("## Changed")[1].split("## Sections")[0])
+
+
 if __name__ == "__main__":
     unittest.main()

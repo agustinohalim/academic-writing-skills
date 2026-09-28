@@ -41,3 +41,19 @@ Each role writes one file, `findings/<role>.json`, in the review workspace:
 
 Findings about something **absent** (a missing baseline, a missing limitation) quote the sentence
 where it should appear or the claim it undermines.
+
+## Not assessable
+
+Optional top-level list, next to `findings`:
+
+```json
+"not_assessable": [
+  {"question": "Is the test split by patient rather than by recording?",
+   "missing": "the manuscript does not describe how records were assigned to splits"}
+]
+```
+
+Use it when a question in the role's remit cannot be answered from the manuscript at all.
+It is not a finding and does not affect the decision; the report lists it so that silence is not
+read as a pass. If the absence itself is a defect a journal reviewer would raise, write a finding
+instead (or as well). Each entry needs both `question` and `missing`.
