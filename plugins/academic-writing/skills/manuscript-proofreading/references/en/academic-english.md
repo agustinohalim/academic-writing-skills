@@ -47,6 +47,48 @@ The machine checker is `../../scripts/check_manuscript_en.py`.
 **Tone.** Neutral toward others' work. Critique practices, not people; drop dramatic phrasing
 ("impossible without anyone noticing") and dramatic section titles.
 
+## What automated language scores measure
+
+Services such as Research Square's language quality score (built by AJE, now offered with the
+Rubriq AI editor) use a model trained on more than 100,000 papers scored by professional editors.
+The score compares a manuscript's readability — grammar, consistency, **clarity** — with other
+papers, so it is relative, and a mid score (5/10) means "average among submitted papers", not
+"wrong". The editor's suggestion count (often hundreds) includes many stylistic rewrites.
+
+A manuscript that is grammatical can still score in the middle, because the model rewards what
+editors reward: short, well-built sentences. The features that pull a technically precise
+manuscript down, and that `check_manuscript_en.py` now reports (light):
+
+| Feature | Guide | Fix |
+|---|---|---|
+| Average sentence length | ≤ 22 words; < 10% over 35 words | Split at "and", ";", ", which"; one claim per sentence |
+| Numbers per sentence | ≤ 2; < 10% of sentences with 4+ | Move numbers to a table; keep the one that carries the claim |
+| Hyphenated noun stacks | ≤ 15 per 1,000 words | "per-district rolling-origin test folds" → "test folds that roll forward in time, with thresholds set per district" (at first use; the short form after) |
+| Parentheses | ≤ 8 per 1,000 words | Promote to a sentence, or drop |
+| Semicolons | ≤ 5 per 1,000 words | Two sentences |
+| Punchline fragments | rare | Full sentences with a subject and verb |
+
+Precision and readability are not in conflict: define a compact term once, then use it; keep
+numbers where they prove something; let tables carry the rest.
+
+## Errors typical of writers whose first language is Indonesian
+
+Indonesian has no articles, no plural inflection on nouns after quantifiers, and no tense
+inflection on verbs. The English errors that follow are predictable — look for them first:
+
+| Error | Example → fix |
+|---|---|
+| Missing or extra article | "Model trained on panel" → "The model was trained on the panel" |
+| Uncountable noun made plural | researches, informations, equipments, literatures, evidences, softwares, feedbacks, datas → studies, information, equipment, literature, evidence, software, feedback, data |
+| Plural after a number missing | "three model" → "three models" |
+| Tense drift inside a paragraph | Methods and Results in past tense throughout |
+| Preposition calque | "discuss about", "consist from", "different with" → "discuss", "consist of", "different from" |
+| Question word order | "what data we should use" in a direct question → "what data should we use?" |
+| Overly long Indonesian-style sentences | Indonesian academic prose tolerates long chained clauses; English readers do not — split them |
+
+The checker flags the uncountable plurals; articles and prepositions need a human read, ideally
+aloud.
+
 ## AI copy-editing and publisher policy
 
 AI-assisted copy editing of human-written text for readability and grammar does not need to be

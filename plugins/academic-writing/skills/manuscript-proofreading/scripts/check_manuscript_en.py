@@ -242,12 +242,122 @@ def periksa_gaya(abstrak, badan):
     return temuan
 
 
+MSG = {
+    "judul": "title frames a local case ('evidence from', 'case study'): reviewers read it as local interest; state the general finding",
+    "abs_kata": "abstract has {} words (most journals: 150-250)",
+    "abs_angka": "abstract carries {} numbers: reads as a list of findings, not one arc (aim for <= 4)",
+    "kontribusi": "{} contribution items: more than 4 suggests several papers in one; pick the central one",
+    "angka_baru": "number '{}' in Discussion/Conclusion does not appear earlier: new result in the Discussion?",
+    "baca_panjang": "sentences average {:.1f} words, {:.0f}% over 35 words (aim: average <= 22, long < 10%) - automated language scores penalise this most",
+    "baca_angka": "{:.0f}% of sentences carry 4+ numbers: move numbers to tables, keep one or two per sentence",
+    "baca_hubung": "{:.1f} hyphenated compounds per 1,000 words (guide <= {}): noun stacks such as 'per-district rolling-origin test folds' are hard to parse; unpack some into phrases",
+    "baca_kurung": "{:.1f} parentheses per 1,000 words (guide <= {}): parenthetical asides interrupt sentences",
+    "baca_titikkoma": "{:.1f} semicolons per 1,000 words (guide <= {}): split into sentences",
+    "baca_kalimat": "long or number-dense sentence ({} words): '{}...'",
+    "baca_jamak": "'{}': uncountable noun used as countable (e.g. research -> studies, information -> details)",
+}
+
+
+UNCOUNTABLE = ["researches", "informations", "equipments", "literatures", "evidences",
+               "softwares", "feedbacks", "knowledges", "datas", "advices", "trainings",
+               "infrastructures", "furnitures", "works done", "a research ", "an evidence",
+               "a software", "an information"]
+
+
+def periksa_keterbacaan(abstrak, badan):
+    """Readability signals that automated language-quality scores penalise. All LIGHT."""
+    temuan = []
+    paragraf = [(no, b) for no, b in abstrak + badan
+                if not b.lstrip().startswith(("|", "```", "-", "*", "1.", "2.", "3."))
+                and not KETERANGAN.match(b.strip())]
+    kalimat = []
+    for no, b in paragraf:
+        b2 = re.sub(r"`[^`]*`", "X", b)
+        b2 = re.sub(r"\([^()]*\b(?:19|20)\d\d[a-z]?\b[^()]*\)", "", b2)
+        for k in re.split(r"(?<=[.!?])\s+(?=[A-Z])", b2):
+            if len(k.split()) > 2:
+                kalimat.append((no, k))
+    if not kalimat:
+        return temuan
+    kata = sum(len(k.split()) for _, k in kalimat)
+    panjang = [(no, k) for no, k in kalimat if len(k.split()) > 35]
+    rata = kata / len(kalimat)
+    if rata > 24 or len(panjang) / len(kalimat) > 0.10:
+        temuan.append((0, MSG["baca_panjang"].format(rata, len(panjang) * 100 / len(kalimat))))
+    padat = [(no, k) for no, k in kalimat if len(re.findall(r"\d+(?:\.\d+)?", k)) >= 4]
+    if len(padat) / len(kalimat) > 0.10:
+        temuan.append((0, MSG["baca_angka"].format(len(padat) * 100 / len(kalimat))))
+    teks = " ".join(k for _, k in kalimat)
+    for kunci, pola, batas in (("baca_hubung", r"\b[A-Za-z]+-[A-Za-z]+(?:-[A-Za-z]+)*\b", 15),
+                               ("baca_kurung", r"\(", 8), ("baca_titikkoma", r";", 5)):
+        n = len(re.findall(pola, teks)) * 1000 / kata
+        if n > batas:
+            temuan.append((0, MSG[kunci].format(n, batas)))
+    terburuk = sorted(panjang + padat, key=lambda x: -len(x[1].split()))
+    dilihat = set()
+    for no, k in terburuk:
+        if no in dilihat or len(dilihat) >= 8:
+            continue
+        dilihat.add(no)
+        temuan.append((no, MSG["baca_kalimat"].format(len(k.split()), k[:90])))
+    rendah = teks.lower()
+    for u in UNCOUNTABLE:
+        for m in re.finditer(r"\b" + re.escape(u.strip()) + r"\b", rendah):
+            no = next((n for n, k in kalimat if u.strip() in k.lower()), 0)
+            temuan.append((no, MSG["baca_jamak"].format(u.strip())))
+            break
+    return temuan
+
+
+def periksa_struktur(baris):
+    """Structure-level signals that drive novelty/presentation scores. All LIGHT."""
+    temuan = []
+    judul = next((b for b in baris if b.startswith("# ")), "")
+    if re.search(r"(?i)evidence from|a case study|case study of|: the case of", judul):
+        temuan.append((1, MSG["judul"]))
+    bagian_kini, isi = "", {}
+    for no, b in enumerate(baris, 1):
+        if b.startswith("## "):
+            bagian_kini = b[3:].strip().lower()
+            continue
+        if b.lstrip().startswith(">"):
+            continue
+        isi.setdefault(bagian_kini, []).append((no, b))
+    abstrak = next((v for k, v in isi.items() if "abstract" in k), [])
+    teks_abs = " ".join(b for _, b in abstrak)
+    kata = len(teks_abs.split())
+    if kata > 250:
+        temuan.append((abstrak[0][0], MSG["abs_kata"].format(kata)))
+    angka = [a for a in ANGKA.findall(teks_abs) if not re.fullmatch(r"(19|20)\d\d|\d", a.lstrip("-−"))]
+    if len(angka) > 6:
+        temuan.append((abstrak[0][0], MSG["abs_angka"].format(len(angka))))
+    for k, v in isi.items():
+        if "introduction" not in k:
+            continue
+        for i, (no, b) in enumerate(v):
+            if re.search(r"(?i)contribution", b):
+                butir = [x for x in v[i + 1:i + 40] if re.match(r"\s*\d+\.\s", x[1])]
+                if len(butir) > 4:
+                    temuan.append((no, MSG["kontribusi"].format(len(butir))))
+                break
+    hasil = " ".join(b for k, v in isi.items() if not re.search(r"discussion|conclusion|abstract|reference", k)
+                     for _, b in v).replace("−", "-")
+    for k, v in isi.items():
+        if not re.search(r"discussion|conclusion", k):
+            continue
+        for no, b in v:
+            for a in ANGKA.findall(b):
+                inti = a.replace("−", "-").lstrip("-")
+                if "." in inti and inti not in hasil:
+                    temuan.append((no, MSG["angka_baru"].format(a)))
+    return temuan
+
 def periksa(jalur, hanya_berat=False, penanda=True):
     baris = baca(jalur)
     abstrak, badan, rujukan, keterangan = bagian(baris)
     berat = (periksa_angka(abstrak, badan, keterangan) + periksa_sitasi(badan, rujukan)
              + periksa_gambar(badan, keterangan) + (periksa_penanda(baris) if penanda else []))
-    ringan = [] if hanya_berat else periksa_gaya(abstrak, badan)
+    ringan = [] if hanya_berat else periksa_gaya(abstrak, badan) + periksa_struktur(baris) + periksa_keterbacaan(abstrak, badan)
     nama = jalur
     print(f"\n== {nama}: {len(berat)} heavy, {len(ringan)} light")
     for no, pesan in sorted(berat):

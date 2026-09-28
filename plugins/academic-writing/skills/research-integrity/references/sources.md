@@ -16,3 +16,5 @@ every submission, not only this file.
 | Systematic reviews | PRISMA 2020 — https://www.prisma-statement.org/ |
 | Indonesian spelling | EYD Edisi V (Badan Bahasa, 2022) — https://ejaan.kemendikdasmen.go.id/ |
 | Textbook credit (Indonesia) | Kepmendiktisaintek No. 63/M/Kep/2025; confirm with LLDIKTI/SISTER |
+| Automated language score | Research Square / AJE, *Checking documents in Research Square* — https://support.aje.com/hc/en-us/articles/23285536027277-Checking-documents-in-Research-Square ; Rubriq on Research Square — https://www.researchsquare.com/researchers/digital-editing |
+| Structure and style | Mensh & Kording (2017) https://doi.org/10.1371/journal.pcbi.1005619 ; Gopen & Swan (1990) *American Scientist* 78: 550–558 ; Hotaling (2020) https://doi.org/10.1002/lol2.10165 |

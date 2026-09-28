@@ -40,12 +40,12 @@ carry a claim, **soften the claim or run the experiment** — do not make the se
 
 | Stage | Output | Gate |
 |---|---|---|
-| 1. Plan | Plan sections A–D | Author approves A (question, answer, genre) and B (separation from other papers) before any prose |
+| 1. Plan | Plan sections A–D, including the **one-sentence contribution** (≤ 30 words, no place or dataset name) and the closest prior work it goes beyond | Author approves A (question, answer, genre) and B (separation from other papers) before any prose |
 | 2. Results | Results files from scripts that were run; logs kept | Every number in plan D has a source line |
 | 3. Outline | Section headings + one claim sentence per subsection | Each claim points to a results file |
 | 4. Draft | One section per turn, in the order Methods → Results → Discussion → Introduction → Abstract → Title | Section finished before the next |
 | 5. Machine checks | `check_manuscript_en.py`, reference verification (Crossref/arXiv), quote check against PDFs, n-gram overlap | Zero heavy findings; every reference verified |
-| 6. Self-review | Dated review file, reviewer style (`references/self-review.md`) | Every critical finding closed or stated in Limitations |
+| 6. Self-review | Dated review file, reviewer style (`references/self-review.md`) + scorecard (`references/pre-submission-scorecard.md`) | Every critical finding closed or stated in Limitations; scorecard section A ≥ 10 of 14 |
 | 7. Package | Journal-formatted export, figures, cover letter, portal texts (`references/submission-package.md`) | Author reads the export; all co-authors approve (ICMJE item 3) |
 | 8. After submission | Status note in the manuscript head, status board, commit | Manuscript ID recorded |
 
@@ -54,6 +54,20 @@ is written from memory of results. Writing it last, from the final Results, clos
 
 **One section per turn.** A manuscript generated in one pass has uniform rhythm, the most
 visible sign of machine prose.
+
+## What decides the score
+
+Reviewers judge **what the paper is about** before how well it is done. In Rubriq's peer-review
+scorecard (R-Score), novelty and interest set the range of the overall score and quality only moves it within that
+range — so a correct, well-written paper with a local or multi-headed contribution lands in the
+middle. The levers, in order: one central contribution; a general question with the study site
+as evidence; novelty stated against named prior work; an abstract that is one arc, not a list.
+Details and sources (Mensh & Kording, Gopen & Swan, Swales' CARS, Schimel's OCAR):
+`references/story-and-structure.md`.
+
+An **automated language score** (e.g. Research Square's 0–10 language quality score) is a
+different thing: it measures readability only. Long sentences, number-dense sentences, noun
+stacks, and article errors drive it; see `manuscript-proofreading`.
 
 ## Anatomy
 
@@ -87,8 +101,10 @@ and that the manuscript is not under review elsewhere. Record the reasons in the
 
 ## Rejection and revision
 
-- **Desk rejection:** record the editor's reasons. Decide whether the problem is scope (change
-  journal) or framing (rewrite Introduction and title) before resubmitting.
+- **Desk rejection or a mid external score:** record the reasons, map them to the scorecard
+  questions, and decide whether the problem is scope (change journal) or framing (title,
+  abstract, Introduction, contribution list) before resubmitting. Mid scores are rarely a
+  language problem.
 - **Revision:** a response file with one table per reviewer — comment (quoted in full) ·
   response · change in manuscript (section and line). Every changed claim is re-run from
   scripts; no hand-written new numbers. Thank once at the top, then go straight to substance;
@@ -104,3 +120,5 @@ target journal, author order, or submit/withdraw decisions; new data needs.
 - `references/manuscript-anatomy.md` — required content per section and common failures
 - `references/self-review.md` — reviewer-style review before submission
 - `references/submission-package.md` — package contents, cover letter, portal checks
+- `references/story-and-structure.md` — central contribution, framing, CARS, C-C-C, reader expectations
+- `references/pre-submission-scorecard.md` — novelty/research/presentation scorecard before submitting
