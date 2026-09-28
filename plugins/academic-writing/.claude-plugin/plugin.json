@@ -1,0 +1,10 @@
+{
+  "name": "academic-writing",
+  "version": "1.0.0",
+  "description": "Research integrity, bilingual proofreading (EYD V / academic English) with deterministic checkers, and a gated journal-article workflow",
+  "author": { "name": "Agustino Halim", "url": "https://github.com/agustinohalim" },
+  "homepage": "https://github.com/agustinohalim/academic-writing-skills",
+  "repository": "https://github.com/agustinohalim/academic-writing-skills",
+  "license": "MIT AND CC-BY-4.0",
+  "keywords": ["academic-writing", "research-integrity", "proofreading", "indonesian", "eyd", "journal", "manuscript"]
+}
