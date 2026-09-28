@@ -14,9 +14,25 @@ generalised for anyone.
 | `research-integrity` | No number without a source, no citation from memory, claims sized to evidence. Authorship (ICMJE, CRediT), conflicts of interest, duplicate submission, Elsevier and Springer Nature AI-disclosure rules, REFORMS / TRIPOD+AI / PRISMA, and Indonesian regulation (Permendikbudristek 39/2021). |
 | `manuscript-proofreading` | Fix errors without rewriting the author's voice. Runs two checkers, then reads in layers. Indonesian: EYD Edisi V, KBBI, italic foreign terms. English: numbers, tenses, terminology, claims. |
 | `scientific-article-writing` | Plan → results files → Markdown manuscript → self-review → submission package → revision, with an approval gate at each stage. |
+| `manuscript-review` | Simulated pre-submission peer review by five independent roles (editor, methods, domain, presentation, devil's advocate). Every finding quotes the manuscript; a script rejects quotes that are not there, merges findings raised by several roles, scores seven dimensions, applies fixed decision rules, and diffs a revision against the earlier review. |
 
 Skills activate automatically from their descriptions, in English or Indonesian. You can also
 call them directly: `/academic-writing:research-integrity`.
+
+### Review workflow (Python 3.10+, standard library only)
+
+```bash
+python prepare_review.py paper.md --out review/2026-10-01     # workspace, numbered lines, machine checks
+# five reviewer agents write review/2026-10-01/findings/<role>.json
+python consolidate_review.py review/2026-10-01                 # verify quotes, consensus, scorecard, report.md
+python diff_review.py review/2026-10-01 review/2026-10-20      # after revision: resolved / open / new
+```
+
+The reviewer roles ship as plugin agents (`review-editor`, `review-methods`, `review-domain`,
+`review-presentation`, `review-devils-advocate`) so they can run in parallel and independently.
+The flow was designed after studying the review pipelines in K-Dense scientific-agent-skills,
+Imbad0202 academic-research-skills, and bahayonghang academic-writing-skills; the code and text
+here are original.
 
 ### Checkers (Python 3.10+, standard library only)
 
@@ -89,6 +105,7 @@ diumumkan supaya bisa dipakai siapa pun.
 | `research-integrity` | Tidak ada angka tanpa asal, tidak ada sitasi dari ingatan, klaim sebesar buktinya. Kepengarangan (ICMJE, CRediT), konflik kepentingan, pengajuan jamak, kebijakan AI Elsevier dan Springer Nature, REFORMS / TRIPOD+AI / PRISMA, dan Permendikbudristek 39/2021. |
 | `manuscript-proofreading` | Memperbaiki kesalahan tanpa mengganti suara penulis. Pemeriksa otomatis dulu, lalu pembacaan berlapis. Indonesia: EYD Edisi V, KBBI, istilah asing miring. Inggris: angka, *tenses*, istilah, klaim. |
 | `scientific-article-writing` | Rencana → berkas hasil → naskah Markdown → tinjauan mandiri → paket kirim → revisi, dengan gerbang persetujuan di tiap tahap. |
+| `manuscript-review` | Simulasi telaah sebelum kirim oleh lima peran terpisah (editor, metode, bidang, penyajian, *devil's advocate*). Setiap temuan mengutip naskah; skrip menolak kutipan yang tidak ada, menggabungkan temuan yang diangkat beberapa peran, memberi skor tujuh dimensi, menerapkan aturan keputusan tetap, dan membandingkan revisi dengan telaah sebelumnya. |
 
 Skill aktif otomatis dari deskripsinya, baik Anda menulis dalam bahasa Indonesia maupun Inggris,
 dan menjawab dalam bahasa Anda. Bisa juga dipanggil langsung: `/academic-writing:manuscript-proofreading`.

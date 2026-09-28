@@ -20,6 +20,7 @@ Usage:
     python check_manuscript_en.py manuscript.md [more.md ...]
     python check_manuscript_en.py --heavy manuscript.md        # hide style findings
     python check_manuscript_en.py --no-markers manuscript.md   # drafts: placeholders not heavy
+    python check_manuscript_en.py --json manuscript.md         # machine-readable findings
 """
 
 import io
@@ -378,17 +379,24 @@ def periksa_struktur(baris):
                     temuan.append((no, MSG["angka_baru"].format(a)))
     return temuan
 
-def periksa(jalur, hanya_berat=False, penanda=True):
+def temukan(jalur, hanya_berat=False, penanda=True):
+    """Return (heavy, light) findings as lists of (line, message). Used by the CLI and by
+    manuscript-review's prepare_review.py."""
     baris = baca(jalur)
     abstrak, badan, rujukan, keterangan = bagian(baris)
     berat = (periksa_angka(abstrak, badan, keterangan) + periksa_sitasi(badan, rujukan)
              + periksa_gambar(badan, keterangan) + (periksa_penanda(baris) if penanda else []))
-    ringan = [] if hanya_berat else periksa_gaya(abstrak, badan) + periksa_struktur(baris) + periksa_keterbacaan(abstrak, badan) + periksa_pola_ai(abstrak, badan)
-    nama = jalur
-    print(f"\n== {nama}: {len(berat)} heavy, {len(ringan)} light")
-    for no, pesan in sorted(berat):
+    ringan = [] if hanya_berat else (periksa_gaya(abstrak, badan) + periksa_struktur(baris)
+                                     + periksa_keterbacaan(abstrak, badan) + periksa_pola_ai(abstrak, badan))
+    return sorted(berat), sorted(ringan)
+
+
+def periksa(jalur, hanya_berat=False, penanda=True):
+    berat, ringan = temukan(jalur, hanya_berat, penanda)
+    print(f"\n== {jalur}: {len(berat)} heavy, {len(ringan)} light")
+    for no, pesan in berat:
         print(f"  HEAVY  L{no}: {pesan}")
-    for no, pesan in sorted(ringan):
+    for no, pesan in ringan:
         print(f"  light  L{no}: {pesan}")
     return len(berat)
 
@@ -396,10 +404,21 @@ def periksa(jalur, hanya_berat=False, penanda=True):
 def main(argv):
     hanya_berat = "--heavy" in argv
     penanda = "--no-markers" not in argv
-    jalur = [a for a in argv if a not in ("--heavy", "--no-markers")]
+    sebagai_json = "--json" in argv
+    jalur = [a for a in argv if a not in ("--heavy", "--no-markers", "--json")]
     if not jalur:
         print(__doc__)
         return 2
+    if sebagai_json:
+        import json
+        keluaran, total = [], 0
+        for j in jalur:
+            berat, ringan = temukan(j, hanya_berat, penanda)
+            total += len(berat)
+            keluaran += [{"file": j, "line": no, "weight": "heavy", "message": m} for no, m in berat]
+            keluaran += [{"file": j, "line": no, "weight": "light", "message": m} for no, m in ringan]
+        print(json.dumps(keluaran, ensure_ascii=False, indent=1))
+        return 1 if total else 0
     total = sum(periksa(j, hanya_berat, penanda) for j in jalur)
     return 1 if total else 0
 
