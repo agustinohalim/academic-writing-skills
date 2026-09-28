@@ -15,6 +15,7 @@ generalised for anyone.
 | `manuscript-proofreading` | Fix errors without rewriting the author's voice. Runs two checkers, then reads in layers. Indonesian: EYD Edisi V, KBBI, italic foreign terms. English: numbers, tenses, terminology, claims. |
 | `scientific-article-writing` | Plan → results files → Markdown manuscript → self-review → submission package → revision, with an approval gate at each stage. |
 | `manuscript-review` | Simulated pre-submission peer review by five independent roles (editor, methods, domain, presentation, devil's advocate). Every finding quotes the manuscript; a script rejects quotes that are not there, merges findings raised by several roles, scores seven dimensions, applies fixed decision rules, and diffs a revision against the earlier review. |
+| `thesis-audit` | Audits a skripsi, tesis, or disertasi (Indonesian or English, .docx or Markdown) as one research chain. A script runs mechanical checks (rumusan masalah ↔ tujuan ↔ kesimpulan, citations ↔ daftar pustaka with "dkk.", Tabel/Gambar N.M, abstract numbers); the model judges fourteen modules; a second script verifies quotes, enforces status and severity rules, and writes a supervisor report, a student feedback sheet, and defence questions. |
 
 Skills activate automatically from their descriptions, in English or Indonesian. You can also
 call them directly: `/academic-writing:research-integrity`.
@@ -35,6 +36,17 @@ The flow was designed after studying the review pipelines in K-Dense scientific-
 Imbad0202 academic-research-skills, and bahayonghang academic-writing-skills; the revision-impact
 check and the not-assessable state follow ideas in ARKANAALZAIR thesis-debugger; the code and text
 here are original.
+
+### Thesis audit (Python 3.10+, standard library only)
+
+```bash
+python prepare_audit.py skripsi_budi.docx --level skripsi --out audit/budi/2026-10-01   # convert, machine checks, chain
+# the model writes audit/budi/2026-10-01/audit.json (fourteen modules)
+python report_audit.py audit/budi/2026-10-01                                         # verify, reconcile, report.md + feedback.md
+```
+
+`thesis-audit` also takes its framing from thesis-debugger; where that skill asks the model to
+reconcile its own counts, here `report_audit.py` does it and refuses an audit that does not add up.
 
 ### Checkers (Python 3.10+, standard library only)
 
@@ -108,6 +120,7 @@ diumumkan supaya bisa dipakai siapa pun.
 | `manuscript-proofreading` | Memperbaiki kesalahan tanpa mengganti suara penulis. Pemeriksa otomatis dulu, lalu pembacaan berlapis. Indonesia: EYD Edisi V, KBBI, istilah asing miring. Inggris: angka, *tenses*, istilah, klaim. |
 | `scientific-article-writing` | Rencana → berkas hasil → naskah Markdown → tinjauan mandiri → paket kirim → revisi, dengan gerbang persetujuan di tiap tahap. |
 | `manuscript-review` | Simulasi telaah sebelum kirim oleh lima peran terpisah (editor, metode, bidang, penyajian, *devil's advocate*). Setiap temuan mengutip naskah; skrip menolak kutipan yang tidak ada, menggabungkan temuan yang diangkat beberapa peran, memberi skor tujuh dimensi, menerapkan aturan keputusan tetap, dan membandingkan revisi dengan telaah sebelumnya. |
+| `thesis-audit` | Audit skripsi, tesis, atau disertasi (Indonesia atau Inggris, .docx atau Markdown) sebagai satu rantai riset. Skrip memeriksa hal mekanis (rumusan masalah ↔ tujuan ↔ kesimpulan, sitasi ↔ daftar pustaka termasuk "dkk.", Tabel/Gambar N.M, angka abstrak); model menilai empat belas modul; skrip kedua memverifikasi kutipan, menegakkan aturan status dan keparahan, lalu menulis laporan pembimbing, lembar umpan balik mahasiswa, dan pertanyaan sidang. |
 
 Skill aktif otomatis dari deskripsinya, baik Anda menulis dalam bahasa Indonesia maupun Inggris,
 dan menjawab dalam bahasa Anda. Bisa juga dipanggil langsung: `/academic-writing:manuscript-proofreading`.
