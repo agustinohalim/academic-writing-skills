@@ -75,6 +75,21 @@ missing reference is suspected, describe what kind of work is missing instead of
 python "${CLAUDE_SKILL_DIR}/scripts/consolidate_review.py" review/<YYYY-MM-DD>
 ```
 
+The script merges findings automatically only when they quote the same passage. Different
+roles often raise **the same issue at different places** (the abstract's claim, the Discussion's
+restatement, the Limitations paragraph); word overlap cannot tell those from distinct issues
+reliably. So after the first run, read all role files together and write
+`review/<date>/merges.json` — a list of groups of `"role:id"` that are the same issue:
+
+```json
+[["editor:X6", "methods:M5", "devils-advocate:X7"], ["methods:M1", "devils-advocate:X5"]]
+```
+
+Merge only when a single fix would answer every member. Then run the script again. The file
+stays in the workspace, so the merge decisions are visible and can be challenged; unknown IDs
+are reported as errors. In the first real run (a 6,300-word manuscript, 65 findings) this
+changed the result from 56 clusters with 8 consensus issues to 38 clusters with 15.
+
 Then read `report.md` with the author. Findings "set aside" had quotes not found in the
 manuscript: check whether the reviewer misquoted (fix and re-run) or hallucinated (discard).
 Decision rules and scorecard: `references/decision-rules.md`.

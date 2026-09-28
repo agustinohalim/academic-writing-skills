@@ -17,6 +17,10 @@ other and either one quote contains the other or their title+problem wording ove
 ≥ 0.25 on words of four letters or more). A cluster takes the most severe severity among its
 members; `consensus` is the number of distinct roles in it.
 
+In addition, groups listed in the workspace's `merges.json` (lists of `"role:id"`) are joined,
+whatever their lines. Clustering is transitive (union-find): if A joins B and B joins C, all
+three form one cluster.
+
 ## Scorecard
 
 For each dimension: median across roles, and range. Range ≥ 2 is flagged as disagreement.

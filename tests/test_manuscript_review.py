@@ -157,5 +157,32 @@ class Checker(unittest.TestCase):
             self.assertEqual(r.returncode, 1)
 
 
+class CitedTables(unittest.TestCase):
+    def test_table_of_cited_paper_is_not_a_missing_table(self):
+        with tempfile.TemporaryDirectory() as d:
+            p = os.path.join(d, "paper.md")
+            with open(p, "w", encoding="utf-8") as f:
+                f.write(MANUSCRIPT.replace("A pooled target builds",
+                                           "As in Table 7 of Smith et al. (2020), a pooled target builds"))
+            r = run(CHECK, "--json", "--heavy", p)
+            self.assertFalse(any("Table 7" in x["message"] for x in json.loads(r.stdout)))
+
+
+class Merges(unittest.TestCase):
+    setUp, tearDown = ReviewFlow.setUp, ReviewFlow.tearDown
+    prepare, consolidate = ReviewFlow.prepare, ReviewFlow.consolidate
+
+    def test_merge_map_joins_distant_findings(self):
+        ws = self.prepare("r1")
+        role_file(ws, "editor", [dict(finding("Title overclaims", "Label definitions decide whether evaluation", line=1), id="E1")])
+        role_file(ws, "methods", [dict(finding("Discussion overclaims", "A pooled target builds regional base rates into the label.", line=22), id="M1")])
+        with open(os.path.join(ws, "merges.json"), "w", encoding="utf-8") as f:
+            json.dump([["editor:E1", "methods:M1"], ["methods:NOPE"]], f)
+        r, out = self.consolidate(ws)
+        self.assertEqual(len(out["clusters"]), 1)
+        self.assertEqual(out["clusters"][0]["consensus"], 2)
+        self.assertEqual(r.returncode, 1)  # unknown id in merges.json is reported
+
+
 if __name__ == "__main__":
     unittest.main()

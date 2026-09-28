@@ -113,22 +113,41 @@ def mirip(a, b):
     return False
 
 
-def klaster(temuan):
-    kelompok = []
-    for t in temuan:
-        for k in kelompok:
-            if any(mirip(t, u) for u in k):
-                k.append(t)
-                break
-        else:
-            kelompok.append([t])
+def klaster(temuan, gabungan=None):
+    """Cluster findings. Automatic rule: same passage (mirip). Optional `gabungan` is a list of
+    groups of "role:id" strings judged to be the same issue although quoted in different places
+    (written by the orchestrator after reading all role files; see SKILL.md step 4)."""
+    induk = list(range(len(temuan)))
+
+    def akar(i):
+        while induk[i] != i:
+            induk[i] = induk[induk[i]]
+            i = induk[i]
+        return i
+
+    def satukan(i, j):
+        induk[akar(i)] = akar(j)
+
+    for i in range(len(temuan)):
+        for j in range(i):
+            if mirip(temuan[i], temuan[j]):
+                satukan(i, j)
+    indeks = {t["uid"]: i for i, t in enumerate(temuan)}
+    for grup in gabungan or []:
+        ada = [indeks[u] for u in grup if u in indeks]
+        for i in ada[1:]:
+            satukan(i, ada[0])
+    peta = {}
+    for i, t in enumerate(temuan):
+        peta.setdefault(akar(i), []).append(t)
+    kelompok = list(peta.values())
     hasil = []
     for k in kelompok:
         utama = min(k, key=lambda t: (RANK[t["severity"]], -len(t["problem"])))
         peran = sorted({t["role"] for t in k})
         hasil.append({**utama, "roles": peran, "consensus": len(peran),
                       "severity": min((t["severity"] for t in k), key=RANK.get),
-                      "members": [t["id"] for t in k]})
+                      "members": [t["uid"] for t in k]})
     return sorted(hasil, key=lambda c: (RANK[c["severity"]], -c["consensus"], c["line"] or 0))
 
 
@@ -242,12 +261,20 @@ def main(argv):
             if t.get("severity") not in SEVERITIES or t.get("dimension") not in DIMENSIONS:
                 continue
             t = {**t, "role": role, "id": t.get("id") or f"{role}-{i}"}
+            t["uid"] = f"{role}:{t['id']}"
             t["quote_verified"], t["line"] = verifikasi(t, baris)
             t["section"] = seksi_untuk(t["line"], seksi)
             semua.append(t)
     terverifikasi = [t for t in semua if t["quote_verified"]]
     tak = [t for t in semua if not t["quote_verified"]]
-    kl = klaster(terverifikasi)
+    gabungan = []
+    berkas_gabung = os.path.join(ws, "merges.json")
+    if os.path.exists(berkas_gabung):
+        with open(berkas_gabung, encoding="utf-8") as f:
+            gabungan = json.load(f)
+        dikenal = {t["uid"] for t in semua}
+        galat += [f"merges.json: unknown finding '{u}'" for g in gabungan for u in g if u not in dikenal]
+    kl = klaster(terverifikasi, gabungan)
     skor = {d: {"median": statistics.median(v), "min": min(v), "max": max(v)}
             for d, v in skor_mentah.items() if v}
     mesin_berat = sum(1 for m in mesin if m["weight"] == "heavy")

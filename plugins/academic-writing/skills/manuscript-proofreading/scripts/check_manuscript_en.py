@@ -193,7 +193,12 @@ def periksa_gambar(badan, keterangan):
             j = "Table" if m.group(1).startswith("Tab") else "Fig"
             ada.setdefault((j, m.group(2)), no)
             teks = teks[m.end():]
-        for jenis, n1, n2 in RUJUK_GAMBAR.findall(teks):
+        for mm in RUJUK_GAMBAR.finditer(teks):
+            jenis, n1, n2 = mm.groups()
+            # "Table 7 of Smith et al. (2014)", "their Fig. 2": a table in a cited paper
+            sekitar = teks[max(0, mm.start() - 30):mm.start()] + " " + teks[mm.end():mm.end() + 30]
+            if re.search(r"et al\.?|\btheir\b|\((?:[^()]*\s)?(?:19|20)\d\d[a-z]?\)", sekitar):
+                continue
             j = "Table" if jenis.startswith("Tab") else "Fig"
             for n in range(int(n1), int(n2 or n1) + 1):
                 dirujuk.setdefault((j, str(n)), no)
