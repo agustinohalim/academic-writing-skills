@@ -37,7 +37,7 @@ CONFIDENCE = ["high", "medium", "low"]
 
 # Section kinds, most specific first: "Tujuan Penelitian" must not be read as a chapter title.
 JENIS = [
-    ("rumusan", r"rumusan masalah|^(?:the )?problem$|research problem|research questions?|problem statement|pertanyaan penelitian|identifikasi masalah"),
+    ("rumusan", r"rumusan (?:per)?masalah|^(?:the )?problem$|research problem|research questions?|problem statement|pertanyaan penelitian|identifikasi masalah"),
     ("tujuan", r"tujuan penelitian|^tujuan\b|objectives?|research aims?"),
     ("hipotesis", r"hipotesis|hypothes[ie]s"),
     ("batasan", r"batasan masalah|ruang lingkup|scope|delimitation"),

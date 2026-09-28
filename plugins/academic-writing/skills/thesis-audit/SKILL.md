@@ -38,6 +38,11 @@ python "${CLAUDE_SKILL_DIR}/scripts/prepare_audit.py" <thesis.docx|.md> --level 
 ```
 
 PDF is not read; ask for the .docx or convert it first (the `pdf` or `docx` skills can help).
+When only a PDF exists (a finished thesis), extract text (`pdftotext`), add `#` headings for
+chapters and numbered sections, drop the table of contents, and split reference entries onto
+their own lines. PDF text merges captions, table cells, and reference entries into paragraphs,
+so **verify every machine finding by eye** before it becomes a finding; drop the ones the
+extraction caused and say so in M11's `basis`.
 Language is detected; force it with `--lang id|en`. Put workspaces outside public repositories —
 a student's draft is unpublished work.
 

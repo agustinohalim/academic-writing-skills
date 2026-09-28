@@ -213,7 +213,8 @@ def periksa_rantai(ch, bahasa):
 
 SITASI_KURUNG = re.compile(r"[(\[]([^()\[\]]*?\b(?:19|20)\d\d[a-z]?[^()\[\]]*)[)\]]")
 NAMA = r"[A-Z][\w'’\-]+"
-PENGGAL = re.compile(rf"({NAMA}(?:\s{NAMA})?)(?:\s(?:and|&|dan)\s{NAMA}|\s(?:et al\.?|dkk\.?))?,?\s((?:19|20)\d\d[a-z]?)")
+# "Wu et al. 2018", "Wu, et al. 2018", "Suboh, et al., 2019", "Zipes & Wellens, 1998"
+PENGGAL = re.compile(rf"({NAMA}(?:\s{NAMA})?)(?:,?\s(?:and|&|dan)\s{NAMA}|,?\s(?:et al\.?|dkk\.?))?,?\s((?:19|20)\d\d[a-z]?)")
 NARASI = re.compile(rf"\b({NAMA}(?:\s(?:and|&|dan)\s{NAMA}|\s(?:et al\.?|dkk\.?))?)\s[(\[]((?:19|20)\d\d[a-z]?)[)\],;:]")
 BUKAN_NAMA = set("""January February March April May June July August September October November December
 Januari Februari Maret Mei Juni Juli Agustus Oktober Desember Accessed Diakses Table Tabel Tables Fig
@@ -262,7 +263,7 @@ def periksa_sitasi(par, bahasa):
 
 LABEL = r"(Tabel|Gambar|Table|Fig(?:ure)?\.?)\s+(\d+(?:\.\d+)?)"
 KETERANGAN = re.compile(r"[*_]*" + LABEL + r"\s*[.:*]?")
-RUJUK = re.compile(r"\b" + LABEL)
+RUJUK = re.compile(r"\b" + LABEL, re.I)  # "pada tabel 3.3" in running text is lower case
 
 
 EN = {"Tabel": "Table", "Gambar": "Figure"}
@@ -273,7 +274,7 @@ def jenis_label(j):
 
 
 def periksa_gambar(par, bahasa):
-    ada, dirujuk = {}, {}
+    ada, dirujuk, ganda = {}, {}, []
     for no, t, k in par:
         if k == "rujukan":
             continue
@@ -289,7 +290,10 @@ def periksa_gambar(par, bahasa):
         # a bare label followed by a capitalised word only when short
         berformat = teks[:1] in "*_" or re.match(r"\S+\s+\d+(?:\.\d+)*\s*[.:–-](?!\d)", teks)
         if m and (berformat or (len(teks) <= 200 and sesudah[:1].isupper())):
-            ada.setdefault((jenis_label(m.group(1)), m.group(2)), no)
+            kunci = (jenis_label(m.group(1)), m.group(2))
+            if kunci in ada:
+                ganda.append((no, kunci, ada[kunci]))
+            ada.setdefault(kunci, no)
             teks = teks[m.end():]
         for mm in RUJUK.finditer(teks):
             sekitar = teks[max(0, mm.start() - 30):mm.end() + 30]
@@ -305,6 +309,9 @@ def periksa_gambar(par, bahasa):
         if k not in dirujuk:
             temuan.append((no, "heavy", pesan(bahasa, f"{k[0]} {k[1]} tidak pernah dirujuk di teks",
                                               f"{EN[k[0]]} {k[1]} is never referred to in the text")))
+    for no, k, pertama in ganda:
+        temuan.append((no, "heavy", pesan(bahasa, f"nomor {k[0]} {k[1]} dipakai dua kali (juga di L{pertama})",
+                                          f"{EN[k[0]]} {k[1]} is numbered twice (also at L{pertama})")))
     return temuan
 
 
@@ -320,7 +327,9 @@ def periksa_angka(par, bahasa):
             inti = a.replace("−", "-").lstrip("-")
             if re.fullmatch(r"(19|20)\d\d", inti) or re.fullmatch(r"\d", inti):
                 continue
-            if inti not in badan:
+            # an English abstract writes 96.67 where the Indonesian body writes 96,67
+            tukar = inti.translate(str.maketrans(".,", ",."))
+            if inti not in badan and tukar not in badan:
                 temuan.append((no, "heavy", pesan(bahasa, f"angka '{a}' di abstrak tidak muncul di badan naskah",
                                                   f"number '{a}' in the abstract does not appear in the body")))
     return temuan

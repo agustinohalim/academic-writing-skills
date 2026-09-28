@@ -154,6 +154,21 @@ class Prepare(Base):
         self.assertIn("## Tujuan Penelitian", md)
         self.assertEqual(self.load(ws, "chain.json")["tujuan"]["form"], "paragraph")
 
+    def test_forms_seen_in_a_real_thesis(self):
+        p = os.path.join(self.tmp, "t.md")
+        with open(p, "w", encoding="utf-8") as fh:
+            fh.write("# ABSTRACT\n\nAccuracy 96.67%.\n\n# BAB I PENDAHULUAN\n\n## 1.2 Rumusan Permasalahan\n\n"
+                     "- Bagaimana mengklasifikasi sinyal?\n\n# BAB IV HASIL\n\nAkurasi 96,67% (Wu, et al. 2018), "
+                     "dapat dilihat pada tabel 4.1.\n\nTabel 4.1 Hasil\n\nGambar 4.4 Matriks\n\nGambar 4.4 - Grafik\n\n"
+                     "Lihat gambar 4.4.\n\n# DAFTAR PUSTAKA\n\nWu, Y., Yang, F. (2018). A comparison. arXiv.\n")
+        ws = self.prepare(p, level="tesis")
+        joined = "\n".join(m["message"] for m in self.load(ws, "machine.json") if m["weight"] == "heavy")
+        self.assertNotIn("96", joined)  # 96.67 in the abstract, 96,67 in the body
+        self.assertNotIn("Wu", joined)  # "Wu, et al. 2018"
+        self.assertNotIn("Tabel 4.1", joined)  # "pada tabel 4.1", lower case
+        self.assertIn("Gambar 4.4 dipakai dua kali", joined)
+        self.assertIn("rumusan", self.load(ws, "chain.json"))  # "Rumusan Permasalahan"
+
     def test_dissertation_has_thread_module(self):
         self.assertIn("M14", self.load(self.prepare(level="disertasi"), "meta.json")["modules"])
 
