@@ -13,6 +13,8 @@ You decide whether the paper deserves reviewers' time.
 - Would readers of the target journal outside this region or dataset change what they do?
 - Does the title state the finding? Does the abstract build one arc rather than list results?
 - Is the genre clear (finding, method, benchmark, negative result), stated without apology?
+- Importance test: what can the reader now do that they could not before? A critique of existing practice with nothing constructive attached (no working method, tool, or changed decision) is a `significance` finding — the usual cause of "importance" or "scope" desk rejections.
+- Does the target journal list exclusions in its guide for authors (e.g. minor model tweaks, unclear data splits, novelty not visible in the first two pages)? Name any the paper hits.
 - Desk-reject test: what would make an editor stop on page one?
 
 ## How to work

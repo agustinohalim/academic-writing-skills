@@ -23,6 +23,7 @@ score without evidence is not a score.
 | A5 | Does the first paragraph of the Introduction make a non-specialist in the journal's readership care? | |
 | A6 | Is the contribution type stated positively (finding, method, benchmark, negative result with mechanism), without apologising for what it is not? | |
 | A7 | Is the claim's scope earned (more than one setting, or scope stated precisely)? | |
+| A8 | Does the paper let the reader do something new (a method, protocol, or tool that works; a decision that changes), not only show that existing practice is flawed? See `editor-and-reviewer-criteria.md`. | |
 
 ## B. Quality of research — position within the range
 
@@ -50,8 +51,11 @@ score without evidence is not a score.
 
 ## Reading the result
 
-- Section **A below 10 of 14**: the paper will be read as incremental or local. Do not submit yet;
+- Section **A below 11 of 16**: the paper will be read as incremental or local. Do not submit yet;
   revise title, abstract, introduction, and contribution list first (see `story-and-structure.md`).
+- **A8 = 0** (critique only, nothing the reader can use): expect "importance" or "scope" desk
+  rejections whatever the other scores. Add a constructive result or choose a venue that
+  explicitly publishes critiques (see `editor-and-reviewer-criteria.md`).
 - B or C weak with A strong: fixable in revision; submit to a journal whose readership matches A3.
 - Write the scorecard into the self-review file with the date, so a later external score can be
   compared against it.

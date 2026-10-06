@@ -149,4 +149,5 @@ the paper reads differently to different readers — usually a framing problem.
 - `references/finding-schema.md` — the JSON each role writes
 - `references/decision-rules.md` — how clusters, scores, and the decision are computed
 - `scientific-article-writing/references/pre-submission-scorecard.md`,
-  `story-and-structure.md`, and `third-party/k-dense/*` — checklists the roles draw on
+  `story-and-structure.md`, `editor-and-reviewer-criteria.md`, and `third-party/k-dense/*` —
+  checklists the roles draw on

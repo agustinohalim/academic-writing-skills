@@ -49,6 +49,10 @@ lower novelty score. State positively what kind of contribution it is (an evalua
 finding, a benchmark, a negative result with a mechanism) and cite papers of the same kind in
 good venues to show the genre is valued.
 
+Stating the genre positively answers the novelty question, not the importance question. A
+critique with nothing the reader can use is the usual source of "importance" desk rejections;
+pair it with a constructive result where possible (`editor-and-reviewer-criteria.md`).
+
 ## 4. Introduction: create a research space (Swales' CARS)
 
 1. **Establish the territory** — why the topic matters, what is generally known (short).

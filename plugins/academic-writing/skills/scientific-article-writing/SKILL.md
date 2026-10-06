@@ -45,7 +45,7 @@ carry a claim, **soften the claim or run the experiment** — do not make the se
 | 3. Outline | Section headings + one claim sentence per subsection | Each claim points to a results file |
 | 4. Draft | One section per turn, in the order Methods → Results → Discussion → Introduction → Abstract → Title | Section finished before the next |
 | 5. Machine checks | `check_manuscript_en.py`, reference verification (Crossref/arXiv), quote check against PDFs, n-gram overlap | Zero heavy findings; every reference verified |
-| 6. Self-review | Dated review file, reviewer style (`references/self-review.md`) + scorecard (`references/pre-submission-scorecard.md`) | Every critical finding closed or stated in Limitations; scorecard section A ≥ 10 of 14 |
+| 6. Self-review | Dated review file, reviewer style (`references/self-review.md`) + scorecard (`references/pre-submission-scorecard.md`) | Every critical finding closed or stated in Limitations; scorecard section A ≥ 11 of 16 and A8 > 0 |
 | 7. Package | Journal-formatted export, figures, cover letter, portal texts (`references/submission-package.md`) | Author reads the export; all co-authors approve (ICMJE item 3) |
 | 8. After submission | Status note in the manuscript head, status board, commit | Manuscript ID recorded |
 
@@ -62,6 +62,10 @@ scorecard (R-Score), novelty and interest set the range of the overall score and
 range — so a correct, well-written paper with a local or multi-headed contribution lands in the
 middle. The levers, in order: one central contribution; a general question with the study site
 as evidence; novelty stated against named prior work; an abstract that is one arc, not a list.
+Before all of these: the paper must let the reader do something new. A critique of existing
+practice with nothing constructive attached is the usual cause of "importance" or "scope" desk
+rejections; what editors and reviewers check, and how to pair a critique with a constructive
+result: `references/editor-and-reviewer-criteria.md`.
 Details and sources (Mensh & Kording, Gopen & Swan, Swales' CARS, Schimel's OCAR):
 `references/story-and-structure.md`.
 
@@ -122,3 +126,4 @@ target journal, author order, or submit/withdraw decisions; new data needs.
 - `references/submission-package.md` — package contents, cover letter, portal checks
 - `references/story-and-structure.md` — central contribution, framing, CARS, C-C-C, reader expectations
 - `references/pre-submission-scorecard.md` — novelty/research/presentation scorecard before submitting
+- `references/editor-and-reviewer-criteria.md` — desk-screen and reviewer criteria, journal exclusion lists, the "solves nothing" trap
