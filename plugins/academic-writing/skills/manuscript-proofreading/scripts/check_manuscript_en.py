@@ -1,14 +1,15 @@
 """Checks an English-language journal manuscript written in Markdown before submission.
 
-Five things a machine can decide:
+Six things a machine can decide:
 
   NUMBERS   numbers in the Abstract that never appear in the body
   CITATIONS author-year citations with no reference entry, and entries never cited
   FIGURES   Fig./Table cited without a caption, or captioned but never cited
   MARKERS   leftover placeholders: ⬜, TODO, [PERLU ...], XX, ???, [CITATION
   STYLE     machine-prose vocabulary, em-dash density, the "X, not Y" tic, short punchline sentences
+  GENRE     gaps asserted without evidence, critiques aimed at named authors, 'significant' without a test
 
-The first four are HEAVY and make the script exit with status 1. STYLE findings are LIGHT:
+The first four are HEAVY and make the script exit with status 1. STYLE and GENRE findings are LIGHT:
 read them one by one, some are fine as written.
 
 Conventions it expects: "## Abstract", "## References" (or Bibliography), optionally
@@ -266,6 +267,9 @@ MSG = {
     "hedge": "stacked hedge ('may potentially'): one hedge is enough",
     "not_only": "'not only … but also': usually a staged contrast; state both points plainly",
     "overclaim": "overstatement (prove, definitively, guarantee, universally, highly significant): size the verb to the evidence",
+    "celah": "gap asserted without evidence ('no study has', 'to the best of our knowledge'): back it with a comparison table, a coded count of prior studies, or a citation (genre-patterns.md)",
+    "tuduh": "critique names authors as wrong: show the failure on your own models under the standard and the honest evaluation; blame the procedure, not the people (genre-patterns.md)",
+    "signifikan": "'significant(ly)' with no test, p-value or interval nearby: name the test or use another word",
 }
 
 
@@ -279,6 +283,43 @@ POLA_AI = [
     # overstatement list adapted from K-Dense scientific-writing lint_manuscript.py (MIT, K-Dense Inc.)
     (r"\b(?:proves?|proven|definitively|guarantees?|no limitations|universally|highly significant)\b", "overclaim"),
 ]
+
+
+# Genre moves (references/genre-patterns.md in scientific-article-writing): asserted gaps,
+# critiques aimed at named authors, "significant" without a test. Checked per sentence.
+SITASI_DEKAT = re.compile(r"\b(?:19|20)\d\d[a-z]?\b|\[\d+")
+CELAH = re.compile(r"\b(?:no|few) (?:prior |previous |existing |published )?(?:stud(?:y|ies)|works?|papers?|research) (?:has|have)\b"
+                   r"|\bhas not been (?:studied|investigated|addressed|explored|examined)\b"
+                   r"|\bremains? (?:unexplored|unaddressed|unstudied)\b|\bto the best of our knowledge\b", re.IGNORECASE)
+TUDUH = re.compile(r"\bet al\.?,? \(?(?:19|20)\d\d\)?[^.]{0,60}\b(?:failed to|erroneously|incorrectly|wrongly|mistakenly|"
+                   r"are invalid|is invalid|is flawed|are flawed|overestimated|inflated their)\b", re.IGNORECASE)
+# "without significant arrhythmia", "clinically significant": clinical usage, not a statistical claim
+SIGNIFIKAN = re.compile(r"(?<!without )(?<!no )(?<!clinically )\bsignificant(?:ly)?\b", re.IGNORECASE)
+UJI = re.compile(r"\bp\s*[<=>≤]|\btest\b|interval|\bCI\b|\[[-−+]?\d|±|bootstrap|permutation", re.IGNORECASE)
+
+
+def _kalimat(teks, awal, akhir):
+    """The sentence of `teks` that contains the span awal..akhir."""
+    kiri = max(teks.rfind(". ", 0, awal), teks.rfind("? ", 0, awal))
+    kanan = teks.find(". ", akhir)
+    return teks[kiri + 1 if kiri >= 0 else 0:kanan if kanan >= 0 else len(teks)]
+
+
+def periksa_genre(abstrak, badan):
+    temuan = []
+    for blok in (abstrak, badan):
+        for no, b in blok:
+            # bagian() has already joined wrapped lines into paragraphs
+            for pola, kunci in ((CELAH, "celah"), (TUDUH, "tuduh"), (SIGNIFIKAN, "signifikan")):
+                for m in pola.finditer(b):
+                    kal = _kalimat(b, m.start(), m.end())
+                    if kunci == "celah" and SITASI_DEKAT.search(kal):
+                        continue
+                    if kunci == "signifikan" and UJI.search(kal):
+                        continue
+                    temuan.append((no, MSG[kunci]))
+                    break
+    return sorted(set(temuan))
 
 
 def periksa_pola_ai(abstrak, badan):
@@ -392,7 +433,8 @@ def temukan(jalur, hanya_berat=False, penanda=True):
     berat = (periksa_angka(abstrak, badan, keterangan) + periksa_sitasi(badan, rujukan)
              + periksa_gambar(badan, keterangan) + (periksa_penanda(baris) if penanda else []))
     ringan = [] if hanya_berat else (periksa_gaya(abstrak, badan) + periksa_struktur(baris)
-                                     + periksa_keterbacaan(abstrak, badan) + periksa_pola_ai(abstrak, badan))
+                                     + periksa_keterbacaan(abstrak, badan) + periksa_pola_ai(abstrak, badan)
+                                     + periksa_genre(abstrak, badan))
     return sorted(berat), sorted(ringan)
 
 

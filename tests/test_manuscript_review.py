@@ -157,6 +157,28 @@ class Checker(unittest.TestCase):
             self.assertEqual(r.returncode, 1)
 
 
+class GenreMoves(unittest.TestCase):
+    def light(self, extra):
+        with tempfile.TemporaryDirectory() as d:
+            p = os.path.join(d, "paper.md")
+            with open(p, "w", encoding="utf-8") as f:
+                f.write(MANUSCRIPT.replace("A pooled target builds", extra + "\n\nA pooled target builds"))
+            r = run(CHECK, "--json", p)
+            return [x["message"] for x in json.loads(r.stdout) if x["weight"] == "light"]
+
+    def test_flags_asserted_gap_accusation_and_untested_significance(self):
+        msgs = self.light("To the best of our knowledge, no study has done this. "
+                          "Smith et al. (2020) incorrectly split the records. The gain was significant.")
+        self.assertTrue(any("gap asserted" in m for m in msgs))
+        self.assertTrue(any("names authors" in m for m in msgs))
+        self.assertTrue(any("'significant(ly)'" in m for m in msgs))
+
+    def test_cited_gap_tested_significance_and_clinical_usage_pass(self):
+        msgs = self.light("No prior studies have tested this (Smith et al., 2020). "
+                          "The gain was significant (p < 0.01). Volunteers had no significant arrhythmia.")
+        self.assertFalse(any("gap asserted" in m or "'significant(ly)'" in m for m in msgs))
+
+
 class CitedTables(unittest.TestCase):
     def test_table_of_cited_paper_is_not_a_missing_table(self):
         with tempfile.TemporaryDirectory() as d:

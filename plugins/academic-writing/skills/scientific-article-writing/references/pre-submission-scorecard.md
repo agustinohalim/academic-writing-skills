@@ -35,19 +35,22 @@ score without evidence is not a score.
 | B4 | Robustness checks that could change the conclusion are in the main text, not only in Limitations? | |
 | B5 | Sample size / number of settings adequate for the generality claimed? | |
 | B6 | Code and data available, version named? | |
+| B7 | Are the same models scored under the standard and the honest evaluation, beside the cheapest competitor (climatology, persistence, prevalence only)? See `genre-patterns.md`. | |
+| B8 | For a probe, check, or confound claim: is there a null control (permuted labels, surrogate) and at least one case that passes? Score 2 if not applicable. | |
 
 ## C. Quality of presentation — position within the range
 
 | # | Question | Evidence |
 |---|---|---|
 | C1 | Abstract is one arc (context → gap → action → result → meaning) with ≤ 4 numbers? | |
-| C2 | Introduction follows CARS, with the gap evidenced by citation? | |
+| C2 | Introduction follows CARS, with the gap evidenced (comparison table, coded count of prior studies, or citation), not asserted? | |
 | C3 | Contribution list ≤ 4 items, each distinct from prior work? | |
 | C4 | Results subsections are claims, each paragraph question → evidence → answer? | |
 | C5 | No new results in the Discussion; Discussion says how the gap was filled? | |
 | C6 | No zig-zag: each subject treated in one place; one setting at a time? | |
 | C7 | Figures readable alone; titles state conclusions? | |
 | C8 | Language clean (`check_manuscript_en.py` heavy = 0; light findings read)? | |
+| C9 | Critique shown on the authors' own models, not by naming other authors as wrong; a fence sentence (what the finding is not) in the abstract? | |
 
 ## Reading the result
 
