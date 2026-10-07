@@ -69,6 +69,12 @@ result: `references/editor-and-reviewer-criteria.md`.
 Details and sources (Mensh & Kording, Gopen & Swan, Swales' CARS, Schimel's OCAR):
 `references/story-and-structure.md`.
 
+Each genre (dataset/benchmark, evaluation-practice critique, leakage/confound, method plus
+software) has a skeleton that accepted papers share — evidence the gap instead of asserting it,
+score the same models under two evaluations, include the cheapest competitor, fence the claim,
+and blame the procedure rather than other authors: `references/genre-patterns.md`. Choose the
+genre at stage 1 and outline to its skeleton at stage 3.
+
 An **automated language score** (e.g. Research Square's 0–10 language quality score) is a
 different thing: it measures readability only. Long sentences, number-dense sentences, noun
 stacks, and article errors drive it; see `manuscript-proofreading`.
@@ -127,3 +133,4 @@ target journal, author order, or submit/withdraw decisions; new data needs.
 - `references/story-and-structure.md` — central contribution, framing, CARS, C-C-C, reader expectations
 - `references/pre-submission-scorecard.md` — novelty/research/presentation scorecard before submitting
 - `references/editor-and-reviewer-criteria.md` — desk-screen and reviewer criteria, journal exclusion lists, the "solves nothing" trap
+- `references/genre-patterns.md` — skeleton and transferable moves of accepted papers per genre; blame the procedure, not the people

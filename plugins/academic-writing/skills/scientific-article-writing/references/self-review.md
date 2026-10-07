@@ -25,7 +25,11 @@ Read as a reviewer who wants to reject, not as an author who wants to pass. The 
    (estimand, denominators, clustered data, multiplicity, reproducibility). MIT, K-Dense Inc.
 5. **Confounders.** What distinguishes the classes besides what is claimed? (Database,
    annotator, device, year.)
-6. **Tone.** Neutralise sentences that attack other authors or sound dramatic.
+6. **Tone and genre moves.** Neutralise sentences that attack other authors or sound dramatic;
+   a critique is shown on your own models under the standard and the honest evaluation, not by
+   naming who erred. Check the genre skeleton in `genre-patterns.md`: gap evidenced (table,
+   coded count, degenerate example), same models under two evaluations, cheapest competitor,
+   a fence sentence in the abstract.
 7. **Compliance.** Reporting guideline, AI policy, the journal's required statements.
 
 ## Review file format
