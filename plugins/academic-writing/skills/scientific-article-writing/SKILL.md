@@ -106,15 +106,17 @@ already knows the findings.
 
 ## Choosing a journal
 
-Read the aims and scope and the guide for authors. Check fees (APC), review model, AI policy,
-and that the manuscript is not under review elsewhere. Record the reasons in the plan.
+Choose at stage 1, before drafting: the journal fixes the readership, length, structure, and
+reference style. Build a target ladder of three or four journals, each tested for fit against
+recent papers and verified on the official index list on the day of submission — procedure in
+`journal-targeting`. Record the ladder and the reasons in the plan.
 
 ## Rejection and revision
 
 - **Desk rejection or a mid external score:** record the reasons, map them to the scorecard
   questions, and decide whether the problem is scope (change journal) or framing (title,
   abstract, Introduction, contribution list) before resubmitting. Mid scores are rarely a
-  language problem.
+  language problem. Transfer offers and moving down the ladder: `journal-targeting`.
 - **Revision:** a response file with one table per reviewer — comment (quoted in full) ·
   response · change in manuscript (section and line). Every changed claim is re-run from
   scripts; no hand-written new numbers. Thank once at the top, then go straight to substance;
@@ -134,3 +136,4 @@ target journal, author order, or submit/withdraw decisions; new data needs.
 - `references/pre-submission-scorecard.md` — novelty/research/presentation scorecard before submitting
 - `references/editor-and-reviewer-criteria.md` — desk-screen and reviewer criteria, journal exclusion lists, the "solves nothing" trap
 - `references/genre-patterns.md` — skeleton and transferable moves of accepted papers per genre; blame the procedure, not the people
+- `journal-targeting/references/sources.md` — Elsevier Researcher Academy modules (research design, manuscript preparation, writing skills, finding a journal) mapped to the stages above

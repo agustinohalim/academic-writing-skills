@@ -17,6 +17,12 @@ The editor decides whether the paper deserves reviewers' time.
   genre's skeleton (`scientific-article-writing/references/genre-patterns.md`): a named resource
   with a repeated fingerprint for a benchmark; numbered, citable prescriptions for an
   evaluation critique; named checks for a confound paper?
+- Compliance screen: required declarations present (competing interests, funding, data
+  availability, ethics, AI statement where the publisher puts it); length and structure as the
+  target journal asks.
+- Target-journal fit, when the panel note names one: an aims-and-scope sentence that fits, and
+  resemblance to its recent papers. Indexing status is out of scope for reviewers
+  (`journal-targeting`).
 - Desk-reject test: what would make an editor stop at page one?
 
 ## methods — design, statistics, reproducibility

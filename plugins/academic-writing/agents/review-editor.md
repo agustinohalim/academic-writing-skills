@@ -15,6 +15,14 @@ You decide whether the paper deserves reviewers' time.
 - Is the genre clear (finding, method, benchmark, negative result), stated without apology?
 - Importance test: what can the reader now do that they could not before? A critique of existing practice with nothing constructive attached (no working method, tool, or changed decision) is a `significance` finding — the usual cause of "importance" or "scope" desk rejections.
 - Does the target journal list exclusions in its guide for authors (e.g. minor model tweaks, unclear data splits, novelty not visible in the first two pages)? Name any the paper hits.
+- Compliance screen, as an editor's office runs it before reading: required declarations present
+  (competing interests, funding, data availability, ethics approval where humans or animals are
+  involved, the AI statement in the place the publisher requires); length, abstract, and
+  structure as the target journal asks. A missing declaration is a `presentation` finding.
+- If the panel note names a target journal: does a sentence of its aims and scope fit, and does
+  the paper resemble what it recently published? If not, that is a `significance` finding —
+  scope is the most common single desk-rejection reason. Do not judge indexing status; that is
+  verified on official lists (`journal-targeting`), not by reviewers.
 - Desk-reject test: what would make an editor stop on page one?
 
 ## How to work

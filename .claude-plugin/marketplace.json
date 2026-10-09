@@ -6,7 +6,7 @@
     {
       "name": "academic-writing",
       "source": "./plugins/academic-writing",
-      "description": "Research integrity, bilingual proofreading (EYD V / academic English) with deterministic checkers, and a gated journal-article workflow"
+      "description": "Research integrity, bilingual proofreading (EYD V / academic English) with deterministic checkers, a gated journal-article workflow, and journal targeting for indexed journals"
     }
   ]
 }
