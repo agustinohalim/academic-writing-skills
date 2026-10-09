@@ -11,6 +11,14 @@ Metrics narrow a list; they do not choose a journal. Fit comes first.
 | **SNIP** | CWTS Leiden | Scopus data | Citations per paper (three-year window) divided by the citation potential of the journal's field; 1.0 ≈ the median journal. Better than CiteScore for comparing across fields | `scopus.com/sources`; `journalindicators.com` |
 | **Journal Impact Factor** | Clarivate | Web of Science | Citations in one year to items of the two previous years | Journal Citation Reports (subscription); many journals show it on their homepage |
 
+## Getting the values in bulk
+
+Scimago offers the whole ranking as one file (`scimagojr.com/journalrank.php?out=xls`, semicolon
+separated: title, ISSN, publisher, open access, SJR, SJR Best Quartile, H index, coverage,
+categories). The site sits behind a bot check, so a plain download from a script is refused; it
+works from a normal browser session. Record the edition year (the file's document-count column
+names it).
+
 ## Quartile traps
 
 - **"Q1" without a name means nothing.** A journal can be Q1 by CiteScore percentile and Q2 by

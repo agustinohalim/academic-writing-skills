@@ -12,6 +12,14 @@ Scopus publishes its title lists openly; no subscription is needed.
 | Discontinued Sources List — Excel linked from Elsevier's *Content policy and selection* page, updated monthly | Titles whose forward coverage Scopus stopped, with the volume/issue where indexing ended |
 | Source title list (Excel), same page | The full list of indexed titles |
 
+**One download covers the whole ladder.** The monthly Excel file is not only the discontinued
+list: its first sheet is the full source list with, per title, *Active or Inactive*, coverage years,
+*Open Access Status*, publisher, and subject codes; further sheets list discontinued titles (with
+the last covered issue) and titles accepted but not yet added. Download it once and look up every
+candidate by exact title or ISSN with a short script, instead of searching the web per journal.
+A coverage range that stops before the current year (e.g. `2020-2024`) is a reason to drop the
+title even if it says *Active*.
+
 **Two kinds of "discontinued".** A title can show "discontinued" on Scopus Sources without being
 on the Discontinued Sources List: Scopus marks a title that way when it has received no new
 content from the publisher for about three years, or when the publisher stopped publishing.
@@ -33,6 +41,11 @@ coverage for the latest issues.
 **Lists from third parties** (university announcements, blogs, Scimago pages) are leads only.
 Scimago (SJR) is a different database built on Scopus data and can lag behind Scopus decisions.
 Confirm on the Scopus list itself.
+
+**Open-access status lags too.** A journal that flipped to full open access can still be marked
+non-OA in Scimago's export (seen in October 2026 for *EP Europace*, fully OA since its 2023
+volume). When the ladder excludes APC journals, confirm the model on the publisher's or society's
+own page, not on an aggregator.
 
 ## 2. Is it the real journal? (hijacked clones)
 

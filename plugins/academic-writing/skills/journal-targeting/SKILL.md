@@ -67,7 +67,10 @@ editors review independently and the finder guarantees nothing.
 ## Step 2 — Fit test
 
 For each candidate, open the **three most recent research articles** on the same kind of
-question and record, in one line each:
+question and record, in one line each. A count makes "the journal publishes this" measurable:
+for biomedical topics, query PubMed per journal (E-utilities `esearch`, `<topic terms> AND
+<journal>[ta] AND 2023:2026[dp]`) and compare counts across candidates — a journal with zero
+papers on the topic in four years is a scope risk whatever its aims say.
 
 | Check | What to record |
 |---|---|
@@ -82,7 +85,15 @@ question and record, in one line each:
 | AI policy | Where the AI statement goes (publisher default or stricter journal rule) |
 
 If no sentence of the aims and scope fits and none of the recent papers resembles the
-manuscript, drop the journal however high its metrics.
+manuscript, drop the journal however high its metrics. Read the guide for authors in full, not
+only the aims: exclusions often sit in the scope text (e.g. "studies focusing solely on AI will
+only be considered when integrated into clinical systems"), and word limits differ by a factor of
+two between otherwise similar journals. Publisher guide pages (ScienceDirect among them) refuse
+automated fetches; open them in a browser.
+
+Searching the recent literature of each candidate also turns up **close prior work the manuscript
+does not cite yet**. Read it before submitting; citing the target journal's own recent papers on
+the topic is part of showing fit.
 
 ## Step 3 — Verification (on the day of submission, not from memory)
 
