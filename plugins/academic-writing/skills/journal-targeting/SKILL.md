@@ -105,10 +105,13 @@ data, a blog, or the journal's own website. Details and red flags:
    recent years present.
 2. **Discontinued Sources List** (Excel, updated monthly, linked from Elsevier's *Content policy
    and selection* page): the title is **not** on it.
-3. **Hijack check**: the URL you will submit through is the one Scopus links to (or the
+3. **Web of Science status** (Master Journal List, `mjl.clarivate.com`): listed and **not on hold**,
+   and no notice of an index investigation in the guide for authors. A journal dropped from one
+   index is a warning for the other.
+4. **Hijack check**: the URL you will submit through is the one Scopus links to (or the
    publisher's own platform), and the title is not on the Retraction Watch Hijacked Journal
    Checker.
-4. **Think. Check. Submit.** checklist: submit only if most answers are yes.
+5. **Think. Check. Submit.** checklist: submit only if most answers are yes.
 5. If an institution or regulation requires a **specific metric** (e.g. a SJR quartile, a
    CiteScore percentile, a national index), check that exact metric at its source and note the
    year of the value.

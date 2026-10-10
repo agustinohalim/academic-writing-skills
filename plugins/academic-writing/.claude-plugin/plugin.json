@@ -1,6 +1,6 @@
 {
   "name": "academic-writing",
-  "version": "1.9.1",
+  "version": "1.9.2",
   "description": "Research integrity, bilingual proofreading (EYD V / academic English) with deterministic checkers, a gated journal-article workflow, and journal targeting for indexed journals",
   "author": { "name": "Agustino Halim", "url": "https://github.com/agustinohalim" },
   "homepage": "https://github.com/agustinohalim/academic-writing-skills",

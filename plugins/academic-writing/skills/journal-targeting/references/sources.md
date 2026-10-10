@@ -10,6 +10,7 @@ notice; check the live source on the day of submission, not this file.
 | Scopus title list, discontinued list, re-evaluation | Elsevier, *Content policy and selection* — https://www.elsevier.com/products/scopus/content/content-policy-and-selection (Discontinued Sources List linked there as Excel, "updated monthly"; August 2026 file present on the checked date) |
 | Scopus Sources search | https://www.scopus.com/sources.uri |
 | "Discontinued" label without being on the list | Scopus blog, *Is a title indexed in Scopus? A reminder to check before you publish* — https://blog.scopus.com/posts/is-a-title-indexed-in-scopus-a-reminder-to-check-before-you-publish (read via mirrored copy; original not fetched) |
+| Web of Science holds and delistings | Clarivate, *Why journals are put on hold in Web of Science Core Collection and how research integrity guides the process* — https://clarivate.com/academia-government/blog/why-journals-are-put-on-hold-in-web-of-science-core-collection-and-how-research-integrity-guides-the-process/ ; Master Journal List — https://mjl.clarivate.com/ (checked 10 October 2026) |
 | Hijacked journals | Retraction Watch Hijacked Journal Checker — https://retractionwatch.com/retraction-watch-hijacked-journal-checker/ ; *Journal hijackers still infiltrate Scopus despite its efforts* (2024) — https://retractionwatch.com/2024/06/18/journal-hijackers-still-infiltrate-scopus-despite-its-efforts |
 | Trusted journals checklist | Think. Check. Submit. — https://thinkchecksubmit.org/ |
 

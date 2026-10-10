@@ -47,6 +47,24 @@ non-OA in Scimago's export (seen in October 2026 for *EP Europace*, fully OA sin
 volume). When the ladder excludes APC journals, confirm the model on the publisher's or society's
 own page, not on an aggregator.
 
+## 1b. Is it in Web of Science, and is it on hold?
+
+Check the other index too, even when only Scopus is required: a journal dropped by one index is a
+warning for the other, and many institutions count both.
+
+- **Master Journal List** (`mjl.clarivate.com`, free search by title or ISSN) shows whether the journal
+  is in the Web of Science Core Collection and in which edition. A journal under re-evaluation stays
+  listed but is marked **on hold**: indexing of new content is paused. Clarivate reports that about
+  85 % of journals put on hold have ended up delisted, and that most holds last around six weeks.
+- **Delisted** journals disappear from the list and receive no Impact Factor; content published after
+  the cut-off is not indexed and is not backfilled. Clarivate publishes coverage changes monthly.
+- **Read the publisher's own notices.** A journal under investigation may say so in its guide for
+  authors or on its homepage. Example (October 2026): the guide for authors of *Computers in Biology
+  and Medicine* stated that the journal was put on hold in April 2024 and discontinued from the Web of
+  Science Core Collection on 17 November 2025, while Scopus still listed it as active. A rung like that
+  is not excluded for a Scopus-only goal, but it should not be the first fallback, and the author must
+  be told.
+
 ## 2. Is it the real journal? (hijacked clones)
 
 A hijacked journal copies the title, ISSN, and metadata of a legitimate indexed journal and
@@ -82,4 +100,5 @@ to a personal or unrelated account.
 ## Recording the check
 
 In the ladder table, per rung: `Scopus Sources: ongoing, 2026 issues present (checked
-2026-10-09); not on Discontinued List Aug 2026; not on RW Hijacked Checker; TCS 9/10 yes`.
+2026-10-09); not on Discontinued List Aug 2026; WoS MJL: listed, not on hold; not on RW Hijacked
+Checker; TCS 9/10 yes`.
