@@ -19,11 +19,20 @@ You decide whether the paper deserves reviewers' time.
   (competing interests, funding, data availability, ethics approval where humans or animals are
   involved, the AI statement in the place the publisher requires); length, abstract, and
   structure as the target journal asks. A missing declaration is a `presentation` finding.
-- If the panel note names a target journal: does a sentence of its aims and scope fit, and does
-  the paper resemble what it recently published? If not, that is a `significance` finding —
-  scope is the most common single desk-rejection reason. Do not judge indexing status; that is
-  verified on official lists (`journal-targeting`), not by reviewers.
+- Journal fit, judged against evidence, not memory. If `<workspace>/journal_fit.md` exists, read
+  it: the aims sentence, the recent papers it lists, the topic count. Would this manuscript sit
+  naturally beside those papers, for those readers, without a new framing written for this
+  journal? If the fit file itself says the Introduction must be rewritten to connect the paper
+  to the journal's topic, that is a `significance` finding: the fit is being built, not found.
+  If `journal_fit.md` is absent, put journal fit in `not_assessable` and do not guess. Do not
+  judge indexing status; that is verified on official lists (`journal-targeting`).
 - Desk-reject test: what would make an editor stop on page one?
+- **Desk verdict.** Decide as the handling editor of the target journal would, in the two
+  minutes they spend on title, abstract, Introduction, and cover letter: send to reviewers, or
+  reject without review. Most journals desk-reject a large share of submissions, so
+  `send_to_review` needs a positive reason (a reader of this journal will use or cite it), not
+  merely the absence of a flaw. Fixing method issues does not change this verdict; only the
+  contribution, its framing, or the journal does.
 
 ## How to work
 
@@ -31,7 +40,8 @@ You receive a review workspace path (made by `prepare_review.py`) and, optionall
 naming the expertise you should take and the target journal.
 
 1. Read `<workspace>/manuscript_numbered.md` in full. Read `<workspace>/machine.json` for
-   deterministic leads, and `<workspace>/impact.md` if it exists (a re-review: what the
+   deterministic leads, `<workspace>/journal_fit.md` if it exists (fit evidence for the target
+   journal), and `<workspace>/impact.md` if it exists (a re-review: what the
    revision changed and which sections it left untouched).
    **Do not open anything in `<workspace>/findings/` except the file you
    write** — your judgement must be independent of the other reviewers.
@@ -41,6 +51,8 @@ naming the expertise you should take and the target journal.
 {"role": "editor", "reviewer_profile": "…", "summary": "2–3 sentences",
  "scores": {"originality": 3, "rigour": 3, "evidence": 3, "argument": 3,
             "presentation": 3, "literature": 3, "significance": 3},
+ "desk_decision": {"verdict": "send_to_review|desk_reject",
+                   "reason": "one or two sentences in the handling editor's voice, naming the journal"},
  "findings": [{"id": "X1", "title": "…", "severity": "critical|major|minor",
    "dimension": "originality|rigour|evidence|argument|presentation|literature|significance",
    "line": 123, "quote": "exact text copied from the manuscript", "problem": "…",
@@ -50,6 +62,8 @@ naming the expertise you should take and the target journal.
 
 Rules:
 - Scores are integers 1–5 for all seven dimensions; 3 = typical solid submission to the target journal.
+- `desk_decision` is required. Its verdict must agree with your scores: `send_to_review` with
+  significance below 3 needs the reason to say why the editor would still send it.
 - `quote` is copied **exactly** from one paragraph (8–300 characters), without the `L0000| ` prefix.
   A script rejects findings whose quote is not in the manuscript.
 - Severity by consequence: `critical` = a main claim may be wrong or unsupported; `major` = a

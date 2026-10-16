@@ -40,6 +40,12 @@ def sama(a, b):
     return a.get("dimension") == b.get("dimension") and bool(ka and kb) and len(ka & kb) / len(ka | kb) >= 0.35
 
 
+def siap(r):
+    if "ready" not in r:
+        return "not judged"
+    return "READY" if r["ready"] else "NOT READY"
+
+
 def main(argv):
     if len(argv) != 2:
         print(__doc__)
@@ -60,6 +66,14 @@ def main(argv):
 
     L = [f"# Re-review: {argv[0]} -> {argv[1]}", "",
          f"Decision: **{lama['decision']}** -> **{baru['decision']}**", "",
+         f"Submission readiness: **{siap(lama)}** -> **{siap(baru)}**", ""]
+    s0 = lama["scores"].get("significance", {}).get("median")
+    s1 = baru["scores"].get("significance", {}).get("median")
+    if selesai and s0 is not None and s1 is not None and s1 <= s0:
+        L += [f"> {len(selesai)} issue(s) resolved, but median significance did not rise "
+              f"({s0} -> {s1}). Fixing issues improved the paper's rigour, not the reason an editor "
+              "would send it out. See journal-targeting, 'When to leave the ladder'.", ""]
+    L += [
          "## Scores", "", "| Dimension | Before | After | Change |", "|---|---|---|---|"]
     for d in sorted(set(lama["scores"]) | set(baru["scores"])):
         s0 = lama["scores"].get(d, {}).get("median")

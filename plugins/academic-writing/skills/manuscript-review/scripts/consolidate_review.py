@@ -10,7 +10,16 @@ findings/<role>.json, then:
   4. aggregates the seven dimension scores (median and spread; spread >= 2 = disagreement);
   5. applies the decision rules (references/decision-rules.md);
   6. lists the questions roles marked not assessable (a missing input is not a pass);
-  7. writes report.md (for the author) and findings_final.json (for diff_review.py).
+  7. judges submission readiness, separately from the decision (see below);
+  8. writes report.md (for the author) and findings_final.json (for diff_review.py).
+
+The decision says how much revision the paper needs; readiness says whether it should go to the
+named journal now. They differ on purpose: a "Major revision" reached by fixing critical
+issues can still be a paper whose contribution an editor will not send to reviewers. Readiness
+needs all of: decision not "Reject in current form"; the editor role's desk verdict
+"send_to_review"; median significance and originality at least MIN_SIGNIFICANCE and
+MIN_ORIGINALITY; fit evidence for the target journal in the workspace (journal_fit.md); no heavy
+machine finding.
 
 Usage:
     python consolidate_review.py review/2026-09-28
@@ -26,6 +35,12 @@ import sys
 DIMENSIONS = ["originality", "rigour", "evidence", "argument", "presentation", "literature", "significance"]
 SEVERITIES = ["critical", "major", "minor"]
 RANK = {s: i for i, s in enumerate(SEVERITIES)}
+VERDICTS = ["send_to_review", "desk_reject"]
+# 3 = "typical solid submission to the target journal" (finding-schema.md). Below that the
+# editor is being asked to send an under-typical paper to reviewers. Recorded case and why the
+# decision alone was not enough: decision-rules.md, "Why readiness".
+MIN_SIGNIFICANCE = 3
+MIN_ORIGINALITY = 3
 
 
 def normal(t):
@@ -67,6 +82,10 @@ def validasi(role, data):
     for i, n in enumerate(data.get("not_assessable") or []):
         if not isinstance(n, dict) or not n.get("question") or not n.get("missing"):
             galat.append(f"{role} not_assessable {i + 1}: needs 'question' and 'missing'")
+    if role == "editor":
+        dd = data.get("desk_decision")
+        if not isinstance(dd, dict) or dd.get("verdict") not in VERDICTS or not dd.get("reason"):
+            galat.append(f"editor: 'desk_decision' needs 'verdict' ({' or '.join(VERDICTS)}) and 'reason'")
     return galat
 
 
@@ -177,11 +196,38 @@ def putuskan(kl, skor, mesin_berat):
     return "Accept with polishing", ["no critical or major issue"]
 
 
-def tulis_laporan(ws, meta, kl, skor, tak_terverifikasi, mesin, galat, keputusan, alasan, da, tak_nilai):
+def kesiapan(keputusan, skor, meja, ada_fit, mesin_berat):
+    """Submission readiness: a list of (condition, passed, detail). Ready only if all pass."""
+    med = {d: v["median"] for d, v in skor.items()}
+    sig, ori = med.get("significance"), med.get("originality")
+    return [
+        ("Decision is not 'Reject in current form'", keputusan != "Reject in current form", keputusan),
+        ("Editor would send it to reviewers", bool(meja) and meja.get("verdict") == "send_to_review",
+         f"{meja.get('verdict')}: {meja.get('reason')}" if meja else "editor role gave no desk verdict"),
+        (f"Median significance >= {MIN_SIGNIFICANCE}", sig is not None and sig >= MIN_SIGNIFICANCE,
+         "not scored" if sig is None else f"{sig:.1f}"),
+        (f"Median originality >= {MIN_ORIGINALITY}", ori is not None and ori >= MIN_ORIGINALITY,
+         "not scored" if ori is None else f"{ori:.1f}"),
+        ("Fit evidence for the target journal (journal_fit.md)", ada_fit,
+         "present" if ada_fit else "absent: re-run prepare_review.py with --fit"),
+        ("No heavy machine finding", mesin_berat == 0, f"{mesin_berat} heavy"),
+    ]
+
+
+def tulis_laporan(ws, meta, kl, skor, tak_terverifikasi, mesin, galat, keputusan, alasan, da, tak_nilai,
+                  siap):
     L = []
     L.append(f"# Review report\n\nManuscript: `{meta.get('source', '')}`  ")
     L.append(f"SHA-256: `{meta.get('sha256', '')[:16]}…` · {meta.get('words', 0)} words · "
              f"roles: {', '.join(sorted({r for c in kl for r in c['roles']}))}\n")
+    lolos = all(ok for _, ok, _ in siap)
+    L.append(f"## Submission readiness: {'READY' if lolos else 'NOT READY'}\n")
+    if not lolos:
+        L.append("Do not submit to the target journal yet. A revision decision below says how much work "
+                 "the paper needs; this section says whether an editor is likely to send it to reviewers.\n")
+    L.append("| Condition | Result | Detail |\n|---|---|---|")
+    L += [f"| {k} | {'pass' if ok else 'FAIL'} | {d} |" for k, ok, d in siap]
+    L.append("")
     L.append(f"## Decision: {keputusan}\n")
     L += [f"- {a}" for a in alasan]
     L.append("\n## Scorecard (1–5, median across roles)\n")
@@ -244,6 +290,7 @@ def main(argv):
         with open(os.path.join(ws, "meta.json"), encoding="utf-8") as f:
             meta = json.load(f)
     semua, galat, skor_mentah, da, tak_nilai = [], [], {d: [] for d in DIMENSIONS}, "", []
+    meja = None
     peran_jalan = set()
     folder = os.path.join(ws, "findings")
     for nama in sorted(os.listdir(folder)):
@@ -268,6 +315,8 @@ def main(argv):
                       if isinstance(n, dict) and n.get("question") and n.get("missing")]
         if data.get("strongest_counterargument"):
             da = data["strongest_counterargument"]
+        if role == "editor" and isinstance(data.get("desk_decision"), dict):
+            meja = data["desk_decision"]
         for i, t in enumerate(data["findings"], 1):
             if t.get("severity") not in SEVERITIES or t.get("dimension") not in DIMENSIONS:
                 continue
@@ -290,12 +339,16 @@ def main(argv):
             for d, v in skor_mentah.items() if v}
     mesin_berat = sum(1 for m in mesin if m["weight"] == "heavy")
     keputusan, alasan = putuskan(kl, skor, mesin_berat)
-    tulis_laporan(ws, meta, kl, skor, tak, mesin, galat, keputusan, alasan, da, tak_nilai)
+    siap = kesiapan(keputusan, skor, meja, os.path.exists(os.path.join(ws, "journal_fit.md")), mesin_berat)
+    lolos = all(ok for _, ok, _ in siap)
+    tulis_laporan(ws, meta, kl, skor, tak, mesin, galat, keputusan, alasan, da, tak_nilai, siap)
     with open(os.path.join(ws, "findings_final.json"), "w", encoding="utf-8") as f:
-        json.dump({"decision": keputusan, "scores": skor, "clusters": kl, "set_aside": tak,
+        json.dump({"decision": keputusan, "ready": lolos, "desk_decision": meja,
+                   "readiness": [{"condition": k, "passed": ok, "detail": d} for k, ok, d in siap],
+                   "scores": skor, "clusters": kl, "set_aside": tak,
                    "not_assessable": tak_nilai, "roles_run": sorted(peran_jalan)},
                   f, ensure_ascii=False, indent=1)
-    print(f"{keputusan}: {len(kl)} issue clusters ({sum(c['consensus'] >= 2 for c in kl)} with consensus), "
+    print(f"{'READY' if lolos else 'NOT READY'} to submit · {keputusan}: {len(kl)} issue clusters ({sum(c['consensus'] >= 2 for c in kl)} with consensus), "
           f"{len(tak)} set aside (quote not found), {len(galat)} schema error(s)\n"
           f"report: {os.path.join(ws, 'report.md')}")
     return 1 if galat else 0

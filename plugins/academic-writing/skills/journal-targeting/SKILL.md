@@ -85,7 +85,15 @@ papers on the topic in four years is a scope risk whatever its aims say.
 | AI policy | Where the AI statement goes (publisher default or stricter journal rule) |
 
 If no sentence of the aims and scope fits and none of the recent papers resembles the
-manuscript, drop the journal however high its metrics. Read the guide for authors in full, not
+manuscript, drop the journal however high its metrics. **If fitting the journal would need a new
+Introduction framing written for it** (connecting the paper to a topic it was not about), the
+journal fails: the editor reads the paper the way it was written, and a bridge paragraph does
+not change what the paper is about.
+
+Write the fit test for each rung into the ladder file as evidence, not as a verdict: the aims
+sentence quoted, the three recent papers (authors, year, title), the topic count with its query.
+That section is what `manuscript-review` reads (`prepare_review.py --fit`) when the panel judges
+fit before submission. Read the guide for authors in full, not
 only the aims: exclusions often sit in the scope text (e.g. "studies focusing solely on AI will
 only be considered when integrated into clinical systems"), and word limits differ by a factor of
 two between otherwise similar journals. Publisher guide pages (ScienceDirect among them) refuse
@@ -149,9 +157,17 @@ Details: `references/rejection-and-transfer.md`.
 - **Desk rejection.** Read the reasons; map them to the scorecard. Scope → next rung as is.
   Contribution or framing → fix title, abstract, Introduction, and contribution list first.
   Never resend unchanged to a journal whose editor named a problem the next editor will also see.
+  A letter that says the paper was "reviewed" but arrives within about a week with no reviewer
+  reports is an editorial decision; read it as a desk rejection.
+- **Not the same day.** Before the next submission, write the rejection triage
+  (`references/rejection-and-transfer.md`) into the ladder file and re-run the readiness check
+  of `manuscript-review` against the next journal's fit evidence. A resubmission within hours of
+  a rejection has skipped both.
 - **Transfer offer** (Elsevier Article Transfer Service and similar). Nothing moves unless the
-  author accepts. Check the proposed journal through Steps 2–3 exactly like a ladder rung; accept
-  only if it would have qualified. Revising on the reviews before transferring is allowed and
+  author accepts. Check the proposed journal through Steps 2–3 exactly like a ladder rung,
+  including the topic count and three recent papers; accept only if it would have qualified.
+  A journal that enters the ladder only through a transfer offer, with a fit that needs a new
+  Introduction framing, fails. Revising on the reviews before transferring is allowed and
   usually worth doing.
 - **Rejection after review.** Address every reviewer comment before the next rung, even though
   the next journal will not see them: the same reviewers may be invited again.

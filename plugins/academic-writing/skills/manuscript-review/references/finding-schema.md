@@ -42,6 +42,19 @@ Each role writes one file, `findings/<role>.json`, in the review workspace:
 Findings about something **absent** (a missing baseline, a missing limitation) quote the sentence
 where it should appear or the claim it undermines.
 
+## Desk decision (editor role only)
+
+Required in `findings/editor.json`:
+
+```json
+"desk_decision": {"verdict": "desk_reject",
+                  "reason": "Readers of <journal> need a usable method; this reports a benchmark flaw only."}
+```
+
+`verdict` is `send_to_review` or `desk_reject`; `reason` is the editor's two-minute judgement on
+title, abstract, Introduction, and fit. A missing or malformed desk decision is a schema error,
+and the report then marks the manuscript not ready to submit.
+
 ## Not assessable
 
 Optional top-level list, next to `findings`:
