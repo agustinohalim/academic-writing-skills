@@ -38,8 +38,14 @@ diff_review.py old new  →  resolved · still open · not re-checked · new
 ### 1. Prepare
 
 ```bash
-python "${CLAUDE_SKILL_DIR}/scripts/prepare_review.py" manuscript.md --out review/<YYYY-MM-DD>
+python "${CLAUDE_SKILL_DIR}/scripts/prepare_review.py" manuscript.md --out review/<YYYY-MM-DD> --fit Target_Journals.md
 ```
+
+`--fit` copies the fit test for the journal the paper is going to (`journal-targeting` step 2:
+aims sentence, three recent similar papers, topic count) into the workspace as `journal_fit.md`.
+The editor role judges fit against it. Without it, fit is not assessable and the report marks
+the manuscript not ready to submit; a review run before the target is chosen is fine, but the
+review that clears submission must have it.
 
 The workspace freezes the manuscript (SHA-256 recorded), numbers its lines, maps headings to
 line ranges, and runs `check_manuscript_en.py` from `manuscript-proofreading`. Heavy machine
@@ -94,7 +100,15 @@ stays in the workspace, so the merge decisions are visible and can be challenged
 are reported as errors. In the first real run (a 6,300-word manuscript, 65 findings) this
 changed the result from 56 clusters with 8 consensus issues to 38 clusters with 15.
 
-Then read `report.md` with the author. Findings "set aside" had quotes not found in the
+Then read `report.md` with the author. **Read the readiness table first.** It is printed above
+the decision because it answers a different question: the decision says how much revision the
+paper needs; readiness says whether the editor of the named journal is likely to send it to
+reviewers. "Major revision" with NOT READY means: do not submit — fixing more issues will not
+change the editor's verdict; the contribution, its framing, or the journal must change
+(`scientific-article-writing` scorecard section A, `journal-targeting`). The author may still
+submit; the report must not be read as clearance.
+
+ Findings "set aside" had quotes not found in the
 manuscript: check whether the reviewer misquoted (fix and re-run) or hallucinated (discard).
 The "Not assessable" section lists questions a role could not answer because an input was
 absent (no split procedure, no code link); those are unchecked, not passed, and a clean report
@@ -135,6 +149,11 @@ reviewers raise exactly those. Scores that the roles disagree on (range ≥ 2) m
 the paper reads differently to different readers — usually a framing problem.
 
 ## Limits
+
+- **Clearing the panel is not clearing the editor.** Readiness lowers the odds of a desk
+  rejection; it does not predict acceptance. Calibrate against real outcomes: record the
+  readiness table and median significance in the submission file each time, and compare with
+  the decision that comes back.
 
 - One model playing five roles shares one set of blind spots. Treat consensus as "likely", not
   "certain", and a clean report as "no obvious problems", not "ready".

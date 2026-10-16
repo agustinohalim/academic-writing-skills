@@ -20,10 +20,14 @@ The editor decides whether the paper deserves reviewers' time.
 - Compliance screen: required declarations present (competing interests, funding, data
   availability, ethics, AI statement where the publisher puts it); length and structure as the
   target journal asks.
-- Target-journal fit, when the panel note names one: an aims-and-scope sentence that fits, and
-  resemblance to its recent papers. Indexing status is out of scope for reviewers
-  (`journal-targeting`).
+- Target-journal fit, judged from `journal_fit.md` (the journal's aims sentence, recent similar
+  papers, topic count): would the paper sit beside those papers without a framing written for
+  this journal? Without the file, fit is not assessable. Indexing status is out of scope for
+  reviewers (`journal-targeting`).
 - Desk-reject test: what would make an editor stop at page one?
+- Desk verdict (`desk_decision`, required): send to reviewers or reject without review, as the
+  handling editor would after two minutes on title, abstract, Introduction, and fit. It feeds the
+  readiness table (`decision-rules.md`).
 
 ## methods — design, statistics, reproducibility
 
