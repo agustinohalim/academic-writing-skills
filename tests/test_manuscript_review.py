@@ -145,6 +145,104 @@ class ReviewFlow(unittest.TestCase):
         self.assertIn("## Not re-checked (1)", diff)  # methods did not run again
 
 
+class Readiness(unittest.TestCase):
+    """Submission readiness is judged apart from the decision (decision-rules.md)."""
+
+    def setUp(self):
+        self.tmp = tempfile.mkdtemp()
+        self.ms = os.path.join(self.tmp, "paper.md")
+        with open(self.ms, "w", encoding="utf-8") as f:
+            f.write(MANUSCRIPT)
+        self.fit = os.path.join(self.tmp, "Target_Journals.md")
+        with open(self.fit, "w", encoding="utf-8") as f:
+            f.write("# Fit\n\nAims: evaluation of ML models.\nRecent: A 2025; B 2026; C 2026.\n")
+
+    def tearDown(self):
+        shutil.rmtree(self.tmp)
+
+    def prepare(self, name, fit=True):
+        ws = os.path.join(self.tmp, name)
+        args = [self.ms, "--out", ws] + (["--fit", self.fit] if fit else [])
+        r = run(os.path.join(REVIEW, "prepare_review.py"), *args)
+        self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
+        return ws
+
+    def editor(self, ws, verdict="send_to_review", significance=3, findings=()):
+        role_file(ws, "editor", list(findings))
+        path = os.path.join(ws, "findings", "editor.json")
+        with open(path, encoding="utf-8") as f:
+            data = json.load(f)
+        data["scores"]["significance"] = significance
+        if verdict:
+            data["desk_decision"] = {"verdict": verdict, "reason": "Readers of the journal would use it."}
+        with open(path, "w", encoding="utf-8") as f:
+            json.dump(data, f)
+
+    def consolidate(self, ws):
+        r = run(os.path.join(REVIEW, "consolidate_review.py"), ws)
+        with open(os.path.join(ws, "findings_final.json"), encoding="utf-8") as f:
+            return r, json.load(f)
+
+    def failed(self, out):
+        return {x["condition"] for x in out["readiness"] if not x["passed"]}
+
+    def test_fit_file_copied_and_recorded(self):
+        ws = self.prepare("r1")
+        self.assertTrue(os.path.exists(os.path.join(ws, "journal_fit.md")))
+        with open(os.path.join(ws, "meta.json"), encoding="utf-8") as f:
+            self.assertTrue(json.load(f)["journal_fit"])
+        missing = run(os.path.join(REVIEW, "prepare_review.py"), self.ms, "--out",
+                      os.path.join(self.tmp, "r2"), "--fit", os.path.join(self.tmp, "nope.md"))
+        self.assertEqual(missing.returncode, 2)
+
+    def test_ready_when_every_condition_holds(self):
+        ws = self.prepare("r1")
+        self.editor(ws)
+        r, out = self.consolidate(ws)
+        self.assertEqual(r.returncode, 0, r.stdout)
+        self.assertTrue(out["ready"], out["readiness"])
+        with open(os.path.join(ws, "report.md"), encoding="utf-8") as f:
+            report = f.read()
+        self.assertLess(report.index("Submission readiness: READY"), report.index("## Decision"))
+
+    def test_major_revision_can_still_be_not_ready(self):
+        ws = self.prepare("r1")
+        q = "Rankings agree in 81% of resamples under a per-unit target"
+        self.editor(ws, verdict="desk_reject", significance=2, findings=[finding("Local result", q, line=16)])
+        _, out = self.consolidate(ws)
+        self.assertEqual(out["decision"], "Minor revision")
+        self.assertFalse(out["ready"])
+        self.assertIn("Editor would send it to reviewers", self.failed(out))
+        self.assertIn("Median significance >= 3", self.failed(out))
+
+    def test_no_fit_evidence_is_not_ready(self):
+        ws = self.prepare("r1", fit=False)
+        self.editor(ws)
+        _, out = self.consolidate(ws)
+        self.assertFalse(out["ready"])
+        self.assertEqual(self.failed(out), {"Fit evidence for the target journal (journal_fit.md)"})
+
+    def test_missing_desk_decision_is_schema_error_and_not_ready(self):
+        ws = self.prepare("r1")
+        self.editor(ws, verdict=None)
+        r, out = self.consolidate(ws)
+        self.assertEqual(r.returncode, 1)
+        self.assertFalse(out["ready"])
+
+    def test_diff_flags_resolved_issues_without_significance_gain(self):
+        ws1 = self.prepare("r1")
+        self.editor(ws1, findings=[finding("Title too narrow", "Label definitions decide whether evaluation")])
+        self.consolidate(ws1)
+        ws2 = self.prepare("r2")
+        self.editor(ws2)
+        self.consolidate(ws2)
+        run(os.path.join(REVIEW, "diff_review.py"), ws1, ws2)
+        with open(os.path.join(ws2, "diff.md"), encoding="utf-8") as f:
+            diff = f.read()
+        self.assertIn("Submission readiness: **READY** -> **READY**", diff)
+        self.assertIn("median significance did not rise", diff)
+
+
 class Checker(unittest.TestCase):
     def test_json_output(self):
         with tempfile.TemporaryDirectory() as d:
