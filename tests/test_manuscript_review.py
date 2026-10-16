@@ -195,9 +195,14 @@ class Readiness(unittest.TestCase):
                       os.path.join(self.tmp, "r2"), "--fit", os.path.join(self.tmp, "nope.md"))
         self.assertEqual(missing.returncode, 2)
 
+    def others(self, ws, roles=("methods", "domain", "presentation", "devils-advocate")):
+        for r in roles:
+            role_file(ws, r, [])
+
     def test_ready_when_every_condition_holds(self):
         ws = self.prepare("r1")
         self.editor(ws)
+        self.others(ws)
         r, out = self.consolidate(ws)
         self.assertEqual(r.returncode, 0, r.stdout)
         self.assertTrue(out["ready"], out["readiness"])
@@ -218,9 +223,18 @@ class Readiness(unittest.TestCase):
     def test_no_fit_evidence_is_not_ready(self):
         ws = self.prepare("r1", fit=False)
         self.editor(ws)
+        self.others(ws)
         _, out = self.consolidate(ws)
         self.assertFalse(out["ready"])
         self.assertEqual(self.failed(out), {"Fit evidence for the target journal (journal_fit.md)"})
+
+    def test_partial_recheck_is_not_ready(self):
+        ws = self.prepare("r1")
+        self.editor(ws)
+        self.others(ws, roles=("devils-advocate",))
+        _, out = self.consolidate(ws)
+        self.assertFalse(out["ready"])
+        self.assertEqual(self.failed(out), {"Full panel ran (all five roles)"})
 
     def test_missing_desk_decision_is_schema_error_and_not_ready(self):
         ws = self.prepare("r1")
@@ -232,9 +246,11 @@ class Readiness(unittest.TestCase):
     def test_diff_flags_resolved_issues_without_significance_gain(self):
         ws1 = self.prepare("r1")
         self.editor(ws1, findings=[finding("Title too narrow", "Label definitions decide whether evaluation")])
+        self.others(ws1)
         self.consolidate(ws1)
         ws2 = self.prepare("r2")
         self.editor(ws2)
+        self.others(ws2)
         self.consolidate(ws2)
         run(os.path.join(REVIEW, "diff_review.py"), ws1, ws2)
         with open(os.path.join(ws2, "diff.md"), encoding="utf-8") as f:

@@ -46,6 +46,7 @@ condition holds:
 
 | Condition | Why |
 |---|---|
+| All five roles ran | A re-check by one or two roles gives medians of one or two voices and no editor verdict; a "Major revision" from such a run is not a panel's verdict |
 | Decision is not "Reject in current form" | The contribution needs rethinking |
 | Editor's `desk_decision.verdict` is `send_to_review` | The gate a submission actually faces first |
 | Median significance ≥ 3 and median originality ≥ 3 | 3 = typical solid submission to the target journal; below it the editor is asked to send an under-typical paper out |
@@ -56,16 +57,16 @@ condition holds:
 
 The decision is driven by issue clusters, so fixing critical issues turns "Reject in current
 form" into "Major revision" even when significance has not moved. In the first long use of this
-skill (one author, 27 September – 16 October 2026), 22 panels on five manuscripts never gave a
-median significance above 3, and resolving 30 issues between two panels left it where it was.
-Three manuscripts went out at median significance 2.0–3.0 — two of them after a last full verdict
-of "Reject in current form". The one decided so far was rejected by two journals within five
-days without reviewer reports ("does not fit within the scope"); two more were pending. Three
-earlier manuscripts by the same author, submitted before the panel existed, were also
-desk-rejected for importance or scope. The decision answers "how much revision"; readiness
-answers "should this go to that journal now", and only the second is about the gate those
-papers failed. `diff_review.py` prints both, and flags a re-review that resolved issues without
-raising significance.
+skill (one author, 27 September – 16 October 2026), 22 panels on five manuscripts gave a median
+significance of 3 or less in 21 of them (one panel scored 4), and resolving 30 issues between two
+panels left it at 3. Two manuscripts were submitted while their last full panel read "Reject in
+current form": one directly, the other after a one-role re-check that produced "Major revision",
+and that one went on to a second journal without any new review. It was rejected by both journals
+within five days without reviewer reports; the other is pending. A third manuscript went out after
+a full "Major revision" at median significance 3 and is pending. Replayed over those 22 panels, the numeric conditions above pass 4;
+the desk verdict and fit evidence did not exist yet. That is consistent with the outcomes, but on
+two decisions it is a check, not a validation: record the readiness table with every submission
+and compare it with the decision that comes back.
 
 ## Re-review matching
 

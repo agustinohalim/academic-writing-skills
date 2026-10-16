@@ -16,7 +16,8 @@ findings/<role>.json, then:
 The decision says how much revision the paper needs; readiness says whether it should go to the
 named journal now. They differ on purpose: a "Major revision" reached by fixing critical
 issues can still be a paper whose contribution an editor will not send to reviewers. Readiness
-needs all of: decision not "Reject in current form"; the editor role's desk verdict
+needs all of: all five roles ran (medians from a partial re-check are not a panel); decision
+not "Reject in current form"; the editor role's desk verdict
 "send_to_review"; median significance and originality at least MIN_SIGNIFICANCE and
 MIN_ORIGINALITY; fit evidence for the target journal in the workspace (journal_fit.md); no heavy
 machine finding.
@@ -196,11 +197,17 @@ def putuskan(kl, skor, mesin_berat):
     return "Accept with polishing", ["no critical or major issue"]
 
 
-def kesiapan(keputusan, skor, meja, ada_fit, mesin_berat):
+FULL_PANEL = ["editor", "methods", "domain", "presentation", "devils-advocate"]
+
+
+def kesiapan(keputusan, skor, meja, ada_fit, mesin_berat, peran_jalan=()):
     """Submission readiness: a list of (condition, passed, detail). Ready only if all pass."""
     med = {d: v["median"] for d, v in skor.items()}
     sig, ori = med.get("significance"), med.get("originality")
+    kurang = [r for r in FULL_PANEL if r not in set(peran_jalan)]
     return [
+        ("Full panel ran (all five roles)", not kurang,
+         "all five" if not kurang else f"missing: {', '.join(kurang)}"),
         ("Decision is not 'Reject in current form'", keputusan != "Reject in current form", keputusan),
         ("Editor would send it to reviewers", bool(meja) and meja.get("verdict") == "send_to_review",
          f"{meja.get('verdict')}: {meja.get('reason')}" if meja else "editor role gave no desk verdict"),
@@ -339,7 +346,8 @@ def main(argv):
             for d, v in skor_mentah.items() if v}
     mesin_berat = sum(1 for m in mesin if m["weight"] == "heavy")
     keputusan, alasan = putuskan(kl, skor, mesin_berat)
-    siap = kesiapan(keputusan, skor, meja, os.path.exists(os.path.join(ws, "journal_fit.md")), mesin_berat)
+    siap = kesiapan(keputusan, skor, meja, os.path.exists(os.path.join(ws, "journal_fit.md")), mesin_berat,
+                    peran_jalan)
     lolos = all(ok for _, ok, _ in siap)
     tulis_laporan(ws, meta, kl, skor, tak, mesin, galat, keputusan, alasan, da, tak_nilai, siap)
     with open(os.path.join(ws, "findings_final.json"), "w", encoding="utf-8") as f:
