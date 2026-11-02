@@ -1,6 +1,6 @@
 ---
 name: scientific-article-writing
-description: Workflow for writing a journal article with an AI assistant, from research question to submission and revision — a gated article plan, results files as the only source of numbers, a Markdown manuscript as the single source (Word/PDF are exports), section-by-section drafting in a fixed order, machine checks, a reviewer-style self-review, a submission package (cover letter, declarations, suggested reviewers), and responses to reviewers. Use when the user works on a paper, manuscript, abstract, cover letter, journal choice, desk rejection, or major/minor revision. Triggers in English and Indonesian — paper, article, manuscript, submit, journal, reviewer, rebuttal, revision, abstract, artikel, naskah, jurnal, kirim naskah, revisi mayor, revisi minor, tanggapan penelaah, surat pengantar.
+description: Workflow for writing a journal article with an AI assistant, from research question to submission and revision — a research gap proven open and new before anything else, a gated article plan, results files as the only source of numbers, a Markdown manuscript as the single source (Word/PDF are exports), section-by-section drafting in a fixed order, machine checks, a reviewer-style self-review, a submission package (cover letter, declarations, suggested reviewers), and responses to reviewers. Use when the user looks for a research gap or works on a paper, manuscript, abstract, cover letter, journal choice, desk rejection, or major/minor revision. Triggers in English and Indonesian — research gap, novelty, paper, article, manuscript, submit, journal, reviewer, rebuttal, revision, abstract, celah riset, kebaruan, artikel, naskah, jurnal, kirim naskah, revisi mayor, revisi minor, tanggapan penelaah, surat pengantar.
 ---
 
 # Scientific Article Writing
@@ -22,6 +22,8 @@ before anyone reads the results.
 ```
 research question
       ↓
+Gap record           closest papers' limitations · proof still open · what is new
+      ↓
 Article plan         A decision · B separation from other papers · C outline · D numbers needed
       ↓
 scripts + logs  →  results files        (the only source of numbers)
@@ -40,7 +42,7 @@ carry a claim, **soften the claim or run the experiment** — do not make the se
 
 | Stage | Output | Gate |
 |---|---|---|
-| 1. Plan | Plan sections A–D, including the **one-sentence contribution** (≤ 30 words, no place or dataset name) and the closest prior work it goes beyond | Author approves A (question, answer, genre) and B (separation from other papers) before any prose; the gap comes from the closest papers' own limitations and untested claims, read in full and searched as still open (`references/gap-from-limitations.md`) |
+| 1. Gap, then plan | First a **gap record** (`references/gap-from-limitations.md`): the closest papers' limitations and untested claims quoted from the full text, the search showing the problem is still open, and what the paper adds that is new. Then plan sections A–D, including the **one-sentence contribution** (≤ 30 words, no place or dataset name) and the closest prior work it goes beyond | No plan before the gap record. A paper that only evaluates existing work has nothing new and stops here until it does. Author approves A (question, answer, genre) and B (separation from other papers) before any prose |
 | 2. Results | Results files from scripts that were run; logs kept | Every number in plan D has a source line |
 | 3. Outline | Section headings + one claim sentence per subsection | Each claim points to a results file |
 | 4. Draft | One section per turn, in the order Methods → Results → Discussion → Introduction → Abstract → Title | Section finished before the next |
@@ -124,7 +126,7 @@ recent papers and verified on the official index list on the day of submission �
 
 ## When to stop and ask
 
-Plan A/B not approved; results contradict a written claim; overlap with another paper;
+No gap that is specific, open, and new; plan A/B not approved; results contradict a written claim; overlap with another paper;
 target journal, author order, or submit/withdraw decisions; new data needs.
 
 ## References
@@ -135,6 +137,6 @@ target journal, author order, or submit/withdraw decisions; new data needs.
 - `references/story-and-structure.md` — central contribution, framing, CARS, C-C-C, reader expectations
 - `references/pre-submission-scorecard.md` — novelty/research/presentation scorecard before submitting
 - `references/editor-and-reviewer-criteria.md` — desk-screen and reviewer criteria, journal exclusion lists, the "solves nothing" trap
-- `references/gap-from-limitations.md` — gap from the closest papers' limitations and untested claims; proving it is still open (forward citations, dataset users, the general question)
+- `references/gap-from-limitations.md` — gap from the closest papers' limitations and untested claims; proving it is still open (forward citations, dataset users, the general question); stating what is new
 - `references/genre-patterns.md` — skeleton and transferable moves of accepted papers per genre; blame the procedure, not the people
 - `journal-targeting/references/sources.md` — Elsevier Researcher Academy modules (research design, manuscript preparation, writing skills, finding a journal) mapped to the stages above

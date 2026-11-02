@@ -13,13 +13,27 @@ generalised for anyone.
 |---|---|
 | `research-integrity` | No number without a source, no citation from memory, claims sized to evidence. Authorship (ICMJE, CRediT), conflicts of interest, duplicate submission, Elsevier and Springer Nature AI-disclosure rules, REFORMS / TRIPOD+AI / PRISMA, and Indonesian regulation (Permendikbudristek 39/2021). |
 | `manuscript-proofreading` | Fix errors without rewriting the author's voice. Runs two checkers, then reads in layers. Indonesian: EYD Edisi V, KBBI, italic foreign terms. English: numbers, tenses, terminology, claims. |
-| `scientific-article-writing` | Plan → results files → Markdown manuscript → self-review → submission package → revision, with an approval gate at each stage. |
+| `scientific-article-writing` | Research gap → plan → results files → Markdown manuscript → self-review → submission package → revision, with an approval gate at each stage. No plan until the gap is shown to be specific, still open, and new. |
 | `journal-targeting` | Where to submit so the paper lands in an indexed journal: a ladder of three or four journals chosen before writing, fit tested against recent papers, index status verified on the official Scopus lists on the day of submission, hijacked and predatory journals ruled out, metrics read correctly (CiteScore percentile vs SJR quartile), and the path after rejection or a transfer offer. Maps Elsevier Researcher Academy modules to each stage. |
 | `manuscript-review` | Simulated pre-submission peer review by five independent roles (editor, methods, domain, presentation, devil's advocate). Every finding quotes the manuscript; a script rejects quotes that are not there, merges findings raised by several roles, scores seven dimensions, applies fixed decision rules, and diffs a revision against the earlier review. |
 | `thesis-audit` | Audits a skripsi, tesis, or disertasi (Indonesian or English, .docx or Markdown) as one research chain. A script runs mechanical checks (rumusan masalah ↔ tujuan ↔ kesimpulan, citations ↔ daftar pustaka with "dkk.", Tabel/Gambar N.M, abstract numbers); the model judges fourteen modules; a second script verifies quotes, enforces status and severity rules, and writes a supervisor report, a student feedback sheet, and defence questions. |
 
 Skills activate automatically from their descriptions, in English or Indonesian. You can also
 call them directly: `/academic-writing:research-integrity`.
+
+## How the article workflow works
+
+![Journal article workflow: stage 1 finds a gap that is specific, open and new, then stages 2 to 8 run from results to submission](docs/article-workflow.svg)
+
+Stage 1 comes before any writing. The gap comes from the closest papers' own limitations and
+untested claims, read in full, and a recorded search shows the problem is still open. The paper must
+also add something new: a finding, method, resource, or decision the reader did not have.
+Re-evaluating existing work alone does not count. If no candidate passes, change the question or
+the data before going on. Procedure: `scientific-article-writing/references/gap-from-limitations.md`.
+
+The prose comes after the results, so the Introduction and Abstract are written last, from what the
+analysis actually showed. The panel in stage 6 can send a draft back. A desk rejection for
+originality or significance sends the paper back to stage 1, not to a language edit.
 
 ### Review workflow (Python 3.10+, standard library only)
 
@@ -119,13 +133,28 @@ diumumkan supaya bisa dipakai siapa pun.
 |---|---|
 | `research-integrity` | Tidak ada angka tanpa asal, tidak ada sitasi dari ingatan, klaim sebesar buktinya. Kepengarangan (ICMJE, CRediT), konflik kepentingan, pengajuan jamak, kebijakan AI Elsevier dan Springer Nature, REFORMS / TRIPOD+AI / PRISMA, dan Permendikbudristek 39/2021. |
 | `manuscript-proofreading` | Memperbaiki kesalahan tanpa mengganti suara penulis. Pemeriksa otomatis dulu, lalu pembacaan berlapis. Indonesia: EYD Edisi V, KBBI, istilah asing miring. Inggris: angka, *tenses*, istilah, klaim. |
-| `scientific-article-writing` | Rencana → berkas hasil → naskah Markdown → tinjauan mandiri → paket kirim → revisi, dengan gerbang persetujuan di tiap tahap. |
+| `scientific-article-writing` | Celah riset → rencana → berkas hasil → naskah Markdown → tinjauan mandiri → paket kirim → revisi, dengan gerbang persetujuan di tiap tahap. Rencana tidak ditulis sebelum celahnya terbukti spesifik, masih terbuka, dan baru. |
 | `journal-targeting` | Memilih jurnal agar naskah terbit di jurnal terindeks: tangga tiga–empat jurnal yang dipilih sebelum menulis, kecocokan diuji pada naskah terbitan terbaru, status indeks diverifikasi di daftar resmi Scopus pada hari pengiriman, jurnal bajakan dan predator disingkirkan, metrik dibaca dengan benar (persentil CiteScore vs kuartil SJR), serta langkah setelah penolakan atau tawaran transfer. Memetakan modul Elsevier Researcher Academy ke tiap tahap. |
 | `manuscript-review` | Simulasi telaah sebelum kirim oleh lima peran terpisah (editor, metode, bidang, penyajian, *devil's advocate*). Setiap temuan mengutip naskah; skrip menolak kutipan yang tidak ada, menggabungkan temuan yang diangkat beberapa peran, memberi skor tujuh dimensi, menerapkan aturan keputusan tetap, dan membandingkan revisi dengan telaah sebelumnya. |
 | `thesis-audit` | Audit skripsi, tesis, atau disertasi (Indonesia atau Inggris, .docx atau Markdown) sebagai satu rantai riset. Skrip memeriksa hal mekanis (rumusan masalah ↔ tujuan ↔ kesimpulan, sitasi ↔ daftar pustaka termasuk "dkk.", Tabel/Gambar N.M, angka abstrak); model menilai empat belas modul; skrip kedua memverifikasi kutipan, menegakkan aturan status dan keparahan, lalu menulis laporan pembimbing, lembar umpan balik mahasiswa, dan pertanyaan sidang. |
 
 Skill aktif otomatis dari deskripsinya, baik Anda menulis dalam bahasa Indonesia maupun Inggris,
 dan menjawab dalam bahasa Anda. Bisa juga dipanggil langsung: `/academic-writing:manuscript-proofreading`.
+
+### Cara kerja alur artikel
+
+![Alur artikel jurnal: tahap 1 mencari celah yang spesifik, terbuka, dan baru, lalu tahap 2 sampai 8 berjalan dari hasil sampai pengiriman](docs/article-workflow.svg)
+
+Tahap 1 mendahului semua penulisan. Celah diambil dari batasan dan klaim tak teruji makalah
+terdekat, yang dibaca penuh, lalu pencarian yang tercatat menunjukkan masalahnya masih terbuka.
+Naskah juga harus menambahkan sesuatu yang baru: temuan, metode, sumber daya, atau keputusan yang
+belum dimiliki pembaca. Mengevaluasi ulang karya yang sudah ada saja tidak cukup. Bila tidak ada
+calon yang lolos, ubah pertanyaan atau datanya sebelum lanjut. Prosedurnya ada di
+`scientific-article-writing/references/gap-from-limitations.md`.
+
+Prosa ditulis sesudah hasil, jadi Pendahuluan dan Abstrak ditulis terakhir, dari apa yang benar-benar
+ditunjukkan analisis. Panel di tahap 6 dapat mengembalikan draf. Penolakan editor karena orisinalitas
+atau signifikansi mengembalikan naskah ke tahap 1, bukan ke penyuntingan bahasa.
 
 ### Memasang
 

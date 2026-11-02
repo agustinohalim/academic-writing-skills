@@ -63,7 +63,29 @@ A web or OpenAlex search is not a systematic review; say so in the notes, and do
 study has…" unless the search supports it. Prefer "we found no study that…, searching X and Y on
 <date>".
 
-## 5. Write the gap
+## 5. Say what is new
+
+An open gap is necessary, not sufficient. Running existing models on another dataset, or under a
+stricter protocol, can fill a gap and still give the reader nothing to use. Before section A goes to
+the author, complete this sentence in the gap record:
+
+> After this paper, readers can <do or know X>, which <closest paper> could not give them.
+
+X must be one of these:
+
+| New | Test |
+|---|---|
+| Finding | an effect or mechanism not reported before, not a confirmation of a known one |
+| Method or protocol | works on the data and beats the cheapest competitor |
+| Resource | a dataset, benchmark, or tool others can use and could not build easily |
+| Decision | a concrete choice in practice that changes because of the result |
+
+An evaluation counts only when it produces one of these: the procedure that fixes the flaw, for
+example, rather than the demonstration that the flaw exists. Score questions A2 and A8 of
+`pre-submission-scorecard.md` now, against this sentence, instead of waiting for stage 6. A score of
+0 on either triggers the stop rule below.
+
+## 6. Write the gap
 
 Introduction, last paragraph of the niche: "<Authors> state that <limitation, quoted or closely
 paraphrased> and suggest that <untested claim>. Neither has been tested since (<search>). We test
@@ -72,8 +94,8 @@ Discussion returns to them in the same order.
 
 ## Stop rule
 
-If every candidate is either already solved, not answerable with your data, or only a general lesson,
-the paper has no specific gap: change the question, the data, or the genre (a short comment or
+If every candidate is already solved, not answerable with your data, only a general lesson, or
+adds nothing new under step 5, the paper has no usable gap: change the question, the data, or the genre (a short comment or
 replication may still be possible) before writing more. Five rounds of revision cannot raise
 originality that the question does not have.
 
