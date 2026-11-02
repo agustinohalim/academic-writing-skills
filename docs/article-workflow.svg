@@ -1,0 +1,130 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 860" width="960" height="860" role="img" aria-labelledby="judul uraian">
+  <title id="judul">Journal article workflow</title>
+  <desc id="uraian">Stage 1 finds a gap that is specific, still open and new, then writes the plan. Stages 2 to 8 run results, outline, draft, machine checks, review, package and submission. A failed novelty test changes the question; a failed review returns to the draft; a desk rejection for originality or significance returns to stage 1.</desc>
+  <defs>
+    <style>
+      text { font-family: Arial, Helvetica, sans-serif; fill: #1f2933; }
+      .utama { font-size: 14px; font-weight: 700; text-anchor: middle; }
+      .rinci { font-size: 12px; fill: #52606d; text-anchor: middle; }
+      .label { font-size: 12px; font-weight: 700; fill: #52606d; }
+      .kepala { font-size: 12px; font-weight: 700; fill: #0b6b63; letter-spacing: .6px; }
+      .legenda { font-size: 12.5px; }
+      .kotak { fill: #ffffff; stroke: #7b8794; stroke-width: 1.4; }
+      .gap { fill: #ffffff; stroke: #0b6b63; stroke-width: 1.6; }
+      .putus { fill: #fdf3e3; stroke: #b7791f; stroke-width: 1.6; }
+      .garis { fill: none; stroke: #52606d; stroke-width: 1.6; }
+      .balik { fill: none; stroke: #b7791f; stroke-width: 1.6; stroke-dasharray: 6 4; }
+      .ujung { fill: #52606d; }
+      .ujungbalik { fill: #b7791f; }
+    </style>
+  </defs>
+
+  <rect width="960" height="860" fill="#ffffff"/>
+
+  <!-- Stage 1 group -->
+  <rect x="24" y="80" width="566" height="542" rx="10" fill="#e8f5f3" stroke="#0b6b63" stroke-width="1.4"/>
+  <text class="kepala" x="254" y="102">STAGE 1: GAP FIRST, THEN PLAN</text>
+
+  <rect class="kotak" x="149" y="20" width="180" height="40" rx="20"/>
+  <text class="utama" x="239" y="45">Research question</text>
+
+  <rect class="gap" x="74" y="116" width="330" height="56" rx="6"/>
+  <text class="utama" x="239" y="139">Read 2 to 5 closest papers in full</text>
+  <text class="rinci" x="239" y="158">Limitations, Discussion, Future work, Methods</text>
+
+  <rect class="gap" x="74" y="192" width="330" height="56" rx="6"/>
+  <text class="utama" x="239" y="215">List candidate problems</text>
+  <text class="rinci" x="239" y="234">stated limitation, untested claim, unstated problem</text>
+
+  <rect class="gap" x="74" y="268" width="330" height="56" rx="6"/>
+  <text class="utama" x="239" y="291">Can our data answer it?</text>
+  <text class="rinci" x="239" y="310">one line each: which analysis, or "cannot"</text>
+
+  <rect class="gap" x="74" y="344" width="330" height="56" rx="6"/>
+  <text class="utama" x="239" y="367">Prove it is still open</text>
+  <text class="rinci" x="239" y="386">forward citations, dataset users, general question</text>
+
+  <polygon class="putus" points="239,416 369,464 239,512 109,464"/>
+  <text class="utama" x="239" y="460">Specific, open,</text>
+  <text class="utama" x="239" y="478">and new?</text>
+
+  <rect class="putus" x="420" y="434" width="154" height="60" rx="6"/>
+  <text class="utama" x="497" y="458">Stop rule</text>
+  <text class="rinci" x="497" y="478">change question or data</text>
+
+  <rect class="gap" x="74" y="540" width="330" height="64" rx="6"/>
+  <text class="utama" x="239" y="561">Plan sections A to D</text>
+  <text class="rinci" x="239" y="579">contribution, prior work, genre, journal ladder</text>
+  <text class="rinci" x="239" y="596">author approves A and B before any prose</text>
+
+  <!-- Stages 2 to 8 -->
+  <rect class="kotak" x="620" y="90" width="312" height="58" rx="6"/>
+  <text class="utama" x="776" y="114">2. Results</text>
+  <text class="rinci" x="776" y="134">scripts and logs, the only source of numbers</text>
+
+  <rect class="kotak" x="620" y="168" width="312" height="58" rx="6"/>
+  <text class="utama" x="776" y="192">3. Outline</text>
+  <text class="rinci" x="776" y="212">one claim per subsection, each tied to a result</text>
+
+  <rect class="kotak" x="620" y="246" width="312" height="70" rx="6"/>
+  <text class="utama" x="776" y="268">4. Draft, one section per turn</text>
+  <text class="rinci" x="776" y="288">Methods, Results, Discussion,</text>
+  <text class="rinci" x="776" y="304">then Introduction, Abstract, Title</text>
+
+  <rect class="kotak" x="620" y="336" width="312" height="58" rx="6"/>
+  <text class="utama" x="776" y="360">5. Machine checks</text>
+  <text class="rinci" x="776" y="380">manuscript, references, quotes, overlap</text>
+
+  <rect class="kotak" x="620" y="414" width="312" height="58" rx="6"/>
+  <text class="utama" x="776" y="438">6. Self-review and panel review</text>
+  <text class="rinci" x="776" y="458">scorecard, five independent reviewer roles</text>
+
+  <polygon class="putus" points="776,492 896,532 776,572 656,532"/>
+  <text class="utama" x="776" y="537">Panel READY?</text>
+
+  <rect class="kotak" x="620" y="592" width="312" height="58" rx="6"/>
+  <text class="utama" x="776" y="616">7. Package</text>
+  <text class="rinci" x="776" y="636">export, cover letter, co-authors approve</text>
+
+  <rect class="kotak" x="620" y="670" width="312" height="58" rx="6"/>
+  <text class="utama" x="776" y="694">8. Submit and record</text>
+  <text class="rinci" x="776" y="714">the author submits; status and ID recorded</text>
+
+  <!-- Forward arrows -->
+  <g id="maju">
+    <path class="garis" d="M239 60 V110"/><polygon class="ujung" points="239,116 234,108 244,108"/>
+    <path class="garis" d="M239 172 V186"/><polygon class="ujung" points="239,192 234,184 244,184"/>
+    <path class="garis" d="M239 248 V262"/><polygon class="ujung" points="239,268 234,260 244,260"/>
+    <path class="garis" d="M239 324 V338"/><polygon class="ujung" points="239,344 234,336 244,336"/>
+    <path class="garis" d="M239 400 V410"/><polygon class="ujung" points="239,416 234,408 244,408"/>
+    <path class="garis" d="M239 512 V534"/><polygon class="ujung" points="239,540 234,532 244,532"/>
+    <path class="garis" d="M404 572 H600 V119 H614"/><polygon class="ujung" points="620,119 612,114 612,124"/>
+    <path class="garis" d="M776 148 V162"/><polygon class="ujung" points="776,168 771,160 781,160"/>
+    <path class="garis" d="M776 226 V240"/><polygon class="ujung" points="776,246 771,238 781,238"/>
+    <path class="garis" d="M776 316 V330"/><polygon class="ujung" points="776,336 771,328 781,328"/>
+    <path class="garis" d="M776 394 V408"/><polygon class="ujung" points="776,414 771,406 781,406"/>
+    <path class="garis" d="M776 472 V486"/><polygon class="ujung" points="776,492 771,484 781,484"/>
+    <path class="garis" d="M776 572 V586"/><polygon class="ujung" points="776,592 771,584 781,584"/>
+    <path class="garis" d="M776 650 V664"/><polygon class="ujung" points="776,670 771,662 781,662"/>
+  </g>
+
+  <!-- Return arrows -->
+  <g id="balik">
+    <path class="balik" d="M369 464 H414"/><polygon class="ujungbalik" points="420,464 412,459 412,469"/>
+    <path class="balik" d="M497 434 V40 H335"/><polygon class="ujungbalik" points="329,40 337,35 337,45"/>
+    <path class="balik" d="M896 532 H948 V281 H938"/><polygon class="ujungbalik" points="932,281 940,276 940,286"/>
+    <path class="balik" d="M620 699 H12 V144 H68"/><polygon class="ujungbalik" points="74,144 66,139 66,149"/>
+  </g>
+
+  <text class="label" x="249" y="530">yes</text>
+  <text class="label" x="380" y="456">no</text>
+  <text class="label" x="786" y="584">yes</text>
+  <text class="label" x="904" y="524">no</text>
+  <text class="label" x="34" y="691">desk rejected for originality or significance: run the gap again</text>
+
+  <!-- Legend -->
+  <rect x="24" y="750" width="908" height="92" rx="8" fill="#f5f7fa" stroke="#cbd2d9"/>
+  <text class="legenda" x="42" y="774"><tspan font-weight="700">New</tspan> means a finding, method, resource or decision the reader did not have. Re-evaluating existing work alone does not count.</text>
+  <text class="legenda" x="42" y="796"><tspan font-weight="700">Supporting skills:</tspan> research-integrity at every stage; journal-targeting at stage 1 and after rejection;</text>
+  <text class="legenda" x="42" y="816">manuscript-proofreading at stage 5; manuscript-review at stage 6.</text>
+</svg>
