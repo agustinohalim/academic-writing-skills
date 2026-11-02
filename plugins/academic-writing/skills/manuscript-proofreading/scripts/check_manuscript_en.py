@@ -117,10 +117,12 @@ def periksa_angka(abstrak, badan, keterangan):
 
 
 SITASI_KURUNG = re.compile(r"[(\[]([^()\[\]]*?\b(?:19|20)\d\d[a-z]?[^()\[\]]*)[)\]]")
+# huruf awal nama boleh berdiakritik (Åkesson, Öhlin); tanpa ini entri seperti itu dilapor "never cited"
 SITASI_NARASI = re.compile(
-    r"\b([A-Z][\w'’\-]+(?:\s(?:and|&)\s[A-Z][\w'’\-]+|\set al\.)?)\s[(\[]((?:19|20)\d\d[a-z]?)[)\],;]")
+    r"\b([A-ZÀ-ÖØ-Þ][\w'’\-]+(?:\s(?:and|&)\s[A-ZÀ-ÖØ-Þ][\w'’\-]+|\set al\.)?)\s[(\[]((?:19|20)\d\d[a-z]?)[)\],;]")
 PENGGAL = re.compile(
-    r"([A-Z][\w'’\-]+(?:\s[A-Z][\w'’\-]+)?)(?:\s(?:and|&)\s[A-Z][\w'’\-]+|\set al\.)?,?\s((?:19|20)\d\d[a-z]?)")
+    r"([A-ZÀ-ÖØ-Þ][\w'’\-]+(?:\s[A-ZÀ-ÖØ-Þ][\w'’\-]+)?)(?:\s(?:and|&)\s[A-ZÀ-ÖØ-Þ][\w'’\-]+|\set al\.)?,?\s"
+    r"((?:19|20)\d\d[a-z]?)")
 # kata berhuruf kapital di depan tahun yang bukan nama penulis
 BUKAN_NAMA = set("""January February March April May June July August September October
 November December Accessed Table Tables Fig Figure Section Version Release""".split())
