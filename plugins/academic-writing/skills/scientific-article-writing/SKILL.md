@@ -28,7 +28,13 @@ Article plan         A decision · B separation from other papers · C outline �
       ↓
 scripts + logs  →  results files        (the only source of numbers)
       ↓
-manuscript.md        journal language; editorial notes in ">" blockquotes
+manuscript body      Methods → Results → Discussion, no journal yet
+      ↓
+novelty check        scorecard section A on the drafted body · gap record re-read
+      ↓
+journal ladder       chosen for the contribution the body actually carries (journal-targeting)
+      ↓
+front matter         Introduction → Abstract → Title for that journal's readership
       ↓
 self-review  →  fixes
       ↓
@@ -45,7 +51,7 @@ carry a claim, **soften the claim or run the experiment** — do not make the se
 | 1. Gap, then plan | First a **gap record** (`references/gap-from-limitations.md`): the closest papers' limitations and untested claims quoted from the full text, the search showing the problem is still open, and what the paper adds that is new. Then plan sections A–D, including the **one-sentence contribution** (≤ 30 words, no place or dataset name) and the closest prior work it goes beyond | No plan before the gap record. A paper that only evaluates existing work has nothing new and stops here until it does. Author approves A (question, answer, genre) and B (separation from other papers) before any prose |
 | 2. Results | Results files from scripts that were run; logs kept | Every number in plan D has a source line |
 | 3. Outline | Section headings + one claim sentence per subsection | Each claim points to a results file |
-| 4. Draft | One section per turn, in the order Methods → Results → Discussion → Introduction → Abstract → Title | Section finished before the next |
+| 4. Draft | One section per turn. **4a** body: Methods → Results → Discussion, written without a target journal. **4b** novelty check on that body: scorecard section A (`references/pre-submission-scorecard.md`) and the gap record re-read against what the results now show. **4c** journal ladder for the contribution the body carries (`journal-targeting`). **4d** front matter for that readership: Introduction → Abstract → Title, references restyled | Section finished before the next. No journal before 4b passes (section A ≥ 11 of 16, A8 > 0); a body that fails 4b goes back to the plan, not to a journal search |
 | 5. Machine checks | `check_manuscript_en.py`, reference verification (Crossref/arXiv), quote check against PDFs, n-gram overlap | Zero heavy findings; every reference verified |
 | 6. Self-review | Dated review file, reviewer style (`references/self-review.md`) + scorecard (`references/pre-submission-scorecard.md`) | Every critical finding closed or stated in Limitations; scorecard section A ≥ 11 of 16 and A8 > 0 |
 | 7. Package | Journal-formatted export, figures, cover letter, portal texts (`references/submission-package.md`) | Author reads the export; all co-authors approve (ICMJE item 3) |
@@ -108,10 +114,27 @@ already knows the findings.
 
 ## Choosing a journal
 
-Choose at stage 1, before drafting: the journal fixes the readership, length, structure, and
-reference style. Build a target ladder of three or four journals, each tested for fit against
-recent papers and verified on the official index list on the day of submission — procedure in
-`journal-targeting`. Record the ladder and the reasons in the plan.
+Choose at stage 4c, after the body is drafted and the novelty check passes — not at stage 1. The
+gap and the one-sentence contribution come first; the journal follows from what the results
+actually carry. A journal chosen before the results exist is chosen for the contribution the author
+hopes for. When the results shrink or change that contribution, the draft gets bridged back to the
+old journal's readership with a new opening paragraph, and an editor reads the paper as it is: out of
+scope. Writing Methods, Results, and Discussion first costs little, because those sections are the
+same in any journal of the field; the readership shapes the Introduction, Abstract, and Title, which
+are written last anyway.
+
+Build a target ladder of three or four journals, each tested for fit against recent papers and
+verified on the official index list on the day of submission — procedure in `journal-targeting`.
+Record the ladder and the reasons in the plan.
+
+- **Re-target when the contribution changes.** If a later result, a re-analysis, or a review changes
+  the one-sentence contribution, run 4b and 4c again. Keeping the old journal and rewriting the
+  Introduction to reach it is the bridge the fit test rejects.
+- **Exception: fixed-date venues.** A conference, a special issue, or a call with a deadline may be
+  chosen at stage 1 when the deadline drives the work. Fit is still tested at stage 1, and again at
+  4c against the drafted body; if it no longer fits, drop the venue rather than reframe.
+- **Length.** Draft the body to the field's usual length; trimming to a journal's limit at 4d is
+  cheaper than redrafting for a readership that turned out to be wrong.
 
 ## Rejection and revision
 

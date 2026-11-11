@@ -1,6 +1,6 @@
 ---
 name: journal-targeting
-description: Choosing where to submit a journal article so it ends up published in an indexed journal (Scopus, Web of Science) — a target ladder of three or four journals chosen before writing, scope fit tested against recently published papers, index status verified on the official list on the day of submission (Scopus Sources, Discontinued Sources List), hijacked and predatory journals ruled out (Retraction Watch Hijacked Journal Checker, Think. Check. Submit.), metrics read correctly (CiteScore percentile vs SJR quartile vs Impact Factor), and the path after rejection (transfer offer, next rung, appeal). Use when the user asks which journal to target, whether a journal is indexed, Q1/Q2/Q3/Q4, "tembus Scopus", a call for papers or invitation email, a transfer offer, or where to send a rejected paper. Triggers in English and Indonesian — journal choice, target journal, Scopus indexed, quartile, CiteScore, SJR, predatory, hijacked, transfer offer, pilih jurnal, jurnal target, terindeks Scopus, kuartil, jurnal predator, jurnal bajakan, tawaran transfer, ditolak mau kirim ke mana.
+description: Choosing where to submit a journal article so it ends up published in an indexed journal (Scopus, Web of Science) — a target ladder of three or four journals chosen after the gap and the drafted results settle the contribution, scope fit tested against recently published papers, index status verified on the official list on the day of submission (Scopus Sources, Discontinued Sources List), hijacked and predatory journals ruled out (Retraction Watch Hijacked Journal Checker, Think. Check. Submit.), metrics read correctly (CiteScore percentile vs SJR quartile vs Impact Factor), and the path after rejection (transfer offer, next rung, appeal). Use when the user asks which journal to target, whether a journal is indexed, Q1/Q2/Q3/Q4, "tembus Scopus", a call for papers or invitation email, a transfer offer, or where to send a rejected paper. Triggers in English and Indonesian — journal choice, target journal, Scopus indexed, quartile, CiteScore, SJR, predatory, hijacked, transfer offer, pilih jurnal, jurnal target, terindeks Scopus, kuartil, jurnal predator, jurnal bajakan, tawaran transfer, ditolak mau kirim ke mana.
 ---
 
 # Journal Targeting
@@ -27,7 +27,7 @@ The ladder below addresses all three before the first submission.
 ## Derivation
 
 ```
-one-sentence contribution + genre      (article plan, scientific-article-writing stage 1)
+one-sentence contribution + genre      (article plan, stage 1; re-checked on the drafted body, stage 4b)
       ↓
 long list (8–15)     where the closest prior work was published · publisher finders
       ↓
@@ -40,9 +40,13 @@ target ladder (3–4)  rung 1 → rung 2 → rung 3, each with format and refere
 submit rung 1  →  decision  →  revise / transfer / next rung
 ```
 
-The ladder is written **before** drafting, because the target journal fixes the reference
-style, length, structure (e.g. highlights for Elsevier), and the readership the Introduction
-speaks to.
+The ladder is written **after** the body (Methods, Results, Discussion) is drafted and scorecard
+section A passes on it (`scientific-article-writing` stages 4a–4c), and **before** the Introduction,
+Abstract, and Title, which the readership shapes. The journal must fit the contribution the results
+carry, not the one hoped for at the plan; a ladder built before the results tends to end in a bridge
+paragraph. Reference style, length, and structure (e.g. highlights for Elsevier) are applied at 4d. If
+the contribution changes after the ladder is built, rebuild the ladder. Fixed-date venues
+(conferences, special issues) are the exception: chosen at the plan, re-tested against the body.
 
 ## Step 1 — Long list
 
