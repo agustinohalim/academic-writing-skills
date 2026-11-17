@@ -148,6 +148,64 @@ class TestChapters(unittest.TestCase):
         temuan = ek.cari_penanda([jalur])
         self.assertEqual([t[1] for t in temuan], [1, 2, 4])
 
+    def test_latex_metadata(self):
+        meta = ek.metadata_latex((4, 4, 3, 3), 12, 1.5, "report", "id")
+        self.assertIn("documentclass: report", meta)
+        self.assertIn('geometry: "left=4cm, top=4cm, right=3cm, bottom=3cm"', meta)
+        self.assertIn("fontsize: 12pt", meta)
+        self.assertIn("lang: id", meta)
+        self.assertIn("labelformat=empty", meta)  # manual "Tabel 2.1" captions kept
+        self.assertNotIn("labelformat", ek.metadata_latex((4, 4, 3, 3), 12, 1.5, "article", "en", True))
+        self.assertNotIn("fontsize", ek.metadata_latex((4, 4, 3, 3), 13, 1.5, "report", "id"))
+
+    def test_pdf_metadata_language_and_labels(self):
+        meta = ek.metadata_pdf((4, 4, 3, 3), "Times New Roman", 12, 1.5, "id")
+        self.assertIn("lang: id", meta)
+        self.assertIn("#set figure(numbering: none)", meta)
+        self.assertNotIn("numbering", ek.metadata_pdf((4, 4, 3, 3), "Arial", 11, 2, "en", True))
+
+    def test_drop_notes_keeps_code_blocks(self):
+        teks = "# Intro\n\n> Note: target journal X.\n> second line\n\nBody.\n\n```\n> not a note\n```\n"
+        hasil = ek.buang_catatan(teks)
+        self.assertNotIn("target journal", hasil)
+        self.assertIn("Body.", hasil)
+        self.assertIn("> not a note", hasil)
+        jalur = self.tulis("m.md", teks)
+        self.assertIn("target journal", ek.gabung_bab([jalur]))  # off by default (thesis quotations)
+        self.assertNotIn("target journal", ek.gabung_bab([jalur], True))
+
+    def test_latex_body_cleaned_for_journal_template(self):
+        tex = ("\\begin{itemize}\n\\tightlist\n\\item a\n\\end{itemize}\n"
+               "\\pandocbounded{\\includegraphics[keepaspectratio,alt={A {nested} alt}]{f.png}}\n"
+               "\\includegraphics[width=0.8\\linewidth,alt={x}]{g.png}\n\\citep{k}\n")
+        hasil, paket = ek.rapikan_isi_latex(tex)
+        self.assertNotIn("\\tightlist", hasil)
+        self.assertNotIn("pandocbounded", hasil)
+        self.assertNotIn("alt=", hasil)
+        self.assertIn("\\includegraphics[width=\\linewidth,keepaspectratio]{f.png}", hasil)
+        self.assertIn("\\includegraphics[width=0.8\\linewidth]{g.png}", hasil)
+        self.assertEqual(paket, ["graphicx", "natbib"])
+
+    def test_latex_options_conflict(self):
+        r = self.run_cli(self.tmp, "--out", os.path.join(self.tmp, "x"), "--latex", "--latex-body")
+        self.assertEqual(r.returncode, 2)
+
+    @unittest.skipUnless(shutil.which("pandoc"), "pandoc not installed")
+    def test_real_latex_export_keeps_cite_keys(self):
+        self.tulis("bab_1.md", "# BAB I PENDAHULUAN\n\nTeks [@sutabri2012].\n")
+        bib = os.path.join(self.tmp, "pustaka.bib")
+        with open(bib, "w", encoding="utf-8") as f:
+            f.write("@book{sutabri2012, author={Sutabri, Tata}, title={Analisis}, year={2012}}\n")
+        keluar = os.path.join(self.tmp, "out", "Skripsi")
+        r = self.run_cli(os.path.join(self.tmp, "bab_1.md"), "--out", keluar, "--latex", "--bib", bib)
+        self.assertEqual(r.returncode, 0, r.stderr)
+        with open(keluar + ".tex", encoding="utf-8") as f:
+            tex = f.read()
+        self.assertIn("\\chapter{BAB I PENDAHULUAN}", tex)
+        self.assertIn("sutabri2012", tex)
+        self.assertIn("left=4cm", tex)
+        self.assertTrue(os.path.isfile(os.path.join(self.tmp, "out", "pustaka.bib")))
+
     def test_english_need_placeholder_found(self):
         jalur = self.tulis("chapter_4.md", "Clean line.\nThe sample was [NEED: n from survey_clean.csv].\n")
         self.assertEqual([t[1] for t in ek.cari_penanda([jalur])], [2])
