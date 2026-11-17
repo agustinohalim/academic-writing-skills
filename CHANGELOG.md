@@ -8,6 +8,38 @@ No git tags exist for versions up to 1.12.0. They were reconstructed from the co
 the version bumps in `plugin.json`. From the next release on, each version is tagged `vX.Y.Z`,
 which `install.py update --ref vX.Y.Z` can install.
 
+## [1.14.0] — 2026-11-17
+
+### Added
+- `ekspor_naskah.py`: LaTeX output. `--latex` writes a standalone `.tex` (A4, margins, size,
+  spacing, language; `report` class with BAB as chapters, `--kelas article` for a paper).
+  `--latex-body` writes a body to `\input` into a campus or journal class template, cleaned of
+  pandoc-only macros (`\pandocbounded`, `\tightlist`, `alt=`), and prints the packages it needs.
+  With `--bib`, `\cite` keys are kept (natbib or biblatex) and the `.bib` is copied beside the
+  `.tex`; `--cite citeproc` renders text instead.
+- `ekspor_naskah.py`: `--lang id|en` passed to every format (Word spell-check language, citeproc
+  terms such as "dan", LaTeX babel); `--auto-number` for engine-numbered captions;
+  `--drop-notes` removes `>` editorial notes (article manuscripts); images found relative to
+  each chapter's folder.
+- `scientific-article-writing`: plan section D lists numbers, figures (claim → results file →
+  script), and must-cite items (datasets, software with version, baselines, metrics); rule
+  "compare only with what was compared", with later work treated as concurrent; LaTeX
+  submission path in `submission-package.md`.
+- `manuscript-review`: the devil's advocate checks comparative claims against the Results; the
+  domain reviewer checks the must-cite items.
+- `verify_references.py`: Indonesian entries not found online get a clickable GARUDA title
+  search (`/documents?select=title&q=…`, the site's own form, verified in a browser). SINTA
+  still gets the title only: it answers 403 to automated and some foreign or VPN traffic.
+
+### Fixed
+- PDF and standalone LaTeX no longer print an engine label in front of a thesis caption
+  ("Table 1: Tabel 2.1 …"); citations in an Indonesian document use "dan", not "and".
+
+### Verified
+- Real export with pandoc 3.14 and Typst 0.15.1: DOCX (A4, margins, Times New Roman, 1.5
+  spacing, Indonesian language tag, embedded image), PDF, standalone LaTeX, and a journal body.
+  The generated `.tex` has not yet been compiled with a TeX engine.
+
 ## [1.13.0] — 2026-11-17
 
 ### Added
