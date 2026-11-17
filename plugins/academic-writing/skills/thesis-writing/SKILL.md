@@ -1,6 +1,6 @@
 ---
 name: thesis-writing
-description: Drafting a skripsi (S1), tesis (S2), or disertasi (S3), or an English-language master's thesis or PhD dissertation, chapter by chapter — Bab I to Bab V or Chapter 1 to 5/6, proposal or final — together with the author, from the author's own material (approved proposal, notes, data, results files, interview transcripts, test logs). A task profile from the campus guide (pedoman) comes first, then a chain map (rumusan masalah ↔ tujuan ↔ hipotesis ↔ metode ↔ analisis ↔ kesimpulan) before any prose, then one chapter per turn in a fixed order — proposal Bab III → II → I, final Bab IV from results files → V → revise III/II/I → abstrak last — with method paths for quantitative, qualitative, R&D / system development, and mixed methods, and export of the Markdown chapters to DOCX and PDF in the campus format. Use when the user writes or revises a thesis or thesis proposal, or one of its chapters or sections. Triggers in English and Indonesian — write thesis, thesis chapter, thesis proposal, master's thesis, PhD dissertation, dissertation chapter, introduction chapter, literature review, methodology chapter, research questions, results chapter, findings, discussion chapter, conclusion chapter, export thesis to Word or PDF, tulis skripsi, menulis skripsi, proposal skripsi, Bab I, Bab II, Bab III, Bab IV, Bab V, latar belakang, rumusan masalah, tujuan penelitian, tinjauan pustaka, kajian teori, kerangka berpikir, metode penelitian, hasil dan pembahasan, kesimpulan dan saran, abstrak, ekspor DOCX, ekspor PDF, format pedoman kampus.
+description: Drafting a skripsi (S1), tesis (S2), or disertasi (S3), or an English-language master's thesis or PhD dissertation, chapter by chapter — Bab I to Bab V or Chapter 1 to 5/6, proposal or final — together with the author, from the author's own material (approved proposal, notes, data, results files, interview transcripts, test logs). A task profile from the campus guide (pedoman) comes first, then a chain map (rumusan masalah ↔ tujuan ↔ hipotesis ↔ metode ↔ analisis ↔ kesimpulan) before any prose, then one chapter per turn in a fixed order — proposal Bab III → II → I, final Bab IV from results files → V → revise III/II/I → abstrak last — with method paths for quantitative, qualitative, R&D / system development, and mixed methods, and export of the Markdown chapters to DOCX, PDF, and LaTeX in the campus format. Use when the user writes or revises a thesis or thesis proposal, or one of its chapters or sections. Triggers in English and Indonesian — write thesis, thesis chapter, thesis proposal, master's thesis, PhD dissertation, dissertation chapter, introduction chapter, literature review, methodology chapter, research questions, results chapter, findings, discussion chapter, conclusion chapter, export thesis to Word or PDF, tulis skripsi, menulis skripsi, proposal skripsi, Bab I, Bab II, Bab III, Bab IV, Bab V, latar belakang, rumusan masalah, tujuan penelitian, tinjauan pustaka, kajian teori, kerangka berpikir, metode penelitian, hasil dan pembahasan, kesimpulan dan saran, abstrak, ekspor DOCX, ekspor PDF, ekspor LaTeX, format pedoman kampus.
 ---
 
 # Thesis Writing
@@ -69,7 +69,7 @@ vaguer.
 | 4. Revise frame | Final only: Bab I, II, III re-read against what Bab IV actually shows; promises cut or kept; method text matches what was done, deviations stated | Chain map updated; no rumusan without an answer in Bab V |
 | 5. Abstrak | Written last, from the final Bab IV and V; numbers copied from them, not from memory | Every number in the abstract appears in the body |
 | 6. Hand-off | `thesis-audit` before seminar proposal or sidang, `manuscript-proofreading` for EYD V and language, reference check (`research-integrity/scripts/verify_references.py`) | Zero heavy machine findings; supervisor has read the audit |
-| 7. Export | DOCX and/or PDF in the campus format (`references/ekspor.md`) | Export refuses leftover placeholders unless it is a draft |
+| 7. Export | DOCX, PDF, and/or LaTeX in the campus format (`references/ekspor.md`) | Export refuses leftover placeholders unless it is a draft |
 
 **One chapter per turn.** A thesis generated in one pass has uniform rhythm and uniform
 emptiness. Writing a chapter at a time keeps each one tied to its sources and lets the author
@@ -131,11 +131,15 @@ saturation onto a survey, or effectiveness claims onto a product that was only v
 ```bash
 python "${CLAUDE_SKILL_DIR}/scripts/ekspor_naskah.py" bab/ --out Skripsi_Budi --docx --pdf
 python "${CLAUDE_SKILL_DIR}/scripts/ekspor_naskah.py" bab_1.md bab_2.md bab_3.md --out Proposal --docx --draft
+python "${CLAUDE_SKILL_DIR}/scripts/ekspor_naskah.py" bab/ --out Skripsi --latex --bib pustaka.bib
 ```
 
-The Markdown chapters are the source; DOCX and PDF are exports. Page size, margins, font, size,
+The Markdown chapters are the source; DOCX, PDF, and LaTeX are exports. `--latex` writes a
+standalone `.tex`; `--latex-body` writes the body for a campus LaTeX template, with `\cite` keys
+kept and the `.bib` copied beside it. Page size, margins, font, size,
 and line spacing come from the task profile. Requires pandoc; PDF additionally needs LibreOffice,
-Typst, or a LaTeX engine. Details and citeproc with `.bib` + CSL: `references/ekspor.md`.
+Typst, or a LaTeX engine. Captions keep the chapter numbers written in the text (Tabel 2.1).
+Details and citeproc with `.bib` + CSL: `references/ekspor.md`.
 
 ## When to stop and ask
 
@@ -164,7 +168,7 @@ not depend on the answer.
 - `references/bab-i-iii.md` — Bab I to III: what each section must do, failures, proposal specifics
 - `references/bab-iv-v.md` — Bab IV and V: results from files, discussion, conclusions, suggestions
 - `references/jalur-metode.md` — quantitative, qualitative, R&D, and mixed-method paths
-- `references/ekspor.md` — export script, requirements, citations
+- `references/ekspor.md` — export script (DOCX, PDF, LaTeX), requirements, citations, captions
 - `references/english-thesis.md` — English-language theses: chapter layouts, terms, tense,
   placeholders, abstract
 - `thesis-audit` (chain audit before seminar or sidang), `manuscript-proofreading` (EYD V, KBBI),

@@ -17,7 +17,7 @@ generalised for anyone.
 | `journal-targeting` | Where to submit so the paper lands in an indexed journal: a ladder of three or four journals chosen after the drafted results settle the contribution, fit tested against recent papers, index status verified on the official Scopus lists on the day of submission, hijacked and predatory journals ruled out, metrics read correctly (CiteScore percentile vs SJR quartile), and the path after rejection or a transfer offer. Maps Elsevier Researcher Academy modules to each stage. |
 | `manuscript-review` | Simulated pre-submission peer review by five independent roles (editor, methods, domain, presentation, devil's advocate). Every finding quotes the manuscript; a script rejects quotes that are not there, merges findings raised by several roles, scores seven dimensions, applies fixed decision rules, and diffs a revision against the earlier review. |
 | `thesis-audit` | Audits a skripsi, tesis, or disertasi (Indonesian or English, .docx or Markdown) as one research chain. A script runs mechanical checks (rumusan masalah ↔ tujuan ↔ kesimpulan, citations ↔ daftar pustaka with "dkk.", Tabel/Gambar N.M, abstract numbers); the model judges fourteen modules; a second script verifies quotes, enforces status and severity rules, and writes a supervisor report, a student feedback sheet, and defence questions. |
-| `thesis-writing` | Drafts a skripsi, tesis, or disertasi (or an English-language thesis, Chapter 1 to 5/6) with its author, Bab I to V, from the author's own material. Campus-guide profile first, then a chain map (rumusan ↔ tujuan ↔ metode ↔ kesimpulan), then one chapter at a time: proposal Bab III → II → I; final Bab IV from results files → V → revise the frame → abstrak last. Quantitative, qualitative, R&D / system development, and mixed-method paths. A script exports the chapters to DOCX and PDF in the campus format. |
+| `thesis-writing` | Drafts a skripsi, tesis, or disertasi (or an English-language thesis, Chapter 1 to 5/6) with its author, Bab I to V, from the author's own material. Campus-guide profile first, then a chain map (rumusan ↔ tujuan ↔ metode ↔ kesimpulan), then one chapter at a time: proposal Bab III → II → I; final Bab IV from results files → V → revise the frame → abstrak last. Quantitative, qualitative, R&D / system development, and mixed-method paths. A script exports the chapters to DOCX, PDF, and LaTeX in the campus format. |
 
 Skills activate automatically from their descriptions, in English or Indonesian. You can also
 call them directly: `/academic-writing:research-integrity`.
@@ -83,11 +83,17 @@ python periksa_gaya.py bab_02.md
 ```bash
 python ekspor_naskah.py bab/ --out Skripsi_Budi --docx --pdf     # A4, 4-4-3-3 cm, Times New Roman 12, 1.5 spacing by default
 python ekspor_naskah.py bab_1.md bab_2.md bab_3.md --out Proposal --docx --draft --bib pustaka.bib --csl apa.csl
+python ekspor_naskah.py bab/ --out Skripsi --latex --bib pustaka.bib           # standalone .tex, \cite keys kept
+python ekspor_naskah.py manuscript.md --out Submit_RSE/body --latex-body --bib refs.bib --lang en --auto-number --drop-notes
 ```
 
-The Markdown chapters are the source; Word and PDF are exports. The script refuses to export
-while `[PERLU: ...]` or `⬜` placeholders remain, unless `--draft`. PDF goes through LibreOffice
-when installed, otherwise pandoc with Typst or LaTeX.
+The Markdown chapters are the source; Word, PDF, and LaTeX are exports. The script refuses to
+export while `[PERLU: ...]`, `[NEED: ...]`, or `⬜` placeholders remain, unless `--draft`. PDF
+goes through LibreOffice when installed, otherwise pandoc with Typst or LaTeX. `--latex` writes
+a standalone `.tex` in the campus format; `--latex-body` writes a body to `\input` into a journal
+or campus class template, cleaned of pandoc-only macros, with the `.bib` copied beside it and the
+packages it needs printed. Captions keep the chapter numbers written in the text (Tabel 2.1)
+unless `--auto-number`.
 
 ### Reference check (Python 3.10+, standard library only)
 
@@ -99,7 +105,7 @@ python verify_references.py skripsi.docx --out cek_pustaka.md --cache cek.json
 Each entry is looked up in Crossref and OpenAlex. `doi_mismatch` (the DOI belongs to another
 work) and `doi_not_found` are heavy. An entry without a DOI gets a suggested DOI only when
 title, year, and first author agree. GARUDA and SINTA have no public API, so Indonesian entries
-not found online get the exact title to search there by hand. Books, theses, and regulations are
+not found online get a GARUDA title-search link and the exact title to search in SINTA. Books, theses, and regulations are
 routed to the catalogue or issuing body instead of failing for lacking a DOI. No e-mail is sent
 unless you pass `--mailto`.
 
@@ -180,7 +186,10 @@ MIT, © 2025 K-Dense Inc. (licence included in that folder). Pattern ideas from
 [blader/humanizer](https://github.com/blader/humanizer) (MIT). The scope of `thesis-writing`,
 the reference check, and the multi-agent installer with updater follows ideas in
 [Nbill27/academic-writing-skills](https://github.com/Nbill27/academic-writing-skills) (MIT); the
-code and text here are original.
+code and text here are original. The rules on comparative claims and concurrent work, the
+must-cite list, and the figure plan in the article plan follow ideas in
+[google-research/paper-orchestra](https://github.com/google-research/paper-orchestra)
+(Apache 2.0); no code or prompt text is reused.
 
 ---
 
@@ -201,7 +210,7 @@ diumumkan supaya bisa dipakai siapa pun.
 | `journal-targeting` | Memilih jurnal agar naskah terbit di jurnal terindeks: tangga tiga–empat jurnal yang dipilih sesudah hasil yang ditulis menetapkan kontribusinya, kecocokan diuji pada naskah terbitan terbaru, status indeks diverifikasi di daftar resmi Scopus pada hari pengiriman, jurnal bajakan dan predator disingkirkan, metrik dibaca dengan benar (persentil CiteScore vs kuartil SJR), serta langkah setelah penolakan atau tawaran transfer. Memetakan modul Elsevier Researcher Academy ke tiap tahap. |
 | `manuscript-review` | Simulasi telaah sebelum kirim oleh lima peran terpisah (editor, metode, bidang, penyajian, *devil's advocate*). Setiap temuan mengutip naskah; skrip menolak kutipan yang tidak ada, menggabungkan temuan yang diangkat beberapa peran, memberi skor tujuh dimensi, menerapkan aturan keputusan tetap, dan membandingkan revisi dengan telaah sebelumnya. |
 | `thesis-audit` | Audit skripsi, tesis, atau disertasi (Indonesia atau Inggris, .docx atau Markdown) sebagai satu rantai riset. Skrip memeriksa hal mekanis (rumusan masalah ↔ tujuan ↔ kesimpulan, sitasi ↔ daftar pustaka termasuk "dkk.", Tabel/Gambar N.M, angka abstrak); model menilai empat belas modul; skrip kedua memverifikasi kutipan, menegakkan aturan status dan keparahan, lalu menulis laporan pembimbing, lembar umpan balik mahasiswa, dan pertanyaan sidang. |
-| `thesis-writing` | Menyusun skripsi, tesis, atau disertasi (juga tesis berbahasa Inggris, Chapter 1 sampai 5/6) bersama penulisnya, Bab I sampai V, dari bahan penulis sendiri. Profil dari pedoman kampus dulu, lalu peta rantai (rumusan ↔ tujuan ↔ metode ↔ kesimpulan), lalu satu bab sekali jalan: proposal Bab III → II → I; naskah akhir Bab IV dari berkas hasil → V → revisi bingkai → abstrak terakhir. Jalur kuantitatif, kualitatif, R&D / pengembangan sistem, dan campuran. Skrip mengekspor bab ke DOCX dan PDF sesuai format kampus. |
+| `thesis-writing` | Menyusun skripsi, tesis, atau disertasi (juga tesis berbahasa Inggris, Chapter 1 sampai 5/6) bersama penulisnya, Bab I sampai V, dari bahan penulis sendiri. Profil dari pedoman kampus dulu, lalu peta rantai (rumusan ↔ tujuan ↔ metode ↔ kesimpulan), lalu satu bab sekali jalan: proposal Bab III → II → I; naskah akhir Bab IV dari berkas hasil → V → revisi bingkai → abstrak terakhir. Jalur kuantitatif, kualitatif, R&D / pengembangan sistem, dan campuran. Skrip mengekspor bab ke DOCX, PDF, dan LaTeX sesuai format kampus. |
 
 Skill aktif otomatis dari deskripsinya, baik Anda menulis dalam bahasa Indonesia maupun Inggris,
 dan menjawab dalam bahasa Anda. Bisa juga dipanggil langsung: `/academic-writing:manuscript-proofreading`.
@@ -241,12 +250,15 @@ bagian Install versi Inggris; perubahan tiap versi di [CHANGELOG.md](CHANGELOG.m
 **Cek rujukan.** `python verify_references.py naskah.md` (juga .docx dan .bib) mencocokkan setiap
 entri daftar pustaka ke Crossref dan OpenAlex. `doi_mismatch` (DOI milik karya lain) dan
 `doi_not_found` harus diperbaiki dulu. GARUDA dan SINTA tidak punya API publik, jadi entri
-Indonesia yang tidak ditemukan diberi judul persis untuk dicari manual di sana.
+Indonesia yang tidak ditemukan diberi tautan pencarian judul di GARUDA dan judul persis untuk
+dicari manual di SINTA.
 
 **Ekspor skripsi.** `python ekspor_naskah.py bab/ --out Skripsi --docx --pdf` (perlu pandoc)
 menggabungkan bab Markdown dan mengekspornya ke DOCX/PDF dengan A4, margin 4-4-3-3 cm, Times New
 Roman 12, spasi 1,5 sebagai bawaan yang bisa diubah. Ekspor ditolak selama masih ada penanda
-`[PERLU: ...]`, kecuali dengan `--draft`.
+`[PERLU: ...]`, kecuali dengan `--draft`. `--latex` menulis `.tex` mandiri sesuai format kampus;
+`--latex-body` menulis isi untuk ditempel ke templat LaTeX kampus atau jurnal, dengan kunci
+`\cite` dipertahankan dan `.bib` disalin ke sampingnya.
 
 ### Catatan
 

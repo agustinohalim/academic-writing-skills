@@ -214,7 +214,7 @@ class Checking(Base):
         r = self.check("Putri, D., dkk. (2021). Analisis kepuasan pengguna aplikasi desa. "
                        "Jurnal Sistem Informasi Nusantara, 4(2), 11-20.")
         self.assertEqual(r["status"], "not_found")
-        self.assertIn(vr.GARUDA, r["manual"])
+        self.assertIn(vr.GARUDA + "documents?select=title&q=Analisis+kepuasan+pengguna", r["manual"])
         self.assertIn(vr.SINTA, r["manual"])
         self.assertIn("Analisis kepuasan pengguna aplikasi desa", r["manual"])
 

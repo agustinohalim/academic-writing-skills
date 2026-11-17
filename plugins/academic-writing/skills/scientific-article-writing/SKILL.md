@@ -1,6 +1,6 @@
 ---
 name: scientific-article-writing
-description: Workflow for writing a journal article with an AI assistant, from research question to submission and revision — a research gap proven open and new before anything else, a gated article plan, results files as the only source of numbers, a Markdown manuscript as the single source (Word/PDF are exports), section-by-section drafting in a fixed order, machine checks, a reviewer-style self-review, a submission package (cover letter, declarations, suggested reviewers), and responses to reviewers. Use when the user looks for a research gap or works on a paper, manuscript, abstract, cover letter, journal choice, desk rejection, or major/minor revision. Triggers in English and Indonesian — research gap, novelty, paper, article, manuscript, submit, journal, reviewer, rebuttal, revision, abstract, celah riset, kebaruan, artikel, naskah, jurnal, kirim naskah, revisi mayor, revisi minor, tanggapan penelaah, surat pengantar.
+description: Workflow for writing a journal article with an AI assistant, from research question to submission and revision — a research gap proven open and new before anything else, a gated article plan, results files as the only source of numbers, a Markdown manuscript as the single source (Word/PDF/LaTeX are exports), section-by-section drafting in a fixed order, machine checks, a reviewer-style self-review, a submission package (cover letter, declarations, suggested reviewers), and responses to reviewers. Use when the user looks for a research gap or works on a paper, manuscript, abstract, cover letter, journal choice, desk rejection, or major/minor revision. Triggers in English and Indonesian — research gap, novelty, paper, article, manuscript, submit, journal, reviewer, rebuttal, revision, abstract, celah riset, kebaruan, artikel, naskah, jurnal, kirim naskah, revisi mayor, revisi minor, tanggapan penelaah, surat pengantar.
 ---
 
 # Scientific Article Writing
@@ -25,7 +25,7 @@ research question
       ↓
 Gap record           closest papers' limitations · proof still open · what is new
       ↓
-Article plan         A decision · B separation from other papers · C outline · D numbers needed
+Article plan         A decision · B separation from other papers · C outline · D evidence needed
       ↓
 scripts + logs  →  results files        (the only source of numbers)
       ↓
@@ -39,7 +39,7 @@ front matter         Introduction → Abstract → Title for that journal's read
       ↓
 self-review  →  fixes
       ↓
-export (.docx/PDF per journal)  +  submission package
+export (.docx/PDF/LaTeX per journal)  +  submission package
 ```
 
 The manuscript follows the results, never the reverse. If writing shows the results cannot
@@ -50,7 +50,7 @@ carry a claim, **soften the claim or run the experiment** — do not make the se
 | Stage | Output | Gate |
 |---|---|---|
 | 1. Gap, then plan | First a **gap record** (`references/gap-from-limitations.md`): the closest papers' limitations and untested claims quoted from the full text, the search showing the problem is still open, and what the paper adds that is new. Then plan sections A–D, including the **one-sentence contribution** (≤ 30 words, no place or dataset name) and the closest prior work it goes beyond | No plan before the gap record. A paper that only evaluates existing work has nothing new and stops here until it does. Author approves A (question, answer, genre) and B (separation from other papers) before any prose |
-| 2. Results | Results files from scripts that were run; logs kept | Every number in plan D has a source line |
+| 2. Results | Results files from scripts that were run; logs kept | Every number and figure in plan D has a source line |
 | 3. Outline | Section headings + one claim sentence per subsection | Each claim points to a results file |
 | 4. Draft | One section per turn. **4a** body: Methods → Results → Discussion, written without a target journal. **4b** novelty check on that body: scorecard section A (`references/pre-submission-scorecard.md`) and the gap record re-read against what the results now show. **4c** journal ladder for the contribution the body carries (`journal-targeting`). **4d** front matter for that readership: Introduction → Abstract → Title, references restyled | Section finished before the next. No journal before 4b passes (section A ≥ 11 of 16, A8 > 0); a body that fails 4b goes back to the plan, not to a journal search |
 | 5. Machine checks | `check_manuscript_en.py`, reference verification (Crossref/arXiv), quote check against PDFs, n-gram overlap | Zero heavy findings; every reference verified |
@@ -63,6 +63,16 @@ is written from memory of results. Writing it last, from the final Results, clos
 
 **One section per turn.** A manuscript generated in one pass has uniform rhythm, the most
 visible sign of machine prose.
+
+**Plan section D — the evidence the paper needs**, three lists, every line with its source:
+
+- **Numbers:** value → results file → script that wrote it.
+- **Figures:** the claim the figure carries → results file → script that draws it. A figure
+  with no claim is cut; a claim that needs a picture gets one here, not at packaging.
+- **Must-cite items:** every dataset, software package (with version), baseline, metric, and
+  method built upon, each with its reference (DataCite or Zenodo DOI for data and software).
+  These are the citations editors ask for most, and the ones an assistant skips because they
+  look obvious.
 
 ## What decides the score
 
@@ -103,8 +113,15 @@ already knows the findings.
 
 ## Hard rules
 
-- **Markdown is the manuscript; Word and PDF are exports.** Edit the source, re-export.
-  Manuscripts rejected and archived are kept unchanged.
+- **Markdown is the manuscript; Word, PDF, and LaTeX are exports.** Edit the source, re-export.
+  Manuscripts rejected and archived are kept unchanged. LaTeX for a journal class:
+  `references/submission-package.md`.
+- **Compare only with what was compared.** "Outperforms", "improves on", or "better than" a
+  cited work only when the results files hold that comparison on the same data and protocol.
+  Other recent work is concurrent, complementary, or set in a different setting, and is written
+  as such. Work published after the gap search (stage 1) or after submission is concurrent, not
+  a baseline: in revision, cite and position it; promise no experiments against it unless the
+  editor requires them and the author agrees.
 - **Editorial notes in `>` blockquotes**, in any language; exporters and the checker skip them.
 - **Visible placeholders** (⬜) for anything uncertain; none may remain at packaging.
 - **Target journal's reference style**, not a favourite. Changing journal means restyling every

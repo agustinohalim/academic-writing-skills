@@ -13,6 +13,9 @@ much narrower than stated.
 - Overgeneralisation: how many settings, units, or years carry the general claim?
 - Alternative explanations not ruled out: confounders, data-processing artefacts, selection.
 - Cherry-picking: results reported for some settings or thresholds and not others.
+- Comparative claims: every "outperforms", "better than", "state of the art" against a cited
+  work needs that comparison in the Results, same data and protocol; otherwise it is an
+  overclaim (`evidence`). Newer work treated as a beaten baseline is concurrent work.
 - The so-what test: if everything is true, what changes for anyone?
 - Be honest about severity: an objection the paper already answers adequately is minor or not a finding.
 

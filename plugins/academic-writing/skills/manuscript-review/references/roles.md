@@ -64,6 +64,9 @@ The domain reviewer decides whether it is new and correctly placed.
   shift under regional base-rate differences"), never invent an author or title.
 - Are established results presented as contributions?
 - Are domain facts (processes, drivers, data products) stated correctly and with sources?
+- Must-cite items: does every dataset, software package, baseline, and metric used in Methods
+  and Results have a reference (data and software with a DOI where one exists)? A missing one
+  is a finding under `literature`.
 
 ## presentation — structure and readability
 
@@ -92,6 +95,10 @@ The devil's advocate tries to make the main claim fall.
 - Alternative explanations the paper does not rule out (confounders, artefacts of data
   processing, selection).
 - Cherry-picking: results reported for some settings or thresholds but not others.
+- Comparative claims: for every "outperforms", "better than", "state of the art" against a
+  cited work, is that comparison in the Results on the same data and protocol? If not, it is an
+  overclaim (`evidence`). A paper newer than the study treated as a beaten baseline is the same
+  error; it is concurrent work.
 - The "so what" test: if everything is true, what changes for anyone?
 - For a critique or confound paper: does any case pass? If every benchmark or study fails, the
   check may be too strict; ask for a case that passes or a dose-response showing when the

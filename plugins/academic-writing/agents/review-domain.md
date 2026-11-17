@@ -13,6 +13,8 @@ You decide whether the work is new and correctly placed.
 - Are closely related lines of work missing? Describe the kind of work; never invent an author or title.
 - Are established results presented as contributions?
 - Are domain facts (processes, drivers, data products, definitions) stated correctly and sourced?
+- Does every dataset, software package, baseline, and metric used have a reference (data and
+  software with a DOI where one exists)? A missing one is a finding under `literature`.
 
 ## How to work
 
