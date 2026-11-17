@@ -11,12 +11,13 @@ generalised for anyone.
 
 | Skill | What it does |
 |---|---|
-| `research-integrity` | No number without a source, no citation from memory, claims sized to evidence. Authorship (ICMJE, CRediT), conflicts of interest, duplicate submission, Elsevier and Springer Nature AI-disclosure rules, REFORMS / TRIPOD+AI / PRISMA, and Indonesian regulation (Permendikbudristek 39/2021). |
+| `research-integrity` | No number without a source, no citation from memory (a script checks every reference against Crossref and OpenAlex), claims sized to evidence. Authorship (ICMJE, CRediT), conflicts of interest, duplicate submission, Elsevier and Springer Nature AI-disclosure rules, REFORMS / TRIPOD+AI / PRISMA, and Indonesian regulation (Permendikbudristek 39/2021). |
 | `manuscript-proofreading` | Fix errors without rewriting the author's voice. Runs two checkers, then reads in layers. Indonesian: EYD Edisi V, KBBI, italic foreign terms. English: numbers, tenses, terminology, claims. |
 | `scientific-article-writing` | Research gap → plan → results files → Markdown manuscript → self-review → submission package → revision, with an approval gate at each stage. No plan until the gap is shown to be specific, still open, and new. |
 | `journal-targeting` | Where to submit so the paper lands in an indexed journal: a ladder of three or four journals chosen after the drafted results settle the contribution, fit tested against recent papers, index status verified on the official Scopus lists on the day of submission, hijacked and predatory journals ruled out, metrics read correctly (CiteScore percentile vs SJR quartile), and the path after rejection or a transfer offer. Maps Elsevier Researcher Academy modules to each stage. |
 | `manuscript-review` | Simulated pre-submission peer review by five independent roles (editor, methods, domain, presentation, devil's advocate). Every finding quotes the manuscript; a script rejects quotes that are not there, merges findings raised by several roles, scores seven dimensions, applies fixed decision rules, and diffs a revision against the earlier review. |
 | `thesis-audit` | Audits a skripsi, tesis, or disertasi (Indonesian or English, .docx or Markdown) as one research chain. A script runs mechanical checks (rumusan masalah ↔ tujuan ↔ kesimpulan, citations ↔ daftar pustaka with "dkk.", Tabel/Gambar N.M, abstract numbers); the model judges fourteen modules; a second script verifies quotes, enforces status and severity rules, and writes a supervisor report, a student feedback sheet, and defence questions. |
+| `thesis-writing` | Drafts a skripsi, tesis, or disertasi (or an English-language thesis, Chapter 1 to 5/6) with its author, Bab I to V, from the author's own material. Campus-guide profile first, then a chain map (rumusan ↔ tujuan ↔ metode ↔ kesimpulan), then one chapter at a time: proposal Bab III → II → I; final Bab IV from results files → V → revise the frame → abstrak last. Quantitative, qualitative, R&D / system development, and mixed-method paths. A script exports the chapters to DOCX and PDF in the campus format. |
 
 Skills activate automatically from their descriptions, in English or Indonesian. You can also
 call them directly: `/academic-writing:research-integrity`.
@@ -77,6 +78,31 @@ python check_manuscript_en.py paper.md
 python periksa_gaya.py bab_02.md
 ```
 
+### Thesis export (Python 3.10+, pandoc)
+
+```bash
+python ekspor_naskah.py bab/ --out Skripsi_Budi --docx --pdf     # A4, 4-4-3-3 cm, Times New Roman 12, 1.5 spacing by default
+python ekspor_naskah.py bab_1.md bab_2.md bab_3.md --out Proposal --docx --draft --bib pustaka.bib --csl apa.csl
+```
+
+The Markdown chapters are the source; Word and PDF are exports. The script refuses to export
+while `[PERLU: ...]` or `⬜` placeholders remain, unless `--draft`. PDF goes through LibreOffice
+when installed, otherwise pandoc with Typst or LaTeX.
+
+### Reference check (Python 3.10+, standard library only)
+
+```bash
+python verify_references.py naskah.md            # .md, .docx, .txt, .bib; finds the reference list
+python verify_references.py skripsi.docx --out cek_pustaka.md --cache cek.json
+```
+
+Each entry is looked up in Crossref and OpenAlex. `doi_mismatch` (the DOI belongs to another
+work) and `doi_not_found` are heavy. An entry without a DOI gets a suggested DOI only when
+title, year, and first author agree. GARUDA and SINTA have no public API, so Indonesian entries
+not found online get the exact title to search there by hand. Books, theses, and regulations are
+routed to the catalogue or issuing body instead of failing for lacking a DOI. No e-mail is sent
+unless you pass `--mailto`.
+
 ## Install
 
 ```
@@ -102,6 +128,41 @@ To enable it for everyone working in a project, add to the project's `.claude/se
 
 Update later with `/plugin marketplace update academic-writing-skills`.
 
+### Other agents (Codex, Gemini CLI, OpenCode, and others)
+
+The skills are plain Agent Skills folders, so other agents can read them. `install.py` (Python
+3.10+, standard library only) copies them into the agent's skills folder, replaces Claude Code's
+`${CLAUDE_SKILL_DIR}` with the real path, and puts the five reviewer roles inside
+`manuscript-review/agents/` so the review runs them one at a time where subagents are not available.
+
+```bash
+git clone https://github.com/agustinohalim/academic-writing-skills.git
+cd academic-writing-skills
+python install.py install                          # ~/.agents/skills: Codex, Gemini CLI, OpenCode
+python install.py install --target gemini          # ~/.gemini/skills (also: opencode, claude)
+python install.py install --project path/to/repo   # path/to/repo/.agents/skills
+python install.py install --dest ~/.hermes/skills  # any other agent's skills folder
+```
+
+Install into one folder only: OpenCode also reads `~/.claude/skills` and `~/.agents/skills`, and
+Gemini CLI reads `~/.agents/skills`, so a second copy shows every skill twice. In Claude Code,
+use the plugin above instead.
+
+The installed copy carries its own updater in `.academic-writing/`, so no clone is needed later:
+
+```bash
+python ~/.agents/skills/.academic-writing/install.py check-update   # read-only
+python ~/.agents/skills/.academic-writing/install.py update         # backup first, then replace
+python ~/.agents/skills/.academic-writing/install.py rollback          # again to step further back; --list, --to <id>
+python ~/.agents/skills/.academic-writing/install.py uninstall
+```
+
+`update` downloads the latest `main` (or a tag with `--ref v1.13.0`), extracts it safely, checks
+that every skill is present and the version is not older, and backs up the current copy first
+(`%LOCALAPPDATA%\academic-writing-skills\backups` on Windows,
+`~/.cache/academic-writing-skills/backups` elsewhere). It only touches this family's folders. What
+changed in each version: [CHANGELOG.md](CHANGELOG.md).
+
 ## Caveats
 
 - Publisher AI policies and Indonesian credit rules change. `references/sources.md` records when
@@ -116,7 +177,10 @@ Code in `plugins/**/scripts/`: MIT. Everything else: CC BY 4.0. See `LICENSE`.
 Third-party: `scientific-article-writing/references/third-party/k-dense/` contains two checklists
 from [K-Dense-AI/scientific-agent-skills](https://github.com/K-Dense-AI/scientific-agent-skills),
 MIT, © 2025 K-Dense Inc. (licence included in that folder). Pattern ideas from
-[blader/humanizer](https://github.com/blader/humanizer) (MIT).
+[blader/humanizer](https://github.com/blader/humanizer) (MIT). The scope of `thesis-writing`,
+the reference check, and the multi-agent installer with updater follows ideas in
+[Nbill27/academic-writing-skills](https://github.com/Nbill27/academic-writing-skills) (MIT); the
+code and text here are original.
 
 ---
 
@@ -131,12 +195,13 @@ diumumkan supaya bisa dipakai siapa pun.
 
 | Skill | Isinya |
 |---|---|
-| `research-integrity` | Tidak ada angka tanpa asal, tidak ada sitasi dari ingatan, klaim sebesar buktinya. Kepengarangan (ICMJE, CRediT), konflik kepentingan, pengajuan jamak, kebijakan AI Elsevier dan Springer Nature, REFORMS / TRIPOD+AI / PRISMA, dan Permendikbudristek 39/2021. |
+| `research-integrity` | Tidak ada angka tanpa asal, tidak ada sitasi dari ingatan (skrip memeriksa setiap rujukan ke Crossref dan OpenAlex), klaim sebesar buktinya. Kepengarangan (ICMJE, CRediT), konflik kepentingan, pengajuan jamak, kebijakan AI Elsevier dan Springer Nature, REFORMS / TRIPOD+AI / PRISMA, dan Permendikbudristek 39/2021. |
 | `manuscript-proofreading` | Memperbaiki kesalahan tanpa mengganti suara penulis. Pemeriksa otomatis dulu, lalu pembacaan berlapis. Indonesia: EYD Edisi V, KBBI, istilah asing miring. Inggris: angka, *tenses*, istilah, klaim. |
 | `scientific-article-writing` | Celah riset → rencana → berkas hasil → naskah Markdown → tinjauan mandiri → paket kirim → revisi, dengan gerbang persetujuan di tiap tahap. Rencana tidak ditulis sebelum celahnya terbukti spesifik, masih terbuka, dan baru. |
 | `journal-targeting` | Memilih jurnal agar naskah terbit di jurnal terindeks: tangga tiga–empat jurnal yang dipilih sesudah hasil yang ditulis menetapkan kontribusinya, kecocokan diuji pada naskah terbitan terbaru, status indeks diverifikasi di daftar resmi Scopus pada hari pengiriman, jurnal bajakan dan predator disingkirkan, metrik dibaca dengan benar (persentil CiteScore vs kuartil SJR), serta langkah setelah penolakan atau tawaran transfer. Memetakan modul Elsevier Researcher Academy ke tiap tahap. |
 | `manuscript-review` | Simulasi telaah sebelum kirim oleh lima peran terpisah (editor, metode, bidang, penyajian, *devil's advocate*). Setiap temuan mengutip naskah; skrip menolak kutipan yang tidak ada, menggabungkan temuan yang diangkat beberapa peran, memberi skor tujuh dimensi, menerapkan aturan keputusan tetap, dan membandingkan revisi dengan telaah sebelumnya. |
 | `thesis-audit` | Audit skripsi, tesis, atau disertasi (Indonesia atau Inggris, .docx atau Markdown) sebagai satu rantai riset. Skrip memeriksa hal mekanis (rumusan masalah ↔ tujuan ↔ kesimpulan, sitasi ↔ daftar pustaka termasuk "dkk.", Tabel/Gambar N.M, angka abstrak); model menilai empat belas modul; skrip kedua memverifikasi kutipan, menegakkan aturan status dan keparahan, lalu menulis laporan pembimbing, lembar umpan balik mahasiswa, dan pertanyaan sidang. |
+| `thesis-writing` | Menyusun skripsi, tesis, atau disertasi (juga tesis berbahasa Inggris, Chapter 1 sampai 5/6) bersama penulisnya, Bab I sampai V, dari bahan penulis sendiri. Profil dari pedoman kampus dulu, lalu peta rantai (rumusan ↔ tujuan ↔ metode ↔ kesimpulan), lalu satu bab sekali jalan: proposal Bab III → II → I; naskah akhir Bab IV dari berkas hasil → V → revisi bingkai → abstrak terakhir. Jalur kuantitatif, kualitatif, R&D / pengembangan sistem, dan campuran. Skrip mengekspor bab ke DOCX dan PDF sesuai format kampus. |
 
 Skill aktif otomatis dari deskripsinya, baik Anda menulis dalam bahasa Indonesia maupun Inggris,
 dan menjawab dalam bahasa Anda. Bisa juga dipanggil langsung: `/academic-writing:manuscript-proofreading`.
@@ -165,6 +230,23 @@ atau signifikansi mengembalikan naskah ke tahap 1, bukan ke penyuntingan bahasa.
 
 Untuk mengaktifkannya bagi semua orang di satu proyek, tambahkan blok `extraKnownMarketplaces`
 dan `enabledPlugins` seperti contoh di atas ke `.claude/settings.json` proyek itu.
+
+**Agen lain (Codex, Gemini CLI, OpenCode, dan lainnya).** `python install.py install` menyalin
+skill ke `~/.agents/skills`; `--target gemini|opencode|claude`, `--project <folder>`, atau
+`--dest <folder>` untuk agen lain. Salinan terpasang membawa pembaruannya sendiri:
+`python ~/.agents/skills/.academic-writing/install.py check-update`, lalu `update`, `rollback`,
+atau `uninstall`. Pasang di satu folder saja agar skill tidak muncul dua kali. Rinciannya di
+bagian Install versi Inggris; perubahan tiap versi di [CHANGELOG.md](CHANGELOG.md).
+
+**Cek rujukan.** `python verify_references.py naskah.md` (juga .docx dan .bib) mencocokkan setiap
+entri daftar pustaka ke Crossref dan OpenAlex. `doi_mismatch` (DOI milik karya lain) dan
+`doi_not_found` harus diperbaiki dulu. GARUDA dan SINTA tidak punya API publik, jadi entri
+Indonesia yang tidak ditemukan diberi judul persis untuk dicari manual di sana.
+
+**Ekspor skripsi.** `python ekspor_naskah.py bab/ --out Skripsi --docx --pdf` (perlu pandoc)
+menggabungkan bab Markdown dan mengekspornya ke DOCX/PDF dengan A4, margin 4-4-3-3 cm, Times New
+Roman 12, spasi 1,5 sebagai bawaan yang bisa diubah. Ekspor ditolak selama masih ada penanda
+`[PERLU: ...]`, kecuali dengan `--draft`.
 
 ### Catatan
 

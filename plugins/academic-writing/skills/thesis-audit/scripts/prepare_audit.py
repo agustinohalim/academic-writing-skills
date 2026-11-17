@@ -42,7 +42,7 @@ AQUI = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, AQUI)
 from modul import LEVELS, MODULES, WAJIB, jenis_judul, modul_untuk, nama_modul  # noqa: E402
 
-PENANDA = re.compile(r"⬜|\bTODO\b|\[PERLU[^\]]*\]|\bXX+\b|\?\?\?|\[CITATION|\[(?:sitasi|citation) needed\]", re.I)
+PENANDA = re.compile(r"⬜|\bTODO\b|\[(?:PERLU|NEED)[^\]]*\]|\bXX+\b|\?\?\?|\[CITATION|\[(?:sitasi|citation) needed\]", re.I)
 W = "{http://schemas.openxmlformats.org/wordprocessingml/2006/main}"
 
 

@@ -102,7 +102,9 @@ problems that persist.
 ## Limits
 
 - One reader, one model. The audit finds problems visible in the text; it does not rerun
-  analyses, open datasets, or check that references exist (use Crossref tooling).
+  analyses, open datasets, or check that references exist. For that, run
+  `research-integrity/scripts/verify_references.py` on the same .docx or .md (Crossref and
+  OpenAlex; GARUDA and SINTA by hand) and cite its `doi_mismatch` entries under M11 or M12.
 - The verdict is a rule over counts (any critical → not ready; three or more major → major
   revision), not a prediction of the examiners.
 - It is the supervisor's tool. What reaches the student is the supervisor's decision.
@@ -113,5 +115,6 @@ problems that persist.
 - `references/audit-schema.md` — the audit.json format
 - `references/supervising.md` — rounds, order of work, what not to do, sidang preparation
 - `references/dissertation.md` — dissertation level, M14, proposals
+- `thesis-writing` — drafting Bab I–V chapter by chapter before the audit
 - `research-integrity` (AI use, plagiarism, authorship) and `manuscript-proofreading`
   (language) — separate jobs, not part of the audit

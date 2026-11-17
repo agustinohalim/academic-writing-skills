@@ -7,7 +7,8 @@ description: Workflow for writing a journal article with an AI assistant, from r
 
 Respond in the user's language; the manuscript itself is in the journal's language. Integrity
 rules — no number without a source, no citation from memory — are in `research-integrity` and
-apply in full here. Language checks are in `manuscript-proofreading`.
+apply in full here. Language checks are in `manuscript-proofreading`. A thesis (skripsi, tesis,
+disertasi) is written with `thesis-writing`, not this workflow.
 
 ## Why this skill exists
 
