@@ -50,8 +50,8 @@ guesses**.
    trace of a citation written from memory. `partial` means the work is right but the year or
    first author is not. `found` gives a suggested DOI for an entry without one; open it and
    confirm before adding it. `not_found` is not proof of fabrication: many Indonesian journals
-   are only in GARUDA or SINTA, which have no public API, so the script prints the title to
-   search there by hand. Books, theses, regulations, web pages, and datasets without a DOI are
+   are only in GARUDA or SINTA, which have no public API, so the script prints a GARUDA
+   title-search link and the title to search in SINTA by hand. Books, theses, regulations, web pages, and datasets without a DOI are
    `not_checkable_online`, with the route to check them. **`verified` and `found` confirm that
    the work exists and the metadata matches, not that it supports the sentence citing it.**
    No e-mail is sent unless `--mailto` is given; `--offline` only parses.

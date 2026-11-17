@@ -21,9 +21,10 @@ in Crossref and OpenAlex and reports one status per entry:
 Exit status 1 when any entry is doi_mismatch or doi_not_found, 2 on usage errors, else 0.
 
 GARUDA (garuda.kemdiktisaintek.go.id) and SINTA (sinta.kemdiktisaintek.go.id) have no public
-API, so for Indonesian entries the script prints the exact title to paste into their search
-boxes; that check is manual. It does not build deep search links: their URL formats could not be
-verified.
+API, so the check there is manual. For Indonesian entries the script prints a GARUDA title-search
+link (the site's own GET form: /documents?select=title&q=<title>, verified 2026-11-17) and the
+title to paste into SINTA, whose search pages refuse automated and some foreign or VPN traffic
+(HTTP 403), so no SINTA link is built.
 
 A verified or found status means the work exists and the metadata matches. It does not mean the
 source says what the manuscript claims it says; that needs the source itself.
@@ -521,8 +522,9 @@ ROUTE = {
 
 def manual_pointer(entry):
     t = entry["title"] if entry["title"] != entry["text"] else entry["text"][:160]
-    return (f'Search the title "{t}" in GARUDA ({GARUDA}) and SINTA ({SINTA}), '
-            f"or on the journal's own site (OJS archive). These portals have no public API.")
+    cari = GARUDA + "documents?" + urllib.parse.urlencode({"select": "title", "q": t[:200]})
+    return (f"GARUDA title search: {cari} ; SINTA ({SINTA}): search the title \"{t}\"; "
+            f"or the journal's own site (OJS archive). These portals have no public API.")
 
 
 # ---------------------------------------------------------------- checking
