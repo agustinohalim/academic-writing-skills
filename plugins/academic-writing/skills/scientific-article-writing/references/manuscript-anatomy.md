@@ -27,12 +27,17 @@ venue uses one. No "In recent years, … has attracted increasing attention".
 ## Related work
 
 Grouped by idea, not by paper. Each group ends with this paper's position relative to it.
+A cited method is "outperformed" or "improved on" only when Results contain that comparison;
+otherwise it is concurrent or complementary work. Papers newer than the gap search are
+concurrent.
 A co-author who wrote a discussed paper is declared under competing interests.
 
 ## Data
 
 Source, period, unit (district-month, recording, patient), filtering with counts before and
-after, download date, product versions. Patients and recordings reported separately.
+after, download date, product versions. Every dataset and software package used is **cited in
+the references**, not only linked (DataCite or Zenodo DOI where one exists), as are baselines
+and metrics taken from other work. Patients and recordings reported separately.
 
 ## Methods
 
