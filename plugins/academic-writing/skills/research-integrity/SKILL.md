@@ -38,7 +38,23 @@ guesses**.
    — `check_manuscript_en.py` treats leftover placeholders as heavy findings.
 2. **No citation from memory.** Author, year, title, venue, volume, pages, DOI all come from
    retrieved metadata (Crossref, arXiv, OpenAlex) or the PDF itself. A claim attributed to a
-   source is checked against that source.
+   source is checked against that source. Before a draft goes to a supervisor, reviewer, or
+   journal, run the reference list through the checker:
+
+   ```bash
+   python "${CLAUDE_SKILL_DIR}/scripts/verify_references.py" naskah.md   # .md, .docx, .txt, .bib
+   ```
+
+   It looks up every entry in Crossref and OpenAlex. `doi_mismatch` (the DOI belongs to another
+   work) and `doi_not_found` are heavy and make it exit 1: fix them first, they are the usual
+   trace of a citation written from memory. `partial` means the work is right but the year or
+   first author is not. `found` gives a suggested DOI for an entry without one; open it and
+   confirm before adding it. `not_found` is not proof of fabrication: many Indonesian journals
+   are only in GARUDA or SINTA, which have no public API, so the script prints the title to
+   search there by hand. Books, theses, regulations, web pages, and datasets without a DOI are
+   `not_checkable_online`, with the route to check them. **`verified` and `found` confirm that
+   the work exists and the metadata matches, not that it supports the sentence citing it.**
+   No e-mail is sent unless `--mailto` is given; `--offline` only parses.
 3. **Claims sized to evidence.** "Shows" only for what was tested. A finding from 16 papers
    read is not a finding about 72 papers screened. Negative results are reported.
 4. **Dated forecasts are never edited after the data arrive.** Write a separate evaluation.
@@ -108,3 +124,6 @@ does not depend on the answer.
 - `references/id/integritas-akademik-indonesia.md` — Permendikbudristek 39/2021 and textbook
   (buku ajar) requirements, in Indonesian
 - `references/sources.md` — official sources for every rule, with the date checked
+- `scripts/verify_references.py` — reference list against Crossref and OpenAlex: DOI belongs
+  to the entry, metadata agrees, entries without DOI found or routed to a manual check
+- `thesis-writing` applies these rules when drafting a skripsi, tesis, or disertasi
