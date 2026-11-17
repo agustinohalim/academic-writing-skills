@@ -148,6 +148,10 @@ class TestChapters(unittest.TestCase):
         temuan = ek.cari_penanda([jalur])
         self.assertEqual([t[1] for t in temuan], [1, 2, 4])
 
+    def test_english_need_placeholder_found(self):
+        jalur = self.tulis("chapter_4.md", "Clean line.\nThe sample was [NEED: n from survey_clean.csv].\n")
+        self.assertEqual([t[1] for t in ek.cari_penanda([jalur])], [2])
+
     def run_cli(self, *args):
         return subprocess.run([sys.executable, EKSPOR, *args], capture_output=True, text=True,
                               encoding="utf-8")

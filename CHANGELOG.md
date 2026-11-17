@@ -13,7 +13,9 @@ which `install.py update --ref vX.Y.Z` can install.
 ### Added
 - `thesis-writing` skill: drafts skripsi, tesis, and disertasi chapters (Bab I–V) from the
   author's own material, with quantitative, qualitative, mixed-methods, and R&D paths, and
-  `ekspor_naskah.py` to export the chapters to DOCX and PDF in the campus format.
+  `ekspor_naskah.py` to export the chapters to DOCX and PDF in the campus format. Covers
+  English-language theses too (five- or six-chapter layouts, term map, tense, `[NEED: ...]`
+  placeholders, which `thesis-audit` now also flags).
 - `research-integrity/scripts/verify_references.py`: checks a reference list against Crossref
   and OpenAlex (DOI resolves, DOI belongs to the cited paper, unlisted works found by
   bibliographic search) and gives Garuda and SINTA pointers for Indonesian sources that need a

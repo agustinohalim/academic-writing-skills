@@ -36,7 +36,7 @@ import sys
 import tempfile
 import zipfile
 
-PENANDA = re.compile(r"⬜|\[PERLU[^\]]*\]|\bTODO\b|\bXX+\b|\?\?\?")
+PENANDA = re.compile(r"⬜|\[(?:PERLU|NEED)[^\]]*\]|\bTODO\b|\bXX+\b|\?\?\?")
 PEMISAH_HALAMAN = (
     "\n\n```{=openxml}\n<w:p><w:r><w:br w:type=\"page\"/></w:r></w:p>\n```\n\n"
     "```{=latex}\n\\newpage\n```\n\n"

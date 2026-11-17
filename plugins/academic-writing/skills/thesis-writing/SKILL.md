@@ -1,6 +1,6 @@
 ---
 name: thesis-writing
-description: Drafting a skripsi (S1), tesis (S2), or disertasi (S3) chapter by chapter — Bab I to Bab V, proposal or final — together with the author, from the author's own material (approved proposal, notes, data, results files, interview transcripts, test logs). A task profile from the campus guide (pedoman) comes first, then a chain map (rumusan masalah ↔ tujuan ↔ hipotesis ↔ metode ↔ analisis ↔ kesimpulan) before any prose, then one chapter per turn in a fixed order — proposal Bab III → II → I, final Bab IV from results files → V → revise III/II/I → abstrak last — with method paths for quantitative, qualitative, R&D / system development, and mixed methods, and export of the Markdown chapters to DOCX and PDF in the campus format. Use when the user writes or revises a thesis or thesis proposal, or one of its chapters or sections. Triggers in English and Indonesian — write thesis, thesis chapter, thesis proposal, dissertation chapter, export thesis to Word or PDF, tulis skripsi, menulis skripsi, proposal skripsi, Bab I, Bab II, Bab III, Bab IV, Bab V, latar belakang, rumusan masalah, tujuan penelitian, tinjauan pustaka, kajian teori, kerangka berpikir, metode penelitian, hasil dan pembahasan, kesimpulan dan saran, abstrak, ekspor DOCX, ekspor PDF, format pedoman kampus.
+description: Drafting a skripsi (S1), tesis (S2), or disertasi (S3), or an English-language master's thesis or PhD dissertation, chapter by chapter — Bab I to Bab V or Chapter 1 to 5/6, proposal or final — together with the author, from the author's own material (approved proposal, notes, data, results files, interview transcripts, test logs). A task profile from the campus guide (pedoman) comes first, then a chain map (rumusan masalah ↔ tujuan ↔ hipotesis ↔ metode ↔ analisis ↔ kesimpulan) before any prose, then one chapter per turn in a fixed order — proposal Bab III → II → I, final Bab IV from results files → V → revise III/II/I → abstrak last — with method paths for quantitative, qualitative, R&D / system development, and mixed methods, and export of the Markdown chapters to DOCX and PDF in the campus format. Use when the user writes or revises a thesis or thesis proposal, or one of its chapters or sections. Triggers in English and Indonesian — write thesis, thesis chapter, thesis proposal, master's thesis, PhD dissertation, dissertation chapter, introduction chapter, literature review, methodology chapter, research questions, results chapter, findings, discussion chapter, conclusion chapter, export thesis to Word or PDF, tulis skripsi, menulis skripsi, proposal skripsi, Bab I, Bab II, Bab III, Bab IV, Bab V, latar belakang, rumusan masalah, tujuan penelitian, tinjauan pustaka, kajian teori, kerangka berpikir, metode penelitian, hasil dan pembahasan, kesimpulan dan saran, abstrak, ekspor DOCX, ekspor PDF, format pedoman kampus.
 ---
 
 # Thesis Writing
@@ -9,6 +9,12 @@ Respond in the user's language; the thesis itself is in the language the faculty
 Integrity rules — no number without a source, no citation from memory — are in
 `research-integrity` and apply in full here. Language checks are in `manuscript-proofreading`.
 The audit of a finished draft is `thesis-audit`.
+
+**English-language theses** follow the same stages. Chapter names, the five- or six-chapter
+layout (Results and Discussion as separate chapters), the term map (rumusan masalah → research
+questions), tense and hedging, and `[NEED: ...]` placeholders are in
+`references/english-thesis.md`. The other reference files are in Indonesian but describe what
+each part must do, so they apply in either language.
 
 ## Why this skill exists
 
@@ -92,9 +98,10 @@ Before moving on, check and report in two or three lines:
 
 ## Placeholders
 
-Use `[PERLU: ...]` for anything the author must supply or confirm, in the language of the thesis
-(`[PERLU: jumlah responden dari data_kuesioner.xlsx]`, `[PERLU: pedoman — jarak spasi abstrak]`).
-`⬜` is accepted too. `thesis-audit` and the export script treat leftover placeholders as heavy
+Use `[PERLU: ...]` for anything the author must supply or confirm
+(`[PERLU: jumlah responden dari data_kuesioner.xlsx]`, `[PERLU: pedoman — jarak spasi abstrak]`);
+in an English thesis, `[NEED: ...]` (`[NEED: sample size from survey_clean.csv]`). `⬜` is
+accepted too. `thesis-audit` and the export script treat leftover placeholders as heavy
 findings, so they cannot reach the supervisor or the examiner unnoticed.
 
 ## Method paths
@@ -158,5 +165,7 @@ not depend on the answer.
 - `references/bab-iv-v.md` — Bab IV and V: results from files, discussion, conclusions, suggestions
 - `references/jalur-metode.md` — quantitative, qualitative, R&D, and mixed-method paths
 - `references/ekspor.md` — export script, requirements, citations
+- `references/english-thesis.md` — English-language theses: chapter layouts, terms, tense,
+  placeholders, abstract
 - `thesis-audit` (chain audit before seminar or sidang), `manuscript-proofreading` (EYD V, KBBI),
   `research-integrity` (citations, AI disclosure, plagiarism)
