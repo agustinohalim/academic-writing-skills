@@ -1,12 +1,12 @@
 {
   "name": "academic-writing-skills",
-  "description": "Academic writing skills for Claude Code: research integrity, manuscript proofreading (English and Indonesian), journal article workflow, and simulated peer review",
+  "description": "Academic writing skills for Claude Code and other agents: research integrity, manuscript proofreading (English and Indonesian), journal article workflow, simulated peer review, and thesis writing and audit",
   "owner": { "name": "Agustino Halim", "url": "https://github.com/agustinohalim" },
   "plugins": [
     {
       "name": "academic-writing",
       "source": "./plugins/academic-writing",
-      "description": "Research integrity, bilingual proofreading (EYD V / academic English) with deterministic checkers, a gated journal-article workflow, and journal targeting for indexed journals"
+      "description": "Research integrity with reference verification (Crossref, OpenAlex), bilingual proofreading (EYD V / academic English) with deterministic checkers, a gated journal-article workflow, journal targeting for indexed journals, simulated peer review, thesis drafting (Bab I-V) with DOCX/PDF export, and thesis audit"
     }
   ]
 }
