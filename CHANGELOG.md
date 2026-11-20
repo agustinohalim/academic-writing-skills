@@ -8,6 +8,15 @@ No git tags exist for versions up to 1.12.0. They were reconstructed from the co
 the version bumps in `plugin.json`. From the next release on, each version is tagged `vX.Y.Z`,
 which `install.py update --ref vX.Y.Z` can install.
 
+## [1.14.1] — 2026-11-20
+
+### Fixed
+- `check_manuscript_en.py`: a combined `## Results and Discussion` section (the SINTA journal
+  templates) was read as Discussion, so every result number was reported as "new in the
+  Discussion" (257 light findings on one manuscript, 22 after the fix). Inside such a section
+  the `###` subsections now decide: one named Discussion or Conclusion is checked, the rest count
+  as results.
+
 ## [1.14.0] — 2026-11-17
 
 ### Added

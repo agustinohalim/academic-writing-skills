@@ -271,6 +271,44 @@ class Checker(unittest.TestCase):
             self.assertEqual(r.returncode, 1)
 
 
+COMBINED_SECTIONS = """# Title
+
+## 1. Introduction
+
+Intro.
+
+## 3. Results and Discussion
+
+Overview AUC 0.811.
+
+### 3.1 Accuracy
+
+The AUC was 0.823.
+
+### 3.2 Discussion
+
+The AUC of 0.823 holds, and 0.777 is new.
+
+## 4. Conclusions
+
+Recall 0.655 appears only here.
+"""
+
+
+class CombinedResultsAndDiscussion(unittest.TestCase):
+    def test_results_subsections_are_not_discussion(self):
+        with tempfile.TemporaryDirectory() as d:
+            p = os.path.join(d, "paper.md")
+            with open(p, "w", encoding="utf-8") as f:
+                f.write(COMBINED_SECTIONS)
+            r = run(CHECK, "--json", p)
+            new = [x["message"] for x in json.loads(r.stdout) if "does not appear earlier" in x["message"]]
+            self.assertEqual(sorted(new), sorted(MSG_NEW.format(n) for n in ("0.777", "0.655")))
+
+
+MSG_NEW = "number '{}' in Discussion/Conclusion does not appear earlier: new result in the Discussion?"
+
+
 class GenreMoves(unittest.TestCase):
     def light(self, extra):
         with tempfile.TemporaryDirectory() as d:
