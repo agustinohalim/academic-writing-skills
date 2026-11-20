@@ -1,0 +1,1 @@
+plugins/academic-writing/skills/manuscript-proofreading/scripts/check_manuscript_en.py  # reason: one CLI checker, one function per check kind, imported whole by prepare_review.py and check_grammar_lt.py; exempted by user decision 20 Nov 2026

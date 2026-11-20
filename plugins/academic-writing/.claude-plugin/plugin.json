@@ -1,6 +1,6 @@
 {
   "name": "academic-writing",
-  "version": "1.14.0",
+  "version": "1.14.1",
   "description": "Research integrity with reference verification (Crossref, OpenAlex), bilingual proofreading (EYD V / academic English) with deterministic checkers, a gated journal-article workflow, journal targeting for indexed journals, simulated peer review, thesis drafting (Bab I-V) with DOCX/PDF export, and thesis audit",
   "author": { "name": "Agustino Halim", "url": "https://github.com/agustinohalim" },
   "homepage": "https://github.com/agustinohalim/academic-writing-skills",

@@ -384,20 +384,34 @@ def periksa_keterbacaan(abstrak, badan):
     return temuan
 
 
+HASIL_DAN_BAHASAN = re.compile(r"result.*discussion|discussion.*result")
+BAHASAN = re.compile(r"discussion|conclusion")
+
+
+def bagian_bahasan(judul):
+    return bool(BAHASAN.search(judul)) and not HASIL_DAN_BAHASAN.search(judul)
+
+
+def isi_per_bagian(baris):
+    """Lines keyed by lower-cased `##` heading; inside a combined Results and Discussion, by `###`."""
+    induk, bagian_kini, isi = "", "", {}
+    for no, b in enumerate(baris, 1):
+        if b.startswith("## "):
+            induk = bagian_kini = b[3:].strip().lower()
+        elif b.startswith("### ") and HASIL_DAN_BAHASAN.search(induk):
+            bagian_kini = b[4:].strip().lower()
+        elif not b.lstrip().startswith(">"):
+            isi.setdefault(bagian_kini, []).append((no, b))
+    return isi
+
+
 def periksa_struktur(baris):
     """Structure-level signals that drive novelty/presentation scores. All LIGHT."""
     temuan = []
     judul = next((b for b in baris if b.startswith("# ")), "")
     if re.search(r"(?i)evidence from|a case study|case study of|: the case of", judul):
         temuan.append((1, MSG["judul"]))
-    bagian_kini, isi = "", {}
-    for no, b in enumerate(baris, 1):
-        if b.startswith("## "):
-            bagian_kini = b[3:].strip().lower()
-            continue
-        if b.lstrip().startswith(">"):
-            continue
-        isi.setdefault(bagian_kini, []).append((no, b))
+    isi = isi_per_bagian(baris)
     abstrak = next((v for k, v in isi.items() if "abstract" in k), [])
     teks_abs = " ".join(b for _, b in abstrak)
     kata = len(teks_abs.split())
@@ -415,10 +429,10 @@ def periksa_struktur(baris):
                 if len(butir) > 4:
                     temuan.append((no, MSG["kontribusi"].format(len(butir))))
                 break
-    hasil = " ".join(b for k, v in isi.items() if not re.search(r"discussion|conclusion|abstract|reference", k)
+    hasil = " ".join(b for k, v in isi.items() if not (bagian_bahasan(k) or re.search(r"abstract|reference", k))
                      for _, b in v).replace("−", "-")
     for k, v in isi.items():
-        if not re.search(r"discussion|conclusion", k):
+        if not bagian_bahasan(k):
             continue
         for no, b in v:
             for a in ANGKA.findall(b):
